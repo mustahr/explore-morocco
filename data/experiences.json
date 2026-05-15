@@ -1,0 +1,134 @@
+[
+  {
+    "id": "camel-ride",
+    "title": "Camel Trekking in the Sahara",
+    "description": "Ride through golden dunes at sunset and spend the night in a desert camp",
+    "image": "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=800&q=80",
+    "category": "Adventure",
+    "duration": "3 hours",
+    "price": 350,
+    "rating": 4.9,
+    "location": "Merzouga"
+  },
+  {
+    "id": "hammam",
+    "title": "Traditional Hammam Experience",
+    "description": "Authentic Moroccan steam bath and black soap scrub in a historic hammam",
+    "image": "https://images.unsplash.com/photo-1737455339797-36bf591cec31",
+    "category": "Wellness",
+    "duration": "2 hours",
+    "price": 200,
+    "rating": 4.8,
+    "location": "Marrakech"
+  },
+  {
+    "id": "cooking-class",
+    "title": "Moroccan Cooking Class",
+    "description": "Learn to make tagine, couscous, and pastilla with a local family",
+    "image": "https://plus.unsplash.com/premium_photo-1683707120482-eae212654b77",
+    "category": "Food & Drink",
+    "duration": "4 hours",
+    "price": 400,
+    "rating": 4.9,
+    "location": "Marrakech"
+  },
+  {
+    "id": "quad-biking",
+    "title": "Quad Biking Adventure",
+    "description": "Race through palm groves, Berber villages, and desert landscapes",
+    "image": "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=800&q=80",
+    "category": "Adventure",
+    "duration": "2 hours",
+    "price": 500,
+    "rating": 4.7,
+    "location": "Agafay Desert"
+  },
+  {
+    "id": "surfing",
+    "title": "Surfing Lessons",
+    "description": "Catch waves on Morocco's Atlantic coast with expert instructors",
+    "image": "https://images.unsplash.com/photo-1729493364469-31d24453e07f",
+    "category": "Adventure",
+    "duration": "3 hours",
+    "price": 300,
+    "rating": 4.6,
+    "location": "Essaouira"
+  },
+  {
+    "id": "hot-air-balloon",
+    "title": "Hot Air Balloon Ride",
+    "description": "Float over the Atlas Mountains and Marrakech countryside at sunrise",
+    "image": "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80",
+    "category": "Adventure",
+    "duration": "1.5 hours",
+    "price": 1500,
+    "rating": 4.9,
+    "location": "Marrakech"
+  },
+  {
+    "id": "pottery",
+    "title": "Pottery Making Workshop",
+    "description": "Create your own Moroccan ceramic masterpiece with master artisans",
+    "image": "https://images.unsplash.com/photo-1595351298020-038700609878",
+    "category": "Culture",
+    "duration": "3 hours",
+    "price": 250,
+    "rating": 4.7,
+    "location": "Fes"
+  },
+  {
+    "id": "spa-riad",
+    "title": "Luxury Riad Spa Day",
+    "description": "Full day of argan oil massage, facial, and relaxation in a premium riad",
+    "image": "https://images.unsplash.com/photo-1708804654353-7ef66cba7776",
+    "category": "Wellness",
+    "duration": "Full day",
+    "price": 800,
+    "rating": 4.8,
+    "location": "Marrakech"
+  },
+  {
+    "id": "food-tour",
+    "title": "Street Food Tour",
+    "description": "Taste your way through the medina's best hidden food stalls",
+    "image": "https://images.unsplash.com/photo-1661083098412-054431ab7112",
+    "category": "Food & Drink",
+    "duration": "3 hours",
+    "price": 200,
+    "rating": 4.8,
+    "location": "Fes"
+  },
+  {
+    "id": "horse-riding",
+    "title": "Beach Horse Riding",
+    "description": "Gallop along the Atlantic coastline at sunset",
+    "image": "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=800&q=80",
+    "category": "Adventure",
+    "duration": "2 hours",
+    "price": 400,
+    "rating": 4.7,
+    "location": "Essaouira"
+  },
+  {
+    "id": "photography",
+    "title": "Photography Walking Tour",
+    "description": "Capture the perfect shots of blue streets and hidden corners",
+    "image": "https://images.unsplash.com/photo-1624802357760-5e1fdc9def34",
+    "category": "Culture",
+    "duration": "4 hours",
+    "price": 350,
+    "rating": 4.9,
+    "location": "Chefchaouen"
+  },
+  {
+    "id": "spice-market",
+    "title": "Spice Market Tour",
+    "description": "Discover Morocco's aromatic spices and learn their uses",
+    "image": "https://plus.unsplash.com/premium_photo-1683321521888-86ea8c3dafc3",
+    "category": "Food & Drink",
+    "duration": "2 hours",
+    "price": 150,
+    "rating": 4.6,
+    "location": "Marrakech"
+  }
+]

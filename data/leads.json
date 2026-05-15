@@ -1,0 +1,29 @@
+[
+  {
+    "id": "LD-2001",
+    "name": "Sophie Martin",
+    "email": "sophie@example.com",
+    "interest": "Private Sahara trip for 6 people",
+    "source": "Contact form",
+    "status": "new",
+    "createdAt": "2026-05-11"
+  },
+  {
+    "id": "LD-2002",
+    "name": "Daniel Brooks",
+    "email": "daniel@example.com",
+    "interest": "Luxury Marrakech retreat in September",
+    "source": "WhatsApp",
+    "status": "contacted",
+    "createdAt": "2026-05-12"
+  },
+  {
+    "id": "LD-2003",
+    "name": "Nadia Chen",
+    "email": "nadia@example.com",
+    "interest": "Family-friendly Morocco itinerary",
+    "source": "Trip generator",
+    "status": "quoted",
+    "createdAt": "2026-05-13"
+  }
+]

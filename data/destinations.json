@@ -1,0 +1,396 @@
+[
+  {
+    "slug": "marrakech",
+    "name": "Marrakech",
+    "nameFr": "Marrakech",
+    "nameAr": "مراكش",
+    "description": "The Red City enchants with its bustling medina, vibrant souks, and the iconic Jemaa el-Fnaa square. A sensory feast of colors, spices, and sounds.",
+    "image": "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1569407228235-9a74cc843afa?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1545071677-7a1dfc4c5d26?auto=format&fit=crop&w=800&q=80"
+    ],
+    "rating": 4.8,
+    "reviews": 2847,
+    "bestTime": "March to May, September to November",
+    "highlights": [
+      "Jemaa el-Fnaa Square",
+      "Majorelle Garden",
+      "Bahia Palace",
+      "Koutoubia Mosque",
+      "Souks of the Medina"
+    ],
+    "experiences": [
+      "Cooking class in a traditional riad",
+      "Hot air balloon ride at sunrise",
+      "Hammam spa experience",
+      "Motorcycle tour of the Atlas Mountains"
+    ],
+    "itineraries": [
+      {
+        "days": 3,
+        "title": "Marrakech Essentials",
+        "price": 2500
+      },
+      {
+        "days": 5,
+        "title": "Marrakech & Atlas Mountains",
+        "price": 4500
+      },
+      {
+        "days": 7,
+        "title": "Complete Marrakech Experience",
+        "price": 7000
+      }
+    ],
+    "details": {
+      "intro": "Marrakech is Morocco at full volume: lantern-lit souks, garden courtyards, rooftop dinners, and the constant theatre of Jemaa el-Fnaa. It is a brilliant base for first-time visitors because culture, food, design, nightlife, and Atlas Mountain day trips are all within easy reach.",
+      "bestFor": [
+        "First-time Morocco trips",
+        "Food and markets",
+        "Riad stays",
+        "Atlas day trips"
+      ],
+      "areas": [
+        {
+          "title": "Medina",
+          "description": "Best for souks, riads, street food, and historic monuments."
+        },
+        {
+          "title": "Gueliz",
+          "description": "Modern cafes, galleries, concept stores, and easier taxi access."
+        },
+        {
+          "title": "Palmeraie",
+          "description": "Quiet resort stays, spa days, camel rides, and palm-grove escapes."
+        }
+      ],
+      "food": [
+        "Tanjia cooked in traditional ashes",
+        "Rooftop couscous on Fridays",
+        "Orange juice and grilled brochettes near Jemaa el-Fnaa"
+      ],
+      "localTips": [
+        "Book popular riads early in spring and autumn.",
+        "Use fixed meeting points near the medina because cars cannot enter many lanes.",
+        "Visit gardens early to avoid heat and tour groups."
+      ],
+      "gettingAround": "Walk inside the medina, use petit taxis for Gueliz and garden visits, and book private transport for Ourika Valley or Agafay Desert.",
+      "whereToStay": "Stay inside the medina for atmosphere, Gueliz for easier logistics, or Palmeraie for a resort-style retreat."
+    }
+  },
+  {
+    "slug": "chefchaouen",
+    "name": "Chefchaouen",
+    "nameFr": "Chefchaouen",
+    "nameAr": "شفشاون",
+    "description": "The Blue Pearl of Morocco is a photographer's paradise with its striking blue-washed buildings nestled in the Rif Mountains.",
+    "image": "https://images.unsplash.com/photo-1569383746724-6f1b882b8f46",
+    "images": [
+      "https://images.unsplash.com/photo-1553693611-679795ed7eb0",
+      "https://plus.unsplash.com/premium_photo-1697730095572-17ef6cb06437",
+      "https://images.unsplash.com/photo-1695601758107-cffeeceace44"
+    ],
+    "rating": 4.9,
+    "reviews": 1923,
+    "bestTime": "April to June, September to October",
+    "highlights": [
+      "Blue Medina",
+      "Kasbah Museum",
+      "Spanish Mosque viewpoint",
+      "Akchour Waterfalls",
+      "Rif Mountains hiking"
+    ],
+    "experiences": [
+      "Photography walking tour",
+      "Traditional weaving workshop",
+      "Hiking to Akchour Waterfalls",
+      "Local cuisine tasting tour"
+    ],
+    "itineraries": [
+      {
+        "days": 2,
+        "title": "Blue City Escape",
+        "price": 1500
+      },
+      {
+        "days": 4,
+        "title": "Chefchaouen & Rif Mountains",
+        "price": 3000
+      }
+    ],
+    "details": {
+      "intro": "Chefchaouen is calm, blue, and beautifully slow. Tucked into the Rif Mountains, it rewards wandering more than checklist sightseeing: quiet stairways, mountain viewpoints, craft shops, and long mint-tea pauses.",
+      "bestFor": [
+        "Photography",
+        "Slow travel",
+        "Mountain air",
+        "Romantic stays"
+      ],
+      "areas": [
+        {
+          "title": "Old Medina",
+          "description": "Blue alleys, small guesthouses, craft shops, and classic photo corners."
+        },
+        {
+          "title": "Spanish Mosque Trail",
+          "description": "The best sunset viewpoint over the blue city."
+        },
+        {
+          "title": "Akchour",
+          "description": "Waterfalls and hiking trails for a nature-focused day trip."
+        }
+      ],
+      "food": [
+        "Goat cheese from the Rif",
+        "Bissara with olive oil",
+        "Tagines served on quiet terrace restaurants"
+      ],
+      "localTips": [
+        "Stay overnight; day trips miss the best morning and evening light.",
+        "Wear comfortable shoes because the medina is steep.",
+        "Ask before taking close-up portraits."
+      ],
+      "gettingAround": "The medina is best explored on foot. For Akchour, arrange a taxi or guided transfer from town.",
+      "whereToStay": "Choose a small guesthouse in the old medina for views, charm, and easy sunrise walks."
+    }
+  },
+  {
+    "slug": "sahara-desert",
+    "name": "Sahara Desert",
+    "nameFr": "Sahara",
+    "nameAr": "الصحراء الكبرى",
+    "description": "Experience the magic of the world's largest hot desert. Sleep under a canopy of stars in a luxury desert camp and ride camels across golden dunes.",
+    "image": "https://images.unsplash.com/photo-1613169620329-6785c004d900",
+    "images": [
+      "https://images.unsplash.com/photo-1613169620329-6785c004d900",
+      "https://images.unsplash.com/photo-1535191198992-fe460a2d0af1",
+      "https://images.unsplash.com/photo-1507812335255-961c6cb5d7cd",
+      "https://images.unsplash.com/photo-1635548002459-2d9de2fcce35"
+    ],
+    "rating": 4.9,
+    "reviews": 3156,
+    "bestTime": "October to April",
+    "highlights": [
+      "Merzouga Dunes",
+      "Luxury Desert Camp",
+      "Camel Trekking",
+      "Stargazing",
+      "Todra Gorge"
+    ],
+    "experiences": [
+      "Sunrise camel trek",
+      "Desert camping under stars",
+      "4x4 dune bashing",
+      "Berber music evening"
+    ],
+    "itineraries": [
+      {
+        "days": 3,
+        "title": "Sahara Express",
+        "price": 3500
+      },
+      {
+        "days": 4,
+        "title": "Desert & Kasbahs Trail",
+        "price": 5000
+      },
+      {
+        "days": 7,
+        "title": "Grand Sahara Adventure",
+        "price": 9000
+      }
+    ],
+    "details": {
+      "intro": "The Sahara is less about ticking off a place and more about the transition into silence: kasbah roads, fossil towns, dunes at golden hour, Berber music by firelight, and a sky that feels impossibly close.",
+      "bestFor": [
+        "Desert camps",
+        "Stargazing",
+        "Camel trekking",
+        "4x4 routes"
+      ],
+      "areas": [
+        {
+          "title": "Erg Chebbi",
+          "description": "The classic Merzouga dune experience with dramatic sand ridges."
+        },
+        {
+          "title": "Todra Gorge",
+          "description": "A scenic canyon stop often paired with Sahara routes."
+        },
+        {
+          "title": "Dades Valley",
+          "description": "Kasbahs, red cliffs, and winding mountain roads."
+        }
+      ],
+      "food": [
+        "Medfouna desert bread",
+        "Berber omelette",
+        "Camp dinners with harira and tagine"
+      ],
+      "localTips": [
+        "Pack warm layers from October to March; desert nights get cold.",
+        "Choose at least 3 days from Marrakech to avoid a rushed drive.",
+        "Bring a small overnight bag for camp stays."
+      ],
+      "gettingAround": "A private driver or organized tour is the smoothest way to reach the dunes, especially from Marrakech or Fes.",
+      "whereToStay": "Pick a desert camp near the dunes for sunset access, or a kasbah hotel if you prefer more comfort and shorter transfers."
+    }
+  },
+  {
+    "slug": "fes",
+    "name": "Fes",
+    "nameFr": "Fès",
+    "nameAr": "فاس",
+    "description": "Morocco's cultural and spiritual heart, home to the world's oldest university and the largest car-free urban area. A living museum of medieval Islamic architecture.",
+    "image": "https://images.unsplash.com/photo-1553898439-93ac04cfe972",
+    "images": [
+      "https://images.unsplash.com/photo-1518979142375-743eaff7a103",
+      "https://plus.unsplash.com/premium_photo-1697729887553-b0392581a691",
+      "https://images.unsplash.com/photo-1553898439-93ac04cfe972",
+      "https://images.unsplash.com/photo-1559925523-10de9e23cf90",
+      "https://plus.unsplash.com/premium_photo-1705004597770-40e4db5df8a6"
+    ],
+    "rating": 4.7,
+    "reviews": 1654,
+    "bestTime": "March to May, September to November",
+    "highlights": [
+      "Fes el-Bali Medina",
+      "Chouara Tannery",
+      "Al Quaraouiyine University",
+      "Bou Inania Madrasa",
+      "Artisan Workshops"
+    ],
+    "experiences": [
+      "Traditional pottery making",
+      "Leather tannery visit",
+      "Food tour in the medina",
+      "Calligraphy workshop"
+    ],
+    "itineraries": [
+      {
+        "days": 2,
+        "title": "Fes Cultural Discovery",
+        "price": 1800
+      },
+      {
+        "days": 4,
+        "title": "Fes & Imperial Cities",
+        "price": 4000
+      }
+    ],
+    "details": {
+      "intro": "Fes is Morocco’s intellectual and craft heart, dense with history and best explored with context. Its medina feels like a living archive: tanneries, madrasas, bakeries, brass workshops, and family-run food stalls.",
+      "bestFor": [
+        "History",
+        "Craft workshops",
+        "Food tours",
+        "Architecture"
+      ],
+      "areas": [
+        {
+          "title": "Fes el-Bali",
+          "description": "The old medina and the core of the city’s craft and religious heritage."
+        },
+        {
+          "title": "Tanneries",
+          "description": "Iconic leather workshops best visited with a local guide."
+        },
+        {
+          "title": "Mellah",
+          "description": "Historic Jewish quarter with different architecture and quieter streets."
+        }
+      ],
+      "food": [
+        "Pastilla",
+        "Rfissa",
+        "Medina breads and fresh nougat"
+      ],
+      "localTips": [
+        "Hire a licensed guide for the first medina day.",
+        "Expect narrow lanes and limited GPS accuracy.",
+        "Visit major monuments in the morning for calmer viewing."
+      ],
+      "gettingAround": "Walk inside the medina and use taxis between the medina gates, Ville Nouvelle, and viewpoints.",
+      "whereToStay": "A restored riad near a main medina gate gives atmosphere without difficult luggage logistics."
+    }
+  },
+  {
+    "slug": "essaouira",
+    "name": "Essaouira",
+    "nameFr": "Essaouira",
+    "nameAr": "الصويرة",
+    "description": "A laid-back coastal town with Portuguese fortifications, artistic vibes, fresh seafood, and some of Africa's best windsurfing conditions.",
+    "image": "https://images.unsplash.com/photo-1611943529357-2f99f4400355",
+    "images": [
+      "https://images.unsplash.com/photo-1624802746702-60ca95bdb605",
+      "https://images.unsplash.com/photo-1611943529357-2f99f4400355",
+      "https://images.unsplash.com/photo-1585337163512-734aad490cf8",
+      "https://images.unsplash.com/photo-1624802751971-d425380ee247"
+    ],
+    "rating": 4.4,
+    "reviews": 1289,
+    "bestTime": "June to September",
+    "highlights": [
+      "Skala de la Ville",
+      "Fishing Port",
+      "Windsurfing Beach",
+      "Art Galleries",
+      "Fresh Seafood Market"
+    ],
+    "experiences": [
+      "Windsurfing lessons",
+      "Fish market cooking class",
+      "Horse riding on the beach",
+      "Gnawa music festival"
+    ],
+    "itineraries": [
+      {
+        "days": 2,
+        "title": "Coastal Escape",
+        "price": 1200
+      },
+      {
+        "days": 4,
+        "title": "Essaouira & Surroundings",
+        "price": 2800
+      }
+    ],
+    "details": {
+      "intro": "Essaouira is Morocco’s breezy Atlantic reset: white-and-blue lanes, sea walls, artists’ studios, fresh fish grills, and a beach culture shaped by wind, music, and long sunsets.",
+      "bestFor": [
+        "Coastal escapes",
+        "Seafood",
+        "Surf and wind",
+        "Relaxed medinas"
+      ],
+      "areas": [
+        {
+          "title": "Medina",
+          "description": "Art shops, cafes, guesthouses, and easy walks to the ramparts."
+        },
+        {
+          "title": "Fishing Port",
+          "description": "Fresh seafood, blue boats, and the city’s working coastal rhythm."
+        },
+        {
+          "title": "Sidi Kaouki",
+          "description": "A wilder beach south of town for surf days and open skies."
+        }
+      ],
+      "food": [
+        "Grilled sardines",
+        "Seafood tagine",
+        "Amlou with fresh bread"
+      ],
+      "localTips": [
+        "Bring a windbreaker even in summer.",
+        "Choose morning beach time before the wind picks up.",
+        "Essaouira pairs well with Marrakech as a 2-3 day contrast."
+      ],
+      "gettingAround": "The medina and beach are walkable. Use taxis or transfers for Sidi Kaouki and nearby villages.",
+      "whereToStay": "Stay in the medina for atmosphere or near the beach for surf schools and ocean views."
+    }
+  }
+]

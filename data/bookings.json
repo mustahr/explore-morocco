@@ -1,0 +1,38 @@
+[
+  {
+    "id": "BK-1001",
+    "tripId": "desert-3day",
+    "customerName": "Maya Thompson",
+    "customerEmail": "maya@example.com",
+    "startDate": "2026-06-12",
+    "travelers": 2,
+    "totalMAD": 7000,
+    "status": "pending",
+    "paymentStatus": "paid",
+    "createdAt": "2026-05-08"
+  },
+  {
+    "id": "BK-1002",
+    "tripId": "imperial-cities",
+    "customerName": "Omar Lewis",
+    "customerEmail": "omar@example.com",
+    "startDate": "2026-07-04",
+    "travelers": 4,
+    "totalMAD": 34000,
+    "status": "pending",
+    "paymentStatus": "deposit",
+    "createdAt": "2026-05-10"
+  },
+  {
+    "id": "BK-1003",
+    "tripId": "marrakech-luxury",
+    "customerName": "Elena Rossi",
+    "customerEmail": "elena@example.com",
+    "startDate": "2026-06-28",
+    "travelers": 2,
+    "totalMAD": 24000,
+    "status": "confirmed",
+    "paymentStatus": "deposit",
+    "createdAt": "2026-05-12"
+  }
+]

@@ -1,0 +1,349 @@
+[
+  {
+    "id": "desert-3day",
+    "title": "3-Day Sahara Desert Adventure",
+    "description": "Journey from Marrakech through the Atlas Mountains to the golden dunes of Merzouga. Sleep under the stars in a luxury desert camp.",
+    "image": "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1509023465459-a9b73850b759?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "adventure",
+    "duration": 4,
+    "price": 3500,
+    "rating": 4.9,
+    "reviews": 847,
+    "locations": [
+      "Marrakech",
+      "Todra Gorge",
+      "Merzouga",
+      "Erg Chebbi"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Marrakech to Dades Valley",
+        "description": "Cross the Tizi n'Tichka pass, visit Ait Ben Haddou kasbah, overnight in Dades."
+      },
+      {
+        "day": 2,
+        "title": "Dades to Merzouga",
+        "description": "Explore Todra Gorge, arrive at Erg Chebbi dunes, camel trek to desert camp."
+      },
+      {
+        "day": 3,
+        "title": "Sunrise & Return",
+        "description": "Sunrise over the dunes, return journey through Ziz Valley to Marrakech."
+      }
+    ],
+    "highlights": [
+      "Camel trekking",
+      "Luxury desert camp",
+      "Ait Ben Haddou",
+      "Todra Gorge",
+      "Stargazing"
+    ],
+    "includes": [
+      "Transport",
+      "Accommodation",
+      "Meals",
+      "Camel ride",
+      "Guide"
+    ]
+  },
+  {
+    "id": "imperial-cities",
+    "title": "7-Day Imperial Cities Tour",
+    "description": "Discover Morocco's four imperial cities: Casablanca, Rabat, Fes, and Marrakech. A cultural immersion through history and architecture.",
+    "image": "https://plus.unsplash.com/premium_photo-1674156433236-2338418ec4d9?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "images": [
+      "https://images.unsplash.com/photo-1577147442772-4be1a2475140?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1553264941-928f4e0c9946?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "cultural",
+    "duration": 7,
+    "price": 8500,
+    "rating": 4.8,
+    "reviews": 523,
+    "locations": [
+      "Casablanca",
+      "Rabat",
+      "Meknes",
+      "Fes",
+      "Marrakech"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival in Casablanca",
+        "description": "Visit Hassan II Mosque, explore the Art Deco downtown."
+      },
+      {
+        "day": 2,
+        "title": "Rabat",
+        "description": "Explore the Kasbah of the Udayas, Hassan Tower, and Royal Palace."
+      },
+      {
+        "day": 3,
+        "title": "Meknes & Volubilis",
+        "description": "Visit the imperial city of Meknes and Roman ruins of Volubilis."
+      },
+      {
+        "day": 4,
+        "title": "Fes Medina",
+        "description": "Guided tour of the world's largest car-free urban area."
+      },
+      {
+        "day": 5,
+        "title": "Fes Experiences",
+        "description": "Cooking class, tannery visit, artisan workshops."
+      },
+      {
+        "day": 6,
+        "title": "Travel to Marrakech",
+        "description": "Scenic drive through Middle Atlas, arrive in Marrakech."
+      },
+      {
+        "day": 7,
+        "title": "Marrakech",
+        "description": "Explore Jemaa el-Fnaa, souks, Majorelle Garden."
+      }
+    ],
+    "highlights": [
+      "Hassan II Mosque",
+      "Fes Medina",
+      "Volubilis Ruins",
+      "Marrakech Souks",
+      "Riad Stays"
+    ],
+    "includes": [
+      "Transport",
+      "Riad accommodation",
+      "Breakfast",
+      "Guided tours",
+      "Entrance fees"
+    ]
+  },
+  {
+    "id": "chefchaouen-blue",
+    "title": "2-Day Chefchaouen Blue City Escape",
+    "description": "Get lost in the mesmerizing blue streets of Chefchaouen. Perfect for photography lovers and those seeking tranquility.",
+    "image": "https://images.unsplash.com/photo-1569383746724-6f1b882b8f46?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "images": [
+      "https://images.unsplash.com/photo-1553264941-928f4e0c9946?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1548074180-4778572c6051?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1599827519735-1c46b9bfd6a4?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "romantic",
+    "duration": 2,
+    "price": 1500,
+    "rating": 4.9,
+    "reviews": 612,
+    "locations": [
+      "Chefchaouen",
+      "Rif Mountains"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Explore the Blue Medina",
+        "description": "Wander through the blue-washed streets, visit the Kasbah, enjoy local cuisine."
+      },
+      {
+        "day": 2,
+        "title": "Spanish Mosque & Waterfalls",
+        "description": "Sunrise at Spanish Mosque viewpoint, optional hike to Akchour Waterfalls."
+      }
+    ],
+    "highlights": [
+      "Blue Medina",
+      "Kasbah Museum",
+      "Spanish Mosque",
+      "Local cuisine",
+      "Mountain views"
+    ],
+    "includes": [
+      "Transport from Fes",
+      "Riad accommodation",
+      "Breakfast",
+      "Local guide"
+    ]
+  },
+  {
+    "id": "marrakech-luxury",
+    "title": "5-Day Luxury Marrakech Retreat",
+    "description": "Indulge in the finest riads, private cooking classes, spa treatments, and exclusive experiences in the Red City.",
+    "image": "https://plus.unsplash.com/premium_photo-1697730075333-822144628df6?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "images": [
+      "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1569407228235-9a74cc843afa?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1545071677-7a1dfc4c5d26?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "luxury",
+    "duration": 5,
+    "price": 12000,
+    "rating": 4.9,
+    "reviews": 234,
+    "locations": [
+      "Marrakech",
+      "Atlas Mountains",
+      "Ourika Valley"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Riad Welcome",
+        "description": "Private airport transfer, luxury riad check-in, evening welcome dinner."
+      },
+      {
+        "day": 2,
+        "title": "Medina & Souks",
+        "description": "Private guide through the medina, exclusive souk shopping experience."
+      },
+      {
+        "day": 3,
+        "title": "Spa & Cooking",
+        "description": "Traditional hammam spa, private cooking class with a local chef."
+      },
+      {
+        "day": 4,
+        "title": "Atlas Mountains Day Trip",
+        "description": "Helicopter tour over the Atlas, lunch at a mountain lodge."
+      },
+      {
+        "day": 5,
+        "title": "Majorelle & Departure",
+        "description": "Private visit to Majorelle Garden, farewell brunch."
+      }
+    ],
+    "highlights": [
+      "Luxury Riad Stay",
+      "Private Hammam",
+      "Helicopter Tour",
+      "Cooking Class",
+      "Exclusive Souk Access"
+    ],
+    "includes": [
+      "Luxury riad",
+      "All meals",
+      "Private transfers",
+      "Spa treatments",
+      "Personal guide"
+    ]
+  },
+  {
+    "id": "essaouira-coastal",
+    "title": "3-Day Essaouira Coastal Adventure",
+    "description": "Windsurf, explore the historic medina, enjoy fresh seafood, and experience the bohemian vibe of Morocco's wind city.",
+    "image": "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=800&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1518392446948-b180898fa4b2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1553531580-a3919965b9ea?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "adventure",
+    "duration": 3,
+    "price": 2200,
+    "rating": 4.7,
+    "reviews": 389,
+    "locations": [
+      "Essaouira",
+      "Diabat",
+      "Sidi Kaouki"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Arrival & Medina",
+        "description": "Explore the UNESCO-listed medina, visit the Skala fortress, sunset at the port."
+      },
+      {
+        "day": 2,
+        "title": "Windsurfing & Beach",
+        "description": "Morning windsurfing lesson, afternoon horse riding on the beach."
+      },
+      {
+        "day": 3,
+        "title": "Sidi Kaouki & Departure",
+        "description": "Day trip to Sidi Kaouki beach, fresh seafood lunch, return to Marrakech."
+      }
+    ],
+    "highlights": [
+      "Windsurfing",
+      "Horse Riding",
+      "Fresh Seafood",
+      "UNESCO Medina",
+      "Gnawa Music"
+    ],
+    "includes": [
+      "Transport",
+      "Boutique hotel",
+      "Windsurfing lesson",
+      "Horse riding",
+      "Breakfast"
+    ]
+  },
+  {
+    "id": "budget-backpacker",
+    "title": "5-Day Budget Morocco Explorer",
+    "description": "See the best of Morocco without breaking the bank. Hostels, local transport, and authentic experiences.",
+    "image": "https://images.unsplash.com/photo-1624805098931-098c0d918b34?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "images": [
+      "https://images.unsplash.com/photo-1545071677-7a1dfc4c5d26?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1553522991-71439aa5763f?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1518392446948-b180898fa4b2?auto=format&fit=crop&w=800&q=80"
+    ],
+    "category": "budget",
+    "duration": 5,
+    "price": 1800,
+    "rating": 4.5,
+    "reviews": 756,
+    "locations": [
+      "Marrakech",
+      "Essaouira",
+      "Agafay Desert"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "Marrakech Arrival",
+        "description": "Check into hostel, explore Jemaa el-Fnaa, street food dinner."
+      },
+      {
+        "day": 2,
+        "title": "Marrakech Exploration",
+        "description": "Free walking tour, Bahia Palace, Koutoubia, souk browsing."
+      },
+      {
+        "day": 3,
+        "title": "Essaouira Day Trip",
+        "description": "Local bus to Essaouira, explore the medina and port."
+      },
+      {
+        "day": 4,
+        "title": "Agafay Desert",
+        "description": "Budget-friendly quad biking in Agafay, Berber dinner."
+      },
+      {
+        "day": 5,
+        "title": "Markets & Departure",
+        "description": "Morning market visit, last-minute shopping, departure."
+      }
+    ],
+    "highlights": [
+      "Street Food",
+      "Free Walking Tour",
+      "Agafay Quad",
+      "Hostel Life",
+      "Local Transport"
+    ],
+    "includes": [
+      "Hostel accommodation",
+      "Some meals",
+      "Group activities",
+      "Guide"
+    ]
+  }
+]
