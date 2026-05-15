@@ -21,57 +21,9 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { type Trip } from "@/lib/data"
+import { type TripDetailContent } from "@/lib/content-db"
 import { useApp } from "@/context/AppContext"
 import { translations, formatPrice } from "@/lib/utils"
-
-const faqItems = [
-  {
-    question: "What should I pack for the desert?",
-    answer:
-      "Light layers, sun protection, a reusable water bottle and comfortable walking shoes. Evenings can get cool, so bring a light jacket and a scarf.",
-  },
-  {
-    question: "How is pickup handled from Marrakech?",
-    answer:
-      "A private luxury 4x4 will collect you from your riad or hotel in Marrakech between 8:00 and 9:00. Exact pickup times are confirmed after booking.",
-  },
-  {
-    question: "Is the trip suitable for first-time visitors?",
-    answer:
-      "Absolutely. Our guides tailor the pace for first-time travelers and provide cultural context throughout the route.",
-  },
-  {
-    question: "What is the cancellation policy?",
-    answer:
-      "Free cancellation up to 48 hours before departure. Full refund is issued automatically through our secure booking system.",
-  },
-  {
-    question: "Can children join the tour?",
-    answer:
-      "Yes, families are welcome. We recommend children be at least 7 years old for the desert trek and small-group experience.",
-  },
-]
-
-const reviewCards = [
-  {
-    name: "Leila M.",
-    location: "London, UK",
-    rating: 5,
-    title: "A magical desert escape",
-    body:
-      "Every detail felt luxurious, from the private pick-up to the candlelit dinner in the dunes. The guide made the entire journey feel effortless.",
-    photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
-  },
-  {
-    name: "Samir A.",
-    location: "New York, USA",
-    rating: 5,
-    title: "Best Moroccan experience ever",
-    body:
-      "The itinerary balanced adventure and comfort perfectly. The camp was stunning and the sunrise over Merzouga was unforgettable.",
-    photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
-  },
-]
 
 const toDateInputValue = (date: Date) => {
   const year = date.getFullYear()
@@ -96,7 +48,17 @@ const formatDateParts = (dateValue: string) => {
   }
 }
 
-export default function TripDetailClient({ trip, relatedTrips }: { trip: Trip; relatedTrips: Trip[] }) {
+export default function TripDetailClient({
+  trip,
+  relatedTrips,
+  detailContent,
+}: {
+  trip: Trip
+  relatedTrips: Trip[]
+  detailContent: TripDetailContent
+}) {
+  const faqItems = detailContent.faqs
+  const reviewCards = detailContent.reviews
   const [selectedImage, setSelectedImage] = useState(0)
   const [expandedDay, setExpandedDay] = useState<number | null>(1)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0)

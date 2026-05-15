@@ -1,4 +1,5 @@
-import { deleteTrip, getTripById, updateTrip } from "@/lib/trips-db"
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
+import { deleteTrip, getPublishedTripById, getTripById, updateTrip } from "@/lib/trips-db"
 import { type Trip } from "@/lib/data"
 
 type RouteContext = {
@@ -7,9 +8,10 @@ type RouteContext = {
 
 export const dynamic = "force-dynamic"
 
-export async function GET(_request: Request, { params }: RouteContext) {
+export async function GET(request: Request, { params }: RouteContext) {
   const { id } = await params
-  const trip = await getTripById(id)
+  const wantsAdminData = new URL(request.url).searchParams.get("admin") === "1"
+  const trip = wantsAdminData && isAdminRequest(request) ? await getTripById(id) : await getPublishedTripById(id)
 
   if (!trip) {
     return Response.json({ error: "Trip not found" }, { status: 404 })
@@ -19,6 +21,8 @@ export async function GET(_request: Request, { params }: RouteContext) {
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
+  if (!isAdminRequest(request)) return unauthorizedResponse()
+
   const { id } = await params
   const updates = (await request.json()) as Partial<Trip>
   const updatedTrip = await updateTrip(id, updates)
@@ -30,7 +34,9 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   return Response.json({ trip: updatedTrip })
 }
 
-export async function DELETE(_request: Request, { params }: RouteContext) {
+export async function DELETE(request: Request, { params }: RouteContext) {
+  if (!isAdminRequest(request)) return unauthorizedResponse()
+
   const { id } = await params
   const deleted = await deleteTrip(id)
 

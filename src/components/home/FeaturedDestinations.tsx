@@ -3,11 +3,15 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Star, ArrowRight } from "lucide-react"
-import { destinations } from "@/lib/data"
+import { type Destination } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
 
-export function FeaturedDestinations() {
+interface FeaturedDestinationsProps {
+  destinations: Destination[]
+}
+
+export function FeaturedDestinations({ destinations }: FeaturedDestinationsProps) {
   const { language } = useApp()
   const t = translations[language]
 

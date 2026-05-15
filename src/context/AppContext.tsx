@@ -1,7 +1,14 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { type LanguageCode, type CurrencyCode } from "@/lib/utils"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react"
+import { currencies, translations, type CurrencyCode, type LanguageCode } from "@/lib/utils"
 
 interface AppContextType {
   language: LanguageCode
@@ -15,32 +22,134 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
-export function AppProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<LanguageCode>("en")
-  const [currency, setCurrency] = useState<CurrencyCode>("MAD")
-  const [wishlist, setWishlist] = useState<string[]>([])
+const LANGUAGE_STORAGE_KEY = "morocco-language"
+const CURRENCY_STORAGE_KEY = "morocco-currency"
+const WISHLIST_STORAGE_KEY = "morocco-wishlist"
+const PREFERENCES_CHANGE_EVENT = "morocco-preferences-change"
+const EMPTY_WISHLIST: string[] = []
 
-  useEffect(() => {
-    const saved = localStorage.getItem("morocco-wishlist")
-    if (saved) setWishlist(JSON.parse(saved))
-  }, [])
+const languageCodes = Object.keys(translations) as LanguageCode[]
+const currencyCodes = Object.keys(currencies) as CurrencyCode[]
 
-  useEffect(() => {
-    localStorage.setItem("morocco-wishlist", JSON.stringify(wishlist))
-  }, [wishlist])
+function isBrowser() {
+  return typeof window !== "undefined"
+}
 
-  const toggleWishlist = (id: string) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
-    )
+function emitPreferencesChange(key: string) {
+  if (!isBrowser()) return
+  window.dispatchEvent(new CustomEvent(PREFERENCES_CHANGE_EVENT, { detail: { key } }))
+}
+
+function subscribeToStorageKey(key: string, callback: () => void) {
+  if (!isBrowser()) return () => {}
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === key) callback()
   }
 
-  const isWishlisted = (id: string) => wishlist.includes(id)
+  const handlePreferencesChange = (event: Event) => {
+    if (event instanceof CustomEvent && event.detail?.key === key) {
+      callback()
+    }
+  }
+
+  window.addEventListener("storage", handleStorage)
+  window.addEventListener(PREFERENCES_CHANGE_EVENT, handlePreferencesChange)
+
+  return () => {
+    window.removeEventListener("storage", handleStorage)
+    window.removeEventListener(PREFERENCES_CHANGE_EVENT, handlePreferencesChange)
+  }
+}
+
+function subscribeToHydration(callback: () => void) {
+  if (!isBrowser()) return () => {}
+
+  const timeout = window.setTimeout(callback, 0)
+  return () => window.clearTimeout(timeout)
+}
+
+function readStoredOption<T extends string>(key: string, fallback: T, options: readonly T[]) {
+  if (!isBrowser()) return fallback
+
+  const saved = localStorage.getItem(key)
+  return options.includes(saved as T) ? (saved as T) : fallback
+}
+
+function readStoredWishlistSnapshot() {
+  if (!isBrowser()) return "[]"
+
+  return localStorage.getItem(WISHLIST_STORAGE_KEY) ?? "[]"
+}
+
+function parseWishlist(snapshot: string) {
+  try {
+    const parsed = JSON.parse(snapshot)
+
+    return Array.isArray(parsed) && parsed.every((item) => typeof item === "string") ? parsed : EMPTY_WISHLIST
+  } catch {
+    return EMPTY_WISHLIST
+  }
+}
+
+function writeStorage(key: string, value: string) {
+  if (!isBrowser()) return
+  localStorage.setItem(key, value)
+  emitPreferencesChange(key)
+}
+
+export function AppProvider({ children }: { children: ReactNode }) {
+  const storedLanguage = useSyncExternalStore<LanguageCode>(
+    useCallback((callback) => subscribeToStorageKey(LANGUAGE_STORAGE_KEY, callback), []),
+    () => readStoredOption(LANGUAGE_STORAGE_KEY, "en", languageCodes),
+    () => "en"
+  )
+
+  const storedCurrency = useSyncExternalStore<CurrencyCode>(
+    useCallback((callback) => subscribeToStorageKey(CURRENCY_STORAGE_KEY, callback), []),
+    () => readStoredOption(CURRENCY_STORAGE_KEY, "MAD", currencyCodes),
+    () => "MAD"
+  )
+
+  const wishlistSnapshot = useSyncExternalStore(
+    useCallback((callback) => subscribeToStorageKey(WISHLIST_STORAGE_KEY, callback), []),
+    readStoredWishlistSnapshot,
+    () => "[]"
+  )
+
+  const storedWishlist = useMemo(() => parseWishlist(wishlistSnapshot), [wishlistSnapshot])
+  const hasHydrated = useSyncExternalStore(
+    useCallback((callback) => subscribeToHydration(callback), []),
+    () => true,
+    () => false
+  )
+
+  const language = hasHydrated ? storedLanguage : "en"
+  const currency = hasHydrated ? storedCurrency : "MAD"
+  const wishlist = hasHydrated ? storedWishlist : EMPTY_WISHLIST
+
+  const setLanguage = useCallback((lang: LanguageCode) => {
+    writeStorage(LANGUAGE_STORAGE_KEY, lang)
+  }, [])
+
+  const setCurrency = useCallback((cur: CurrencyCode) => {
+    writeStorage(CURRENCY_STORAGE_KEY, cur)
+  }, [])
+
+  const toggleWishlist = useCallback((id: string) => {
+    const nextWishlist = wishlist.includes(id) ? wishlist.filter((item) => item !== id) : [...wishlist, id]
+    writeStorage(WISHLIST_STORAGE_KEY, JSON.stringify(nextWishlist))
+  }, [wishlist])
+
+  const isWishlisted = useCallback((id: string) => wishlist.includes(id), [wishlist])
+
+  const contextValue = useMemo<AppContextType>(
+    () => ({ language, setLanguage, currency, setCurrency, wishlist, toggleWishlist, isWishlisted }),
+    [currency, isWishlisted, language, setCurrency, setLanguage, toggleWishlist, wishlist]
+  )
 
   return (
-    <AppContext.Provider
-      value={{ language, setLanguage, currency, setCurrency, wishlist, toggleWishlist, isWishlisted }}
-    >
+    <AppContext.Provider value={contextValue}>
       <div dir={language === "ar" ? "rtl" : "ltr"} lang={language}>
         {children}
       </div>

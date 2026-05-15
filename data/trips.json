@@ -50,7 +50,13 @@
       "Meals",
       "Camel ride",
       "Guide"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "3-Day Sahara Desert Adventure",
+      "description": "Journey from Marrakech through the Atlas Mountains to the golden dunes of Merzouga. Sleep under the stars in a luxury desert camp.",
+      "image": "https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?auto=format&fit=crop&w=800&q=80"
+    }
   },
   {
     "id": "imperial-cities",
@@ -124,7 +130,13 @@
       "Breakfast",
       "Guided tours",
       "Entrance fees"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "7-Day Imperial Cities Tour",
+      "description": "Discover Morocco's four imperial cities: Casablanca, Rabat, Fes, and Marrakech. A cultural immersion through history and architecture.",
+      "image": "https://plus.unsplash.com/premium_photo-1674156433236-2338418ec4d9?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
   },
   {
     "id": "chefchaouen-blue",
@@ -169,7 +181,13 @@
       "Riad accommodation",
       "Breakfast",
       "Local guide"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "2-Day Chefchaouen Blue City Escape",
+      "description": "Get lost in the mesmerizing blue streets of Chefchaouen. Perfect for photography lovers and those seeking tranquility.",
+      "image": "https://images.unsplash.com/photo-1569383746724-6f1b882b8f46?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
   },
   {
     "id": "marrakech-luxury",
@@ -231,7 +249,13 @@
       "Private transfers",
       "Spa treatments",
       "Personal guide"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "5-Day Luxury Marrakech Retreat",
+      "description": "Indulge in the finest riads, private cooking classes, spa treatments, and exclusive experiences in the Red City.",
+      "image": "https://plus.unsplash.com/premium_photo-1697730075333-822144628df6?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
   },
   {
     "id": "essaouira-coastal",
@@ -283,7 +307,13 @@
       "Windsurfing lesson",
       "Horse riding",
       "Breakfast"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "3-Day Essaouira Coastal Adventure",
+      "description": "Windsurf, explore the historic medina, enjoy fresh seafood, and experience the bohemian vibe of Morocco's wind city.",
+      "image": "https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=800&q=80"
+    }
   },
   {
     "id": "budget-backpacker",
@@ -344,6 +374,12 @@
       "Some meals",
       "Group activities",
       "Guide"
-    ]
+    ],
+    "status": "published",
+    "seo": {
+      "title": "5-Day Budget Morocco Explorer",
+      "description": "See the best of Morocco without breaking the bank. Hostels, local transport, and authentic experiences.",
+      "image": "https://images.unsplash.com/photo-1624805098931-098c0d918b34?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
   }
 ]

@@ -3,13 +3,30 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Calendar, Clock, ArrowRight, BookOpen, Sparkles } from "lucide-react"
-import { blogPosts } from "@/lib/data"
-import { useState } from "react"
-
-const categories = ["All", "Itineraries", "Tips", "Destinations", "Culture", "Adventure"]
+import { type BlogPost } from "@/lib/data"
+import { useEffect, useMemo, useState } from "react"
 
 export default function BlogPage() {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const categories = useMemo(
+    () => ["All", ...Array.from(new Set(blogPosts.map((post) => post.category)))],
+    [blogPosts]
+  )
+
+  useEffect(() => {
+    let ignore = false
+
+    fetch("/api/blog")
+      .then((response) => response.json() as Promise<{ posts: BlogPost[] }>)
+      .then((data) => {
+        if (!ignore) setBlogPosts(data.posts)
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   const filteredPosts = selectedCategory === "All"
     ? blogPosts

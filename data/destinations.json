@@ -78,6 +78,12 @@
       ],
       "gettingAround": "Walk inside the medina, use petit taxis for Gueliz and garden visits, and book private transport for Ourika Valley or Agafay Desert.",
       "whereToStay": "Stay inside the medina for atmosphere, Gueliz for easier logistics, or Palmeraie for a resort-style retreat."
+    },
+    "status": "published",
+    "seo": {
+      "title": "Marrakech",
+      "description": "The Red City enchants with its bustling medina, vibrant souks, and the iconic Jemaa el-Fnaa square. A sensory feast of colors, spices, and sounds.",
+      "image": "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80"
     }
   },
   {
@@ -154,6 +160,12 @@
       ],
       "gettingAround": "The medina is best explored on foot. For Akchour, arrange a taxi or guided transfer from town.",
       "whereToStay": "Choose a small guesthouse in the old medina for views, charm, and easy sunrise walks."
+    },
+    "status": "published",
+    "seo": {
+      "title": "Chefchaouen",
+      "description": "The Blue Pearl of Morocco is a photographer's paradise with its striking blue-washed buildings nestled in the Rif Mountains.",
+      "image": "https://images.unsplash.com/photo-1569383746724-6f1b882b8f46"
     }
   },
   {
@@ -236,6 +248,12 @@
       ],
       "gettingAround": "A private driver or organized tour is the smoothest way to reach the dunes, especially from Marrakech or Fes.",
       "whereToStay": "Pick a desert camp near the dunes for sunset access, or a kasbah hotel if you prefer more comfort and shorter transfers."
+    },
+    "status": "published",
+    "seo": {
+      "title": "Sahara Desert",
+      "description": "Experience the magic of the world's largest hot desert. Sleep under a canopy of stars in a luxury desert camp and ride camels across golden dunes.",
+      "image": "https://images.unsplash.com/photo-1613169620329-6785c004d900"
     }
   },
   {
@@ -314,6 +332,12 @@
       ],
       "gettingAround": "Walk inside the medina and use taxis between the medina gates, Ville Nouvelle, and viewpoints.",
       "whereToStay": "A restored riad near a main medina gate gives atmosphere without difficult luggage logistics."
+    },
+    "status": "published",
+    "seo": {
+      "title": "Fes",
+      "description": "Morocco's cultural and spiritual heart, home to the world's oldest university and the largest car-free urban area. A living museum of medieval Islamic architecture.",
+      "image": "https://images.unsplash.com/photo-1553898439-93ac04cfe972"
     }
   },
   {
@@ -391,6 +415,12 @@
       ],
       "gettingAround": "The medina and beach are walkable. Use taxis or transfers for Sidi Kaouki and nearby villages.",
       "whereToStay": "Stay in the medina for atmosphere or near the beach for surf schools and ocean views."
+    },
+    "status": "published",
+    "seo": {
+      "title": "Essaouira",
+      "description": "A laid-back coastal town with Portuguese fortifications, artistic vibes, fresh seafood, and some of Africa's best windsurfing conditions.",
+      "image": "https://images.unsplash.com/photo-1611943529357-2f99f4400355"
     }
   }
 ]

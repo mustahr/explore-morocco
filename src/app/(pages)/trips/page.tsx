@@ -183,13 +183,13 @@ export default function TripsPage() {
               </div>
 
               {trips.filter((trip) => isWishlisted(trip.id)).length > 0 && (
-                <div className="mt-6 lg:mt-0 bg-white rounded-[2rem] p-6 border border-stone-200 shadow-lg">
+                <div className="mt-6 lg:mt-0 bg-white rounded-[2rem] p-6 border border-stone-200 shadow-lg z-50">
                   <div className="flex items-center gap-2 mb-6">
                     <Heart size={20} className="text-primary fill-primary" />
                     <h3 className="font-bold text-stone-900 text-lg">Favorited Trips</h3>
                   </div>
 
-                  <div className="space-y-3">
+                  {/* <div className="space-y-3">
                     {trips
                       .filter((trip) => isWishlisted(trip.id))
                       .map((trip) => (
@@ -229,7 +229,7 @@ export default function TripsPage() {
                           </div>
                         </Link>
                       ))}
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>

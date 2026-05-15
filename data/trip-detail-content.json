@@ -1,0 +1,39 @@
+{
+  "faqs": [
+    {
+      "id": "pickup-marrakech",
+      "question": "How is pickup handled from Marrakech?",
+      "answer": "A private luxury 4x4 will collect you from your riad or hotel in Marrakech between 8:00 and 9:00. Exact pickup times are confirmed after booking."
+    },
+    {
+      "id": "included-meals",
+      "question": "Which meals are included?",
+      "answer": "Breakfasts are included daily, with selected dinners and lunches depending on the itinerary. Each trip page lists included items in detail."
+    },
+    {
+      "id": "cancellation",
+      "question": "What is the cancellation policy?",
+      "answer": "Free cancellation up to 48 hours before departure. Full refund is issued automatically through our secure booking system."
+    }
+  ],
+  "reviews": [
+    {
+      "id": "nora-williams",
+      "name": "Nora Williams",
+      "location": "Toronto, Canada",
+      "rating": 5,
+      "title": "A magical desert escape",
+      "body": "Every detail felt luxurious, from the private pick-up to the candlelit dinner in the dunes. The guide made the entire journey feel effortless.",
+      "photo": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": "adam-chen",
+      "name": "Adam Chen",
+      "location": "Singapore",
+      "rating": 5,
+      "title": "Best Moroccan experience ever",
+      "body": "The itinerary balanced adventure and comfort perfectly. The camp was stunning and the sunrise over Merzouga was unforgettable.",
+      "photo": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80"
+    }
+  ]
+}

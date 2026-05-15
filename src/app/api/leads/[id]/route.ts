@@ -1,4 +1,5 @@
 import { deleteLead, updateLead, type Lead } from "@/lib/admin-db"
+import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
 
 type RouteContext = {
   params: Promise<{ id: string }>
@@ -7,6 +8,8 @@ type RouteContext = {
 export const dynamic = "force-dynamic"
 
 export async function PATCH(request: Request, { params }: RouteContext) {
+  if (!isAdminRequest(request)) return unauthorizedResponse()
+
   const { id } = await params
   const updates = (await request.json()) as Partial<Lead>
   const lead = await updateLead(id, updates)
@@ -18,7 +21,9 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   return Response.json({ lead })
 }
 
-export async function DELETE(_request: Request, { params }: RouteContext) {
+export async function DELETE(request: Request, { params }: RouteContext) {
+  if (!isAdminRequest(request)) return unauthorizedResponse()
+
   const { id } = await params
   const deleted = await deleteLead(id)
 

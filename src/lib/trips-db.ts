@@ -1,8 +1,10 @@
 import { readFile, writeFile } from "fs/promises"
 import path from "path"
-import { type Trip } from "@/lib/data"
+import { isPublished, type Trip } from "@/lib/data"
+import { deleteCloudRecord, getCloudRecord, getCloudRecords, replaceCloudRecords, upsertCloudRecord } from "@/lib/cloud-db"
 
 const tripsDatabasePath = path.join(process.cwd(), "data", "trips.json")
+const recordType = "trips"
 
 async function readTripsDatabase(): Promise<Trip[]> {
   const file = await readFile(tripsDatabasePath, "utf8")
@@ -14,25 +16,45 @@ async function writeTripsDatabase(trips: Trip[]) {
 }
 
 export async function getTrips() {
-  return readTripsDatabase()
+  return (await getCloudRecords<Trip>(recordType)) ?? readTripsDatabase()
+}
+
+export async function getPublishedTrips() {
+  const trips = await getTrips()
+  return trips.filter(isPublished)
 }
 
 export async function getTripById(id: string) {
+  const cloudTrip = await getCloudRecord<Trip>(recordType, id)
+  if (cloudTrip !== undefined) return cloudTrip
+
   const trips = await readTripsDatabase()
   return trips.find((trip) => trip.id === id) ?? null
 }
 
+export async function getPublishedTripById(id: string) {
+  const trip = await getTripById(id)
+  return trip && isPublished(trip) ? trip : null
+}
+
 export async function getFeaturedTrips(limit = 6) {
-  const trips = await readTripsDatabase()
+  const trips = await getPublishedTrips()
   return trips.slice(0, limit)
 }
 
 export async function getRelatedTrips(id: string, limit = 3) {
-  const trips = await readTripsDatabase()
+  const trips = await getPublishedTrips()
   return trips.filter((trip) => trip.id !== id).slice(0, limit)
 }
 
 export async function createTrip(trip: Trip) {
+  const cloudTrips = await getCloudRecords<Trip>(recordType)
+  if (cloudTrips !== undefined) {
+    if (cloudTrips.some((item) => item.id === trip.id)) return null
+    await upsertCloudRecord(recordType, trip.id, trip, cloudTrips.length)
+    return trip
+  }
+
   const trips = await readTripsDatabase()
   const existingTrip = trips.find((item) => item.id === trip.id)
 
@@ -47,6 +69,14 @@ export async function createTrip(trip: Trip) {
 }
 
 export async function updateTrip(id: string, updates: Partial<Trip>) {
+  const cloudTrip = await getCloudRecord<Trip>(recordType, id)
+  if (cloudTrip !== undefined) {
+    if (!cloudTrip) return null
+    const updatedTrip = { ...cloudTrip, ...updates, id }
+    await upsertCloudRecord(recordType, id, updatedTrip)
+    return updatedTrip
+  }
+
   const trips = await readTripsDatabase()
   const tripIndex = trips.findIndex((trip) => trip.id === id)
 
@@ -67,6 +97,13 @@ export async function updateTrip(id: string, updates: Partial<Trip>) {
 }
 
 export async function deleteTrip(id: string) {
+  const cloudTrips = await getCloudRecords<Trip>(recordType)
+  if (cloudTrips !== undefined) {
+    if (!cloudTrips.some((trip) => trip.id === id)) return false
+    await deleteCloudRecord(recordType, id)
+    return true
+  }
+
   const trips = await readTripsDatabase()
   const filteredTrips = trips.filter((trip) => trip.id !== id)
 
@@ -76,4 +113,9 @@ export async function deleteTrip(id: string) {
 
   await writeTripsDatabase(filteredTrips)
   return true
+}
+
+export async function replaceTrips(trips: Trip[]) {
+  await replaceCloudRecords(recordType, trips.map((trip) => ({ key: trip.id, data: trip as unknown as Record<string, unknown> })))
+  return trips
 }

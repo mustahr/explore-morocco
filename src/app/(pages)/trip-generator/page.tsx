@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Sparkles, ArrowRight, Clock, MapPin, DollarSign, Users,
@@ -8,19 +8,10 @@ import {
 } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { formatPrice } from "@/lib/utils"
-
-const travelStyles = [
-  { id: "luxury", label: "Luxury", icon: "\uD83D\uDC8E", description: "Premium riads, private tours, exclusive experiences" },
-  { id: "backpacking", label: "Backpacking", icon: "\uD83C\uDF92", description: "Budget-friendly, hostels, local transport" },
-  { id: "romantic", label: "Romantic", icon: "\u2764\uFE0F", description: "Couples retreat, sunset dinners, spa" },
-  { id: "family", label: "Family", icon: "\uD83D\uDC68\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC66", description: "Kid-friendly activities, safe, relaxed pace" },
-  { id: "adventure", label: "Adventure", icon: "\uD83C\uDFD4\uFE0F", description: "Hiking, desert camping, extreme sports" },
-  { id: "cultural", label: "Cultural", icon: "\uD83C\uDFDB\uFE0F", description: "Historical sites, local traditions, authentic" },
-]
-
-const destinations = ["Marrakech", "Fes", "Chefchaouen", "Sahara Desert", "Essaouira", "Casablanca", "Rabat", "Atlas Mountains"]
+import { type TripGeneratorOptions } from "@/lib/content-db"
 
 export default function TripGeneratorPage() {
+  const [options, setOptions] = useState<TripGeneratorOptions>({ travelStyles: [], destinations: [] })
   const [step, setStep] = useState(1)
   const [budget, setBudget] = useState(5000)
   const [days, setDays] = useState(5)
@@ -36,6 +27,22 @@ export default function TripGeneratorPage() {
     totalCost: number
   }>(null)
   const [expandedDay, setExpandedDay] = useState<number | null>(0)
+  const travelStyles = options.travelStyles
+  const destinations = options.destinations
+
+  useEffect(() => {
+    let ignore = false
+
+    fetch("/api/trip-generator-options")
+      .then((response) => response.json() as Promise<{ options: TripGeneratorOptions }>)
+      .then((data) => {
+        if (!ignore) setOptions(data.options)
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [])
 
   const toggleDest = (dest: string) => {
     setSelectedDests((prev) =>
@@ -48,7 +55,7 @@ export default function TripGeneratorPage() {
     setTimeout(() => {
       const selectedLocations = selectedDests.length > 0 ? selectedDests : ["Marrakech", "Sahara Desert", "Fes"]
       setItinerary({
-        title: `${days}-Day ${style.charAt(0).toUpperCase() + style.slice(1)} Morocco Adventure`,
+        title: `${days}-Day ${style ? style.charAt(0).toUpperCase() + style.slice(1) : "Custom"} Morocco Adventure`,
         overview: `A carefully crafted ${days}-day journey through Morocco${selectedLocations.length > 0 ? `, visiting ${selectedLocations.join(", ")}` : ""}. This ${style} itinerary balances iconic landmarks with hidden gems, giving you an authentic Moroccan experience tailored to your preferences.`,
         days: [
           {

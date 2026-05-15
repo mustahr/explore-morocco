@@ -1,0 +1,50 @@
+{
+  "travelStyles": [
+    {
+      "id": "luxury",
+      "label": "Luxury",
+      "icon": "??",
+      "description": "Premium riads, private tours, exclusive experiences"
+    },
+    {
+      "id": "backpacking",
+      "label": "Backpacking",
+      "icon": "??",
+      "description": "Budget-friendly, hostels, local transport"
+    },
+    {
+      "id": "romantic",
+      "label": "Romantic",
+      "icon": "??",
+      "description": "Couples retreat, sunset dinners, spa"
+    },
+    {
+      "id": "family",
+      "label": "Family",
+      "icon": "???????????",
+      "description": "Kid-friendly activities, safe, relaxed pace"
+    },
+    {
+      "id": "adventure",
+      "label": "Adventure",
+      "icon": "???",
+      "description": "Hiking, desert camping, extreme sports"
+    },
+    {
+      "id": "cultural",
+      "label": "Cultural",
+      "icon": "???",
+      "description": "Historical sites, local traditions, authentic"
+    }
+  ],
+  "destinations": [
+    "Marrakech",
+    "Fes",
+    "Chefchaouen",
+    "Sahara Desert",
+    "Essaouira",
+    "Casablanca",
+    "Rabat",
+    "Atlas Mountains"
+  ]
+}

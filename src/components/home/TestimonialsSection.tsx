@@ -1,33 +1,27 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Star, Quote } from "lucide-react"
-
-const testimonials = [
-  {
-    name: "Sarah Mitchell",
-    location: "London, UK",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
-    text: "The AI-generated itinerary was spot-on! Every day was perfectly planned, from the riad in Fes to our desert camp. Best trip of our lives.",
-    rating: 5,
-  },
-  {
-    name: "Marc Dupont",
-    location: "Paris, France",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-    text: "Incredible local expertise. The hidden spots they recommended in Chefchaouen were Instagram gold. Will definitely use again.",
-    rating: 5,
-  },
-  {
-    name: "Emily Chen",
-    location: "San Francisco, USA",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-    text: "As a solo female traveler, I felt completely safe and supported. The 24/7 WhatsApp assistance was invaluable.",
-    rating: 5,
-  },
-]
+import { type Testimonial } from "@/lib/content-db"
 
 export function TestimonialsSection() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
+
+  useEffect(() => {
+    let ignore = false
+
+    fetch("/api/testimonials")
+      .then((response) => response.json() as Promise<{ testimonials: Testimonial[] }>)
+      .then((data) => {
+        if (!ignore) setTestimonials(data.testimonials)
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [])
+
   return (
     <section className="py-20 lg:py-28 bg-stone-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,7 +40,7 @@ export function TestimonialsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div
-              key={testimonial.name}
+              key={testimonial.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
