@@ -7,13 +7,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowLeft,
   BarChart3,
-  ChevronLeft,
-  ChevronRight,
   Database,
   Edit3,
   FileText,
   Globe,
+  ImageIcon,
   LayoutDashboard,
+  Menu,
   MapPin,
   MessageCircle,
   Plus,
@@ -22,6 +22,7 @@ import {
   Sparkles,
   Trash2,
   TrendingUp,
+  Upload,
   Users,
   X,
 } from "lucide-react";
@@ -134,6 +135,11 @@ type TestimonialFormState = {
   avatar: string;
   text: string;
   rating: string;
+};
+
+type MediaUploadResponse = {
+  url?: string;
+  error?: string;
 };
 
 const categories: Trip["category"][] = [
@@ -290,6 +296,9 @@ const splitLines = (value: string) =>
     .split("\n")
     .map((item) => item.trim())
     .filter(Boolean);
+
+const appendLines = (value: string, lines: string[]) =>
+  [...splitLines(value), ...lines].join("\n");
 
 const escapeHtml = (value: string) =>
   value
@@ -729,7 +738,12 @@ export default function AdminTripsPage() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [activeSection, setActiveSection] = useState("overview");
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+  const [brokenImageKeys, setBrokenImageKeys] = useState<string[]>([]);
+  const [isCheckingImages, setIsCheckingImages] = useState(false);
+  const [uploadingMediaKey, setUploadingMediaKey] = useState<string | null>(
+    null,
+  );
 
   const isEditing = Boolean(selectedTripId);
   const selectedTrip = useMemo(
@@ -810,6 +824,10 @@ export default function AdminTripsPage() {
   const longestTrip = trips.length
     ? [...trips].sort((a, b) => b.duration - a.duration)[0]
     : null;
+  const brokenImageKeySet = useMemo(
+    () => new Set(brokenImageKeys),
+    [brokenImageKeys],
+  );
   const contentIssues = useMemo<ContentIssue[]>(() => {
     const issues: ContentIssue[] = [];
 
@@ -823,6 +841,14 @@ export default function AdminTripsPage() {
         trip.itinerary.length === 0 && "itinerary",
         trip.highlights.length === 0 && "highlights",
         trip.includes.length === 0 && "included items",
+        trip.image.trim() &&
+          brokenImageKeySet.has(`trip:${trip.id}:hero:${trip.image}`) &&
+          "broken hero image",
+        ...trip.images
+          .filter((image) =>
+            brokenImageKeySet.has(`trip:${trip.id}:gallery:${image}`),
+          )
+          .map((_, index) => `broken gallery image ${index + 1}`),
       ].filter(Boolean) as string[];
 
       if (missing.length > 0) {
@@ -847,6 +873,11 @@ export default function AdminTripsPage() {
         !experience.location.trim() && "location",
         !Number.isFinite(experience.price) && "price",
         !Number.isFinite(experience.rating) && "rating",
+        experience.image.trim() &&
+          brokenImageKeySet.has(
+            `experience:${experience.id}:hero:${experience.image}`,
+          ) &&
+          "broken image",
       ].filter(Boolean) as string[];
 
       if (missing.length > 0) {
@@ -873,6 +904,18 @@ export default function AdminTripsPage() {
         !destination.details?.intro?.trim() && "destination intro",
         !destination.details?.gettingAround?.trim() && "getting around details",
         !destination.details?.whereToStay?.trim() && "where to stay details",
+        destination.image.trim() &&
+          brokenImageKeySet.has(
+            `destination:${destination.slug}:hero:${destination.image}`,
+          ) &&
+          "broken hero image",
+        ...destination.images
+          .filter((image) =>
+            brokenImageKeySet.has(
+              `destination:${destination.slug}:gallery:${image}`,
+            ),
+          )
+          .map((_, index) => `broken gallery image ${index + 1}`),
       ].filter(Boolean) as string[];
 
       if (missing.length > 0) {
@@ -894,6 +937,9 @@ export default function AdminTripsPage() {
         !post.image.trim() && "image",
         !post.content.trim() && "content",
         post.tableOfContents.length === 0 && "table of contents",
+        post.image.trim() &&
+          brokenImageKeySet.has(`blog:${post.slug}:hero:${post.image}`) &&
+          "broken image",
       ].filter(Boolean) as string[];
 
       if (missing.length > 0) {
@@ -902,14 +948,37 @@ export default function AdminTripsPage() {
           type: "Blog",
           title: post.title || post.slug || "Untitled blog post",
           missing,
-          actionLabel: "View content",
-          onAction: () => setActiveSection("content"),
+          actionLabel: "Fix blog",
+          onAction: () => startEditingBlogPost(post),
+        });
+      }
+    });
+
+    testimonials.forEach((testimonial) => {
+      const missing = [
+        !testimonial.name.trim() && "name",
+        !testimonial.text.trim() && "quote",
+        testimonial.avatar.trim() &&
+          brokenImageKeySet.has(
+            `testimonial:${testimonial.id}:avatar:${testimonial.avatar}`,
+          ) &&
+          "broken avatar",
+      ].filter(Boolean) as string[];
+
+      if (missing.length > 0) {
+        issues.push({
+          id: `testimonial-${testimonial.id}`,
+          type: "Testimonial",
+          title: testimonial.name || testimonial.id || "Untitled testimonial",
+          missing,
+          actionLabel: "Fix testimonial",
+          onAction: () => startEditingTestimonial(testimonial),
         });
       }
     });
 
     return issues;
-  }, [blogPosts, destinations, experiences, trips]);
+  }, [blogPosts, brokenImageKeySet, destinations, experiences, testimonials, trips]);
   const contentItemCount =
     trips.length +
     experiences.length +
@@ -923,6 +992,98 @@ export default function AdminTripsPage() {
   const contentHealth = contentItemCount
     ? Math.round((healthyContentCount / contentItemCount) * 100)
     : 0;
+
+  useEffect(() => {
+    const imageTargets: Array<{ key: string; url: string }> = [];
+    const addImageTarget = (
+      contentType: string,
+      contentId: string,
+      field: string,
+      url: string,
+    ) => {
+      const trimmedUrl = url.trim();
+      if (!trimmedUrl) return;
+      imageTargets.push({
+        key: `${contentType}:${contentId}:${field}:${trimmedUrl}`,
+        url: trimmedUrl,
+      });
+    };
+
+    trips.forEach((trip) => {
+      addImageTarget("trip", trip.id, "hero", trip.image);
+      trip.images.forEach((image) =>
+        addImageTarget("trip", trip.id, "gallery", image),
+      );
+    });
+    destinations.forEach((destination) => {
+      addImageTarget("destination", destination.slug, "hero", destination.image);
+      destination.images.forEach((image) =>
+        addImageTarget("destination", destination.slug, "gallery", image),
+      );
+    });
+    experiences.forEach((experience) => {
+      addImageTarget("experience", experience.id, "hero", experience.image);
+    });
+    blogPosts.forEach((post) => {
+      addImageTarget("blog", post.slug, "hero", post.image);
+    });
+    testimonials.forEach((testimonial) => {
+      addImageTarget(
+        "testimonial",
+        testimonial.id,
+        "avatar",
+        testimonial.avatar,
+      );
+    });
+
+    if (imageTargets.length === 0) {
+      window.setTimeout(() => {
+        setBrokenImageKeys([]);
+        setIsCheckingImages(false);
+      }, 0);
+      return;
+    }
+
+    let isCancelled = false;
+    const checkingTimeout = window.setTimeout(() => {
+      if (!isCancelled) setIsCheckingImages(true);
+    }, 0);
+
+    Promise.all(
+      imageTargets.map(
+        (target) =>
+          new Promise<{ key: string; ok: boolean }>((resolve) => {
+            const image = new Image();
+            const timeout = window.setTimeout(() => {
+              image.onload = null;
+              image.onerror = null;
+              resolve({ key: target.key, ok: false });
+            }, 8000);
+
+            image.onload = () => {
+              window.clearTimeout(timeout);
+              resolve({ key: target.key, ok: true });
+            };
+            image.onerror = () => {
+              window.clearTimeout(timeout);
+              resolve({ key: target.key, ok: false });
+            };
+            image.src = target.url;
+          }),
+      ),
+    ).then((results) => {
+      if (isCancelled) return;
+      setBrokenImageKeys(
+        results.filter((result) => !result.ok).map((result) => result.key),
+      );
+      setIsCheckingImages(false);
+    });
+
+    return () => {
+      isCancelled = true;
+      window.clearTimeout(checkingTimeout);
+    };
+  }, [blogPosts, destinations, experiences, testimonials, trips]);
 
   async function loadTrips() {
     const response = await fetch("/api/trips?admin=1");
@@ -1164,6 +1325,48 @@ export default function AdminTripsPage() {
     setTestimonialForm((currentForm) => ({ ...currentForm, [field]: value }));
   }
 
+  async function uploadMediaFiles(
+    uploadKey: string,
+    folder: string,
+    files: File[],
+    onUploaded: (urls: string[]) => void,
+  ) {
+    if (files.length === 0) return;
+
+    setUploadingMediaKey(uploadKey);
+    setMessage("");
+
+    try {
+      const urls: string[] = [];
+
+      for (const file of files) {
+        const body = new FormData();
+        body.append("file", file);
+        body.append("folder", folder);
+
+        const response = await fetch("/api/media/upload", {
+          method: "POST",
+          body,
+        });
+        const data = (await response.json()) as MediaUploadResponse;
+
+        if (!response.ok || !data.url) {
+          setMessage(data.error ?? "Could not upload image.");
+          return;
+        }
+
+        urls.push(data.url);
+      }
+
+      onUploaded(urls);
+      setMessage(
+        urls.length === 1 ? "Image uploaded." : `${urls.length} images uploaded.`,
+      );
+    } finally {
+      setUploadingMediaKey(null);
+    }
+  }
+
   function startNewTrip() {
     setSelectedTripId(null);
     setForm(emptyTripForm);
@@ -1240,6 +1443,12 @@ export default function AdminTripsPage() {
 
     try {
       const trip = formStateToTrip(form);
+
+      if (!trip.image) {
+        setMessage("Upload a hero image before saving this trip.");
+        return;
+      }
+
       const response = await fetch(
         isEditing ? `/api/trips/${selectedTripId}` : "/api/trips",
         {
@@ -1289,6 +1498,12 @@ export default function AdminTripsPage() {
 
     try {
       const destination = formStateToDestination(destinationForm);
+
+      if (!destination.image) {
+        setMessage("Upload a hero image before saving this destination.");
+        return;
+      }
+
       const response = await fetch(
         isEditingDestination
           ? `/api/destinations/${selectedDestinationSlug}`
@@ -1346,6 +1561,12 @@ export default function AdminTripsPage() {
 
     try {
       const experience = formStateToExperience(experienceForm);
+
+      if (!experience.image) {
+        setMessage("Upload a hero image before saving this experience.");
+        return;
+      }
+
       const response = await fetch(
         isEditingExperience
           ? `/api/experiences/${selectedExperienceId}`
@@ -1402,6 +1623,12 @@ export default function AdminTripsPage() {
 
     try {
       const post = formStateToBlogPost(blogPostForm);
+
+      if (!post.image) {
+        setMessage("Upload a hero image before saving this blog post.");
+        return;
+      }
+
       const response = await fetch(
         isEditingBlogPost ? `/api/blog/${selectedBlogSlug}` : "/api/blog",
         {
@@ -1729,145 +1956,150 @@ export default function AdminTripsPage() {
   return (
     <main className="min-h-screen bg-stone-50">
       <div
-        className={`grid min-h-screen transition-[grid-template-columns] duration-300 ease-out ${isSidebarCollapsed ? "lg:grid-cols-[88px_1fr]" : "lg:grid-cols-[280px_1fr]"}`}
+        className="min-h-screen"
       >
-        <motion.aside
-          initial={{ opacity: 0, x: -24 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
-          className={`relative border-b border-stone-200 bg-stone-950 px-4 py-6 text-white transition-all duration-300 lg:sticky lg:top-0 lg:h-screen lg:border-b-0 lg:border-r ${
-            isSidebarCollapsed ? "lg:px-4" : "lg:px-5"
+        <button
+          type="button"
+          onClick={() => setIsAdminMenuOpen(true)}
+          className={`fixed left-4 top-4 z-[60] h-12 w-12 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-xl shadow-stone-900/10 transition hover:bg-stone-950 hover:text-white lg:hidden ${
+            isAdminMenuOpen ? "hidden" : "inline-flex"
           }`}
+          aria-label="Open admin menu"
+          title="Open admin menu"
+        >
+          <Menu size={20} />
+        </button>
+        <AnimatePresence>
+          {isAdminMenuOpen && (
+            <motion.button
+              type="button"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setIsAdminMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-stone-950/55 backdrop-blur-sm lg:hidden"
+              aria-label="Close admin menu"
+            />
+          )}
+        </AnimatePresence>
+        <div
+          className={`group/sidebar fixed left-0 top-0 z-50 h-screen w-[min(20rem,calc(100vw-2rem))] transition-transform duration-300 ease-out lg:w-[280px] ${
+            isAdminMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:-translate-x-[280px] lg:hover:translate-x-0 lg:focus-within:translate-x-0`}
         >
           <button
             type="button"
-            onClick={() => setIsSidebarCollapsed((collapsed) => !collapsed)}
-            className={`absolute top-5 hidden h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/10 text-white transition hover:bg-white/20 lg:inline-flex ${
-              isSidebarCollapsed ? "left-1/2 -translate-x-1/2" : "right-4"
-            }`}
-            aria-label={
-              isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
-            }
-            title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="absolute left-full top-4 z-50 ml-4 hidden h-12 w-12 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-xl shadow-stone-900/10 transition group-hover/sidebar:border-amber-300 group-hover/sidebar:bg-stone-950 group-hover/sidebar:text-white lg:inline-flex"
+            aria-label="Open admin menu"
+            title="Open admin menu"
           >
-            {isSidebarCollapsed ? (
-              <ChevronRight size={18} />
-            ) : (
-              <ChevronLeft size={18} />
-            )}
+            <Menu size={20} />
           </button>
-          <div className={`flex items-start flex-col w-full ${isSidebarCollapsed ? "justify-center" : ""}`}>
-            <Link
-              href="/"
-              className={`inline-flex items-center gap-2 text-sm font-semibold text-stone-300 hover:text-white ${
-                isSidebarCollapsed
-                  ? "lg:mt-14 lg:h-10 lg:w-10 lg:justify-center lg:rounded-2xl lg:bg-white/5"
-                  : "lg:pr-12"
-              }`}
-              title="Back to site"
+          <motion.aside
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="relative flex h-screen max-h-screen flex-col overflow-y-auto border-b border-stone-200 bg-stone-950 px-4 py-6 text-white shadow-2xl shadow-stone-950/30 transition-all duration-300 lg:w-[280px] lg:overflow-hidden lg:border-b-0 lg:border-r lg:px-5"
+          >
+            <div
+              className="shrink-0 rounded-[1.35rem] border border-white/10 bg-white/[0.06] p-2 shadow-2xl shadow-black/15 backdrop-blur"
             >
-              <ArrowLeft size={18} />
-              <span className={isSidebarCollapsed ? "lg:hidden" : ""}>
-                Back to site
-              </span>
-            </Link>
+              <Link
+                href="/"
+                onClick={() => setIsAdminMenuOpen(false)}
+                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 text-sm font-semibold text-stone-200 transition hover:border-amber-300/50 hover:bg-amber-300/15 hover:text-white"
+                title="Back to site"
+              >
+                <ArrowLeft size={17} className="shrink-0" />
+                <span className="truncate">
+                  Back to site
+                </span>
+              </Link>
+            </div>
+
+            <nav
+              className="admin-sidebar-nav mt-5 grid min-h-0 gap-2 overflow-y-auto py-3 pr-2 [scrollbar-gutter:stable] lg:flex-1"
+            >
+              {[
+                { id: "overview", label: "Overview", icon: LayoutDashboard },
+                { id: "trips", label: "Trips", icon: Sparkles },
+                { id: "destinations", label: "Destinations", icon: Globe },
+                { id: "experiences", label: "Experiences", icon: MapPin },
+                { id: "blog", label: "Blog", icon: FileText },
+                {
+                  id: "testimonials",
+                  label: "Testimonials",
+                  icon: MessageCircle,
+                },
+                { id: "site-content", label: "Site Content", icon: Settings },
+                { id: "bookings", label: "Bookings", icon: Users },
+                { id: "leads", label: "Leads", icon: MessageCircle },
+                { id: "content", label: "Content", icon: FileText },
+                { id: "database", label: "Database", icon: Database },
+                { id: "settings", label: "Settings", icon: Settings },
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveSection(item.id);
+                      setIsAdminMenuOpen(false);
+                    }}
+                    whileHover={{ x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                    title={item.label}
+                    className={`flex h-12 items-center justify-start gap-3 rounded-2xl px-4 py-3 text-left text-sm font-semibold transition ${
+                      activeSection === item.id
+                        ? "bg-white text-stone-950"
+                        : "text-stone-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <Icon size={18} className="shrink-0" />
+                    <span className="truncate whitespace-nowrap">
+                      {item.label}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </nav>
+
+            <div
+              className="mt-8 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4"
+            >
+              <p className="overflow-hidden whitespace-nowrap text-sm font-semibold">
+                Database
+              </p>
+              <p className="mt-2 overflow-hidden text-xs text-stone-300">
+                Supabase-ready storage
+              </p>
+              <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "75%" }}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                  className="h-full rounded-full bg-amber-400"
+                />
+              </div>
+            </div>
             <button
               type="button"
               onClick={logoutAdmin}
-              className={`mt-3 inline-flex items-center gap-2 rounded-2xl border border-white/10 px-3 py-2 text-sm font-semibold text-stone-300 transition hover:bg-white/10 hover:text-white ${
-                isSidebarCollapsed
-                  ? "lg:h-10 lg:w-10 lg:justify-center lg:px-0"
-                  : ""
-              }`}
+              className="mt-3 inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-2xl border border-red-300/15 bg-red-950 px-3 text-sm font-semibold text-red-100 shadow-lg shadow-red-950/25 transition hover:border-red-300/40 hover:bg-red-900 hover:text-white"
               title="Sign out"
             >
-              <X size={16} />
-              <span className={isSidebarCollapsed ? "lg:hidden" : ""}>
+              <X size={16} className="shrink-0" />
+              <span className="truncate">
                 Sign out
               </span>
             </button>
-          </div>
+          </motion.aside>
+        </div>
 
-          {/* <div className={`mt-8 ${isSidebarCollapsed ? "lg:hidden" : ""}`}>
-            <p className="text-xs uppercase tracking-[0.24em] text-amber-300">Control Panel</p>
-            <p className="mt-3 text-sm text-stone-300">Manage content, monitor inventory, and update the local database.</p>
-          </div> */}
-
-          <nav
-            className={`grid gap-2 ${isSidebarCollapsed ? "mt-8 lg:mt-10" : "mt-8"}`}
-          >
-            {[
-              { id: "overview", label: "Overview", icon: LayoutDashboard },
-              { id: "trips", label: "Trips", icon: Sparkles },
-              { id: "destinations", label: "Destinations", icon: Globe },
-              { id: "experiences", label: "Experiences", icon: MapPin },
-              { id: "blog", label: "Blog", icon: FileText },
-              {
-                id: "testimonials",
-                label: "Testimonials",
-                icon: MessageCircle,
-              },
-              { id: "site-content", label: "Site Content", icon: Settings },
-              { id: "bookings", label: "Bookings", icon: Users },
-              { id: "leads", label: "Leads", icon: MessageCircle },
-              { id: "content", label: "Content", icon: FileText },
-              { id: "database", label: "Database", icon: Database },
-              { id: "settings", label: "Settings", icon: Settings },
-            ].map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <motion.button
-                  key={item.id}
-                  type="button"
-                  onClick={() => setActiveSection(item.id)}
-                  whileHover={isSidebarCollapsed ? { scale: 1.06 } : { x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  title={item.label}
-                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-semibold transition ${
-                    isSidebarCollapsed
-                      ? "lg:h-12 lg:justify-center lg:px-0"
-                      : ""
-                  } ${
-                    activeSection === item.id
-                      ? "bg-white text-stone-950"
-                      : "text-stone-300 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  <Icon size={18} />
-                  <span className={isSidebarCollapsed ? "lg:hidden" : ""}>
-                    {item.label}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </nav>
-
-          <div
-            className={`mt-8 rounded-3xl border border-white/10 bg-white/5 p-4 ${isSidebarCollapsed ? "lg:px-3" : ""}`}
-          >
-            <p
-              className={`text-sm font-semibold ${isSidebarCollapsed ? "lg:text-center lg:text-xs" : ""}`}
-            >
-              Database
-            </p>
-            <p
-              className={`mt-2 text-xs text-stone-300 ${isSidebarCollapsed ? "lg:hidden" : ""}`}
-            >
-              Local JSON storage
-            </p>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "75%" }}
-                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                className="h-full rounded-full bg-amber-400"
-              />
-            </div>
-          </div>
-        </motion.aside>
-
-        <div className="px-4 py-8 sm:px-6 lg:px-8">
+        <div className="px-4 pb-8 pt-20 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto max-w-7xl">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -2130,12 +2362,17 @@ export default function AdminTripsPage() {
                           </div>
                           <p className="mt-4 text-sm text-stone-600">
                             {healthyContentCount} of {contentItemCount} content
-                            records passed the required-field check.
+                            records passed the required-field and image checks.
                           </p>
+                          {isCheckingImages && (
+                            <p className="mt-2 text-xs font-semibold text-sky-700">
+                              Checking uploaded image URLs...
+                            </p>
+                          )}
                           <div className="mt-5 space-y-3">
                             {contentIssues.length === 0 ? (
                               <div className="rounded-2xl bg-green-50 p-4 text-sm font-semibold text-green-800">
-                                No missing content detected.
+                                No missing content or broken images detected.
                               </div>
                             ) : (
                               contentIssues.slice(0, 4).map((issue) => (
@@ -2153,7 +2390,8 @@ export default function AdminTripsPage() {
                                         {issue.title}
                                       </p>
                                       <p className="mt-1 text-sm text-stone-600">
-                                        Missing: {issue.missing.join(", ")}
+                                        Needs attention:{" "}
+                                        {issue.missing.join(", ")}
                                       </p>
                                     </div>
                                     <button
@@ -2236,49 +2474,113 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "content" && (
-                  <section className="mt-8 grid gap-6 lg:grid-cols-3">
-                    <ContentCard
-                      title="Destinations"
-                      count={destinations.length}
-                      status="Database catalog"
-                      detail="Destination records are powered by data/destinations.json and API routes."
-                    />
-                    <ContentCard
-                      title="Experiences"
-                      count={experiences.length}
-                      status="Editable database"
-                      detail="Experience records are powered by data/experiences.json and API routes."
-                    />
-                    <ContentCard
-                      title="Blog posts"
-                      count={blogPosts.length}
-                      status="Editable database"
-                      detail="Blog entries are powered by data/blog-posts.json and API routes."
-                    />
-                    <ContentCard
-                      title="Testimonials"
-                      count={testimonials.length}
-                      status="Editable database"
-                      detail="Home testimonials are powered by data/testimonials.json."
-                    />
-                    <ContentCard
-                      title="Trip generator"
-                      count={
-                        tripGeneratorOptions.travelStyles.length +
-                        tripGeneratorOptions.destinations.length
-                      }
-                      status="Dynamic options"
-                      detail="Travel styles and suggested destinations are editable JSON records."
-                    />
-                    <ContentCard
-                      title="Trip detail content"
-                      count={
-                        tripDetailContent.faqs.length +
-                        tripDetailContent.reviews.length
-                      }
-                      status="Dynamic options"
-                      detail="Trip page FAQs and review cards are editable JSON records."
-                    />
+                  <section className="mt-8 space-y-6">
+                    <div className="grid gap-6 lg:grid-cols-3">
+                      <ContentCard
+                        title="Destinations"
+                        count={destinations.length}
+                        status="Database catalog"
+                        detail="Destination records are powered by data/destinations.json and API routes."
+                      />
+                      <ContentCard
+                        title="Experiences"
+                        count={experiences.length}
+                        status="Editable database"
+                        detail="Experience records are powered by data/experiences.json and API routes."
+                      />
+                      <ContentCard
+                        title="Blog posts"
+                        count={blogPosts.length}
+                        status="Editable database"
+                        detail="Blog entries are powered by data/blog-posts.json and API routes."
+                      />
+                      <ContentCard
+                        title="Testimonials"
+                        count={testimonials.length}
+                        status="Editable database"
+                        detail="Home testimonials are powered by data/testimonials.json."
+                      />
+                      <ContentCard
+                        title="Trip generator"
+                        count={
+                          tripGeneratorOptions.travelStyles.length +
+                          tripGeneratorOptions.destinations.length
+                        }
+                        status="Dynamic options"
+                        detail="Travel styles and suggested destinations are editable JSON records."
+                      />
+                      <ContentCard
+                        title="Trip detail content"
+                        count={
+                          tripDetailContent.faqs.length +
+                          tripDetailContent.reviews.length
+                        }
+                        status="Dynamic options"
+                        detail="Trip page FAQs and review cards are editable JSON records."
+                      />
+                    </div>
+
+                    <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-6">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-[0.22em] text-amber-700">
+                            Content health
+                          </p>
+                          <h3 className="mt-2 text-2xl font-bold text-stone-900">
+                            Content issues
+                          </h3>
+                          <p className="mt-2 text-sm text-stone-600">
+                            Missing fields and broken images that need a quick
+                            fix before publishing.
+                          </p>
+                        </div>
+                        <div className="rounded-2xl bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-700">
+                          {contentIssues.length} open issues
+                        </div>
+                      </div>
+
+                      {isCheckingImages && (
+                        <p className="mt-4 rounded-2xl bg-sky-50 px-4 py-3 text-sm font-semibold text-sky-800">
+                          Checking uploaded image URLs...
+                        </p>
+                      )}
+
+                      <div className="mt-5 overflow-hidden rounded-3xl border border-stone-200">
+                        {contentIssues.length === 0 ? (
+                          <div className="bg-green-50 p-5 text-sm font-semibold text-green-800">
+                            No missing content or broken images detected.
+                          </div>
+                        ) : (
+                          <div className="divide-y divide-stone-200">
+                            {contentIssues.map((issue) => (
+                              <div
+                                key={issue.id}
+                                className="grid gap-4 bg-white p-4 transition hover:bg-amber-50/40 md:grid-cols-[160px_1fr_auto] md:items-center"
+                              >
+                                <div>
+                                  <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
+                                    {issue.type}
+                                  </p>
+                                  <p className="mt-1 truncate font-semibold text-stone-900">
+                                    {issue.title}
+                                  </p>
+                                </div>
+                                <p className="text-sm text-stone-600">
+                                  {issue.missing.join(", ")}
+                                </p>
+                                <button
+                                  type="button"
+                                  onClick={issue.onAction}
+                                  className="inline-flex items-center justify-center rounded-2xl bg-stone-950 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-primary"
+                                >
+                                  {issue.actionLabel}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </section>
                   </section>
                 )}
 
@@ -2447,33 +2749,49 @@ export default function AdminTripsPage() {
                             className="admin-input"
                           />
                         </Field>
-                        <Field label="Hero image URL">
-                          <input
-                            value={blogPostForm.image}
-                            onChange={(event) =>
-                              updateBlogPostField("image", event.target.value)
-                            }
-                            className="admin-input"
-                          />
-                        </Field>
-                        <Field label="Author avatar URL">
-                          <input
-                            value={blogPostForm.authorAvatar}
-                            onChange={(event) =>
-                              updateBlogPostField(
-                                "authorAvatar",
-                                event.target.value,
-                              )
-                            }
-                            className="admin-input"
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Hero image"
+                          value={blogPostForm.image}
+                          uploadKey="blog-hero"
+                          isUploading={uploadingMediaKey === "blog-hero"}
+                          onChange={(value) =>
+                            updateBlogPostField("image", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "blog-hero",
+                              "blog/hero",
+                              files,
+                              ([url]) => updateBlogPostField("image", url),
+                            )
+                          }
+                        />
+                        <MediaUploadField
+                          label="Author avatar"
+                          value={blogPostForm.authorAvatar}
+                          uploadKey="blog-author"
+                          isUploading={uploadingMediaKey === "blog-author"}
+                          onChange={(value) =>
+                            updateBlogPostField("authorAvatar", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "blog-author",
+                              "blog/authors",
+                              files,
+                              ([url]) =>
+                                updateBlogPostField("authorAvatar", url),
+                            )
+                          }
+                        />
                       </div>
                       <PublishingSeoPanel
                         status={blogPostForm.status}
                         seoTitle={blogPostForm.seoTitle}
                         seoDescription={blogPostForm.seoDescription}
                         seoImage={blogPostForm.seoImage}
+                        seoImageUploadKey="blog-seo"
+                        isSeoImageUploading={uploadingMediaKey === "blog-seo"}
                         onStatusChange={(value) =>
                           updateBlogPostField("status", value)
                         }
@@ -2485,6 +2803,14 @@ export default function AdminTripsPage() {
                         }
                         onSeoImageChange={(value) =>
                           updateBlogPostField("seoImage", value)
+                        }
+                        onSeoImageUpload={(files) =>
+                          void uploadMediaFiles(
+                            "blog-seo",
+                            "blog/seo",
+                            files,
+                            ([url]) => updateBlogPostField("seoImage", url),
+                          )
                         }
                       />
                       <div className="mt-5 grid gap-5">
@@ -2746,18 +3072,26 @@ export default function AdminTripsPage() {
                             className="admin-input"
                           />
                         </Field>
-                        <Field label="Avatar URL">
-                          <input
-                            value={testimonialForm.avatar}
-                            onChange={(event) =>
-                              updateTestimonialField(
-                                "avatar",
-                                event.target.value,
-                              )
-                            }
-                            className="admin-input"
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Avatar"
+                          value={testimonialForm.avatar}
+                          uploadKey="testimonial-avatar"
+                          isUploading={
+                            uploadingMediaKey === "testimonial-avatar"
+                          }
+                          onChange={(value) =>
+                            updateTestimonialField("avatar", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "testimonial-avatar",
+                              "testimonials/avatars",
+                              files,
+                              ([url]) =>
+                                updateTestimonialField("avatar", url),
+                            )
+                          }
+                        />
                       </div>
                       <div className="mt-5">
                         <Field label="Quote">
@@ -3008,8 +3342,9 @@ export default function AdminTripsPage() {
                         Storage
                       </h3>
                       <p className="mt-3 text-stone-600">
-                        Trips, destinations, and experiences are read from and
-                        written to local JSON database files.
+                        Content is read from and written to Supabase when the
+                        production environment variables are present, with local
+                        JSON files kept as the development fallback.
                       </p>
                       <div className="mt-6 grid gap-3 text-sm">
                         <p className="rounded-2xl bg-green-50 px-4 py-3 font-semibold text-green-800">
@@ -3061,10 +3396,10 @@ export default function AdminTripsPage() {
                         Production note
                       </h3>
                       <p className="mt-3 text-stone-600">
-                        This dashboard is wired for local JSON storage. The
-                        helper layer can be swapped for Prisma, PostgreSQL, or
-                        Supabase while keeping the admin UI and API routes
-                        mostly unchanged.
+                        Admin image uploads now use Supabase Storage and store
+                        the public image path on each content record. Set the
+                        Supabase URL, service role key, and storage bucket
+                        before deploying.
                       </p>
                     </div>
                   </section>
@@ -3261,19 +3596,26 @@ export default function AdminTripsPage() {
                             className="admin-input"
                           />
                         </Field>
-                        <Field label="Hero image URL">
-                          <input
-                            value={destinationForm.image}
-                            onChange={(event) =>
-                              updateDestinationField(
-                                "image",
-                                event.target.value,
-                              )
-                            }
-                            className="admin-input"
-                            placeholder="https://..."
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Hero image"
+                          value={destinationForm.image}
+                          uploadKey="destination-hero"
+                          isUploading={
+                            uploadingMediaKey === "destination-hero"
+                          }
+                          onChange={(value) =>
+                            updateDestinationField("image", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "destination-hero",
+                              "destinations/hero",
+                              files,
+                              ([url]) =>
+                                updateDestinationField("image", url),
+                            )
+                          }
+                        />
                         <Field label="Best time to visit">
                           <input
                             value={destinationForm.bestTime}
@@ -3323,6 +3665,10 @@ export default function AdminTripsPage() {
                         seoTitle={destinationForm.seoTitle}
                         seoDescription={destinationForm.seoDescription}
                         seoImage={destinationForm.seoImage}
+                        seoImageUploadKey="destination-seo"
+                        isSeoImageUploading={
+                          uploadingMediaKey === "destination-seo"
+                        }
                         onStatusChange={(value) =>
                           updateDestinationField("status", value)
                         }
@@ -3334,6 +3680,15 @@ export default function AdminTripsPage() {
                         }
                         onSeoImageChange={(value) =>
                           updateDestinationField("seoImage", value)
+                        }
+                        onSeoImageUpload={(files) =>
+                          void uploadMediaFiles(
+                            "destination-seo",
+                            "destinations/seo",
+                            files,
+                            ([url]) =>
+                              updateDestinationField("seoImage", url),
+                          )
                         }
                       />
 
@@ -3350,18 +3705,30 @@ export default function AdminTripsPage() {
                             className="admin-input min-h-28"
                           />
                         </Field>
-                        <Field label="Gallery images, one URL per line">
-                          <textarea
-                            value={destinationForm.images}
-                            onChange={(event) =>
-                              updateDestinationField(
-                                "images",
-                                event.target.value,
-                              )
-                            }
-                            className="admin-input min-h-28"
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Gallery images"
+                          value={destinationForm.images}
+                          multiple
+                          uploadKey="destination-gallery"
+                          isUploading={
+                            uploadingMediaKey === "destination-gallery"
+                          }
+                          onChange={(value) =>
+                            updateDestinationField("images", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "destination-gallery",
+                              "destinations/gallery",
+                              files,
+                              (urls) =>
+                                updateDestinationField(
+                                  "images",
+                                  appendLines(destinationForm.images, urls),
+                                ),
+                            )
+                          }
+                        />
                         <Field label="Highlights, one per line">
                           <textarea
                             value={destinationForm.highlights}
@@ -3691,22 +4058,36 @@ export default function AdminTripsPage() {
                             className="admin-input"
                           />
                         </Field>
-                        <Field label="Hero image URL">
-                          <input
-                            value={experienceForm.image}
-                            onChange={(event) =>
-                              updateExperienceField("image", event.target.value)
-                            }
-                            className="admin-input"
-                            placeholder="https://..."
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Hero image"
+                          value={experienceForm.image}
+                          uploadKey="experience-hero"
+                          isUploading={
+                            uploadingMediaKey === "experience-hero"
+                          }
+                          onChange={(value) =>
+                            updateExperienceField("image", value)
+                          }
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "experience-hero",
+                              "experiences/hero",
+                              files,
+                              ([url]) =>
+                                updateExperienceField("image", url),
+                            )
+                          }
+                        />
                       </div>
                       <PublishingSeoPanel
                         status={experienceForm.status}
                         seoTitle={experienceForm.seoTitle}
                         seoDescription={experienceForm.seoDescription}
                         seoImage={experienceForm.seoImage}
+                        seoImageUploadKey="experience-seo"
+                        isSeoImageUploading={
+                          uploadingMediaKey === "experience-seo"
+                        }
                         onStatusChange={(value) =>
                           updateExperienceField("status", value)
                         }
@@ -3718,6 +4099,15 @@ export default function AdminTripsPage() {
                         }
                         onSeoImageChange={(value) =>
                           updateExperienceField("seoImage", value)
+                        }
+                        onSeoImageUpload={(files) =>
+                          void uploadMediaFiles(
+                            "experience-seo",
+                            "experiences/seo",
+                            files,
+                            ([url]) =>
+                              updateExperienceField("seoImage", url),
+                          )
                         }
                       />
 
@@ -3880,16 +4270,21 @@ export default function AdminTripsPage() {
                             ))}
                           </select>
                         </Field>
-                        <Field label="Hero image URL">
-                          <input
-                            value={form.image}
-                            onChange={(event) =>
-                              updateField("image", event.target.value)
-                            }
-                            className="admin-input"
-                            placeholder="https://..."
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Hero image"
+                          value={form.image}
+                          uploadKey="trip-hero"
+                          isUploading={uploadingMediaKey === "trip-hero"}
+                          onChange={(value) => updateField("image", value)}
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "trip-hero",
+                              "trips/hero",
+                              files,
+                              ([url]) => updateField("image", url),
+                            )
+                          }
+                        />
                         <Field label="Duration days">
                           <input
                             type="number"
@@ -3942,6 +4337,8 @@ export default function AdminTripsPage() {
                         seoTitle={form.seoTitle}
                         seoDescription={form.seoDescription}
                         seoImage={form.seoImage}
+                        seoImageUploadKey="trip-seo"
+                        isSeoImageUploading={uploadingMediaKey === "trip-seo"}
                         onStatusChange={(value) => updateField("status", value)}
                         onSeoTitleChange={(value) =>
                           updateField("seoTitle", value)
@@ -3951,6 +4348,14 @@ export default function AdminTripsPage() {
                         }
                         onSeoImageChange={(value) =>
                           updateField("seoImage", value)
+                        }
+                        onSeoImageUpload={(files) =>
+                          void uploadMediaFiles(
+                            "trip-seo",
+                            "trips/seo",
+                            files,
+                            ([url]) => updateField("seoImage", url),
+                          )
                         }
                       />
 
@@ -3964,15 +4369,23 @@ export default function AdminTripsPage() {
                             className="admin-input min-h-28"
                           />
                         </Field>
-                        <Field label="Gallery images, one URL per line">
-                          <textarea
-                            value={form.images}
-                            onChange={(event) =>
-                              updateField("images", event.target.value)
-                            }
-                            className="admin-input min-h-28"
-                          />
-                        </Field>
+                        <MediaUploadField
+                          label="Gallery images"
+                          value={form.images}
+                          multiple
+                          uploadKey="trip-gallery"
+                          isUploading={uploadingMediaKey === "trip-gallery"}
+                          onChange={(value) => updateField("images", value)}
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "trip-gallery",
+                              "trips/gallery",
+                              files,
+                              (urls) =>
+                                updateField("images", appendLines(form.images, urls)),
+                            )
+                          }
+                        />
                         <Field label="Locations, one per line">
                           <textarea
                             value={form.locations}
@@ -4161,24 +4574,169 @@ function StatusBadge({ status }: { status: ContentStatus }) {
   );
 }
 
+function MediaUploadField({
+  label,
+  value,
+  multiple,
+  isUploading,
+  uploadKey,
+  onChange,
+  onUpload,
+}: {
+  label: string;
+  value: string;
+  multiple?: boolean;
+  isUploading: boolean;
+  uploadKey: string;
+  onChange: (value: string) => void;
+  onUpload: (files: File[]) => void;
+}) {
+  const urls = multiple ? splitLines(value) : value.trim() ? [value.trim()] : [];
+  const inputId = `media-upload-${uploadKey}`;
+  const [failedPreviewUrls, setFailedPreviewUrls] = useState<string[]>([]);
+
+  function removeUrl(url: string) {
+    if (!multiple) {
+      onChange("");
+      return;
+    }
+
+    onChange(urls.filter((item) => item !== url).join("\n"));
+  }
+
+  return (
+    <div className="block">
+      <span className="mb-2 block text-sm font-semibold text-stone-700">
+        {label}
+      </span>
+      <div className="rounded-3xl border border-dashed border-stone-300 bg-stone-50 p-3">
+        {urls.length > 0 ? (
+          <div
+            className={
+              multiple
+                ? "mb-3 grid grid-cols-2 gap-3 sm:grid-cols-3"
+                : "mb-3"
+            }
+          >
+            {urls.map((url) => (
+              <div
+                key={url}
+                className="group relative overflow-hidden rounded-2xl border border-stone-200 bg-white"
+              >
+                <img
+                  src={url}
+                  alt=""
+                  onLoad={() =>
+                    setFailedPreviewUrls((current) =>
+                      current.filter((item) => item !== url),
+                    )
+                  }
+                  onError={() =>
+                    setFailedPreviewUrls((current) =>
+                      current.includes(url) ? current : [...current, url],
+                    )
+                  }
+                  className={
+                    multiple
+                      ? "h-28 w-full object-cover"
+                      : "h-40 w-full object-cover"
+                  }
+                />
+                {failedPreviewUrls.includes(url) && (
+                  <div className="absolute inset-x-2 bottom-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-semibold text-red-700 shadow-sm">
+                    Preview unavailable
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeUrl(url)}
+                  className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-stone-700 shadow-sm transition hover:bg-red-50 hover:text-red-700"
+                  aria-label="Remove image"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-3 flex h-28 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-400">
+            <ImageIcon size={24} />
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            id={inputId}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+            multiple={multiple}
+            disabled={isUploading}
+            onChange={(event) => {
+              const files = Array.from(event.target.files ?? []);
+              event.target.value = "";
+              onUpload(files);
+            }}
+            className="sr-only"
+          />
+          <label
+            htmlFor={inputId}
+            className={`inline-flex cursor-pointer items-center justify-center gap-2 rounded-3xl px-4 py-2.5 text-sm font-semibold transition ${
+              isUploading
+                ? "pointer-events-none bg-stone-300 text-stone-600"
+                : "bg-stone-950 text-white hover:bg-primary"
+            }`}
+          >
+            <Upload size={16} />
+            {isUploading ? "Uploading..." : urls.length ? "Replace or add" : "Upload image"}
+          </label>
+          {urls.length > 0 && (
+            <a
+              href={urls[0]}
+              target="_blank"
+              rel="noreferrer"
+              className="max-w-full truncate text-xs font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              {multiple ? `${urls.length} stored - open first image` : "Open stored image"}
+            </a>
+          )}
+        </div>
+        {urls.length > 0 && (
+          <input
+            value={multiple ? urls.join("\n") : urls[0]}
+            readOnly
+            className="mt-3 w-full rounded-2xl border border-stone-200 bg-white px-3 py-2 text-xs text-stone-500"
+            aria-label={`${label} stored URL`}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
 function PublishingSeoPanel({
   status,
   seoTitle,
   seoDescription,
   seoImage,
+  seoImageUploadKey,
+  isSeoImageUploading,
   onStatusChange,
   onSeoTitleChange,
   onSeoDescriptionChange,
   onSeoImageChange,
+  onSeoImageUpload,
 }: {
   status: ContentStatus;
   seoTitle: string;
   seoDescription: string;
   seoImage: string;
+  seoImageUploadKey: string;
+  isSeoImageUploading: boolean;
   onStatusChange: (value: ContentStatus) => void;
   onSeoTitleChange: (value: string) => void;
   onSeoDescriptionChange: (value: string) => void;
   onSeoImageChange: (value: string) => void;
+  onSeoImageUpload: (files: File[]) => void;
 }) {
   return (
     <div className="mt-5 rounded-[2rem] border border-stone-200 bg-stone-50 p-5">
@@ -4213,14 +4771,14 @@ function PublishingSeoPanel({
             placeholder="Leave blank to use the page description or excerpt"
           />
         </Field>
-        <Field label="Open Graph image URL">
-          <input
-            value={seoImage}
-            onChange={(event) => onSeoImageChange(event.target.value)}
-            className="admin-input bg-white"
-            placeholder="Leave blank to use the hero image"
-          />
-        </Field>
+        <MediaUploadField
+          label="Open Graph image"
+          value={seoImage}
+          uploadKey={seoImageUploadKey}
+          isUploading={isSeoImageUploading}
+          onChange={onSeoImageChange}
+          onUpload={onSeoImageUpload}
+        />
       </div>
     </div>
   );

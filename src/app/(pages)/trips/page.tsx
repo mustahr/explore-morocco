@@ -7,6 +7,7 @@ import { Star, Clock, MapPin, Heart, SlidersHorizontal, X, ArrowRight, Sparkles 
 import { type Trip } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations, formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 const categories = ["all", "favorited", "luxury", "budget", "adventure", "cultural", "romantic", "family"]
 
@@ -258,10 +259,11 @@ export default function TripsPage() {
                       <Link href={`/trips/${trip.id}`} className="group block h-full">
                         <div className="h-full bg-white rounded-[2rem] overflow-hidden shadow-md border border-stone-200 hover:shadow-2xl transition-shadow duration-300">
                           <div className="relative aspect-[16/10] overflow-hidden bg-stone-900">
-                            <img
+                            <ImageWithFallback
                               src={trip.image}
                               alt={trip.title}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              fallbackClassName="w-full h-full"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent" />
 

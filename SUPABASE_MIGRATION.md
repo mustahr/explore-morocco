@@ -19,11 +19,16 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ADMIN_PASSWORD=your-admin-password
 ADMIN_SESSION_SECRET=your-long-random-secret
+SUPABASE_STORAGE_BUCKET=morocco-travel-images
 ```
 
 Use the service role key only on the server. Do not expose it in client code.
 
-## 3. Seed Current Local Data
+## 3. Image Uploads
+
+Admin image uploads use Supabase Storage. The app will create the bucket named by `SUPABASE_STORAGE_BUCKET` when the first upload runs. If your Supabase project blocks bucket creation from the service role key, create a public bucket with that name in the Supabase dashboard.
+
+## 4. Seed Current Local Data
 
 After the table exists and env vars are set:
 
@@ -43,7 +48,7 @@ This uploads:
 - trip generator options
 - trip detail content
 
-## 4. Run The App
+## 5. Run The App
 
 ```bash
 npm run dev

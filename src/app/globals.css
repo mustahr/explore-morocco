@@ -115,6 +115,36 @@ button, .btn, [role="button"] {
   box-shadow: 0 0 0 3px rgb(194 65 12 / 0.15);
 }
 
+.admin-sidebar-nav {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(217 119 6 / 0.85) rgb(255 255 255 / 0.08);
+}
+
+.admin-sidebar-nav::-webkit-scrollbar {
+  width: 0.7rem;
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-track {
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 999px;
+  background:
+    linear-gradient(rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02)),
+    rgb(28 25 23 / 0.6);
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-thumb {
+  border: 2px solid rgb(28 25 23);
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, #fbbf24 0%, #d97706 46%, #0ea5e9 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
+}
+
+.admin-sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, #fcd34d 0%, #ea580c 45%, #38bdf8 100%);
+}
+
 .blog-content {
   color: #57534e;
   font-size: 1.0625rem;

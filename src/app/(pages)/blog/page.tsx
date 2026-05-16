@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Calendar, Clock, ArrowRight, BookOpen, Sparkles } from "lucide-react"
 import { type BlogPost } from "@/lib/data"
 import { useEffect, useMemo, useState } from "react"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
@@ -112,10 +113,11 @@ export default function BlogPage() {
               >
                 <Link href={`/blog/${post.slug}`} className="group block">
                   <div className="relative rounded-2xl overflow-hidden aspect-[16/10] mb-6">
-                    <img
+                    <ImageWithFallback
                       src={post.image}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fallbackClassName="w-full h-full"
                     />
                   </div>
                   <span className="text-primary text-sm font-semibold">{post.category}</span>
@@ -148,10 +150,11 @@ export default function BlogPage() {
                 >
                   <Link href={`/blog/${post.slug}`} className="group flex gap-4">
                     <div className="w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
-                      <img
+                      <ImageWithFallback
                         src={post.image}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        fallbackClassName="w-full h-full"
                       />
                     </div>
                     <div>
@@ -181,10 +184,11 @@ export default function BlogPage() {
                 <Link href={`/blog/${post.slug}`} className="group block">
                   <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 card-hover">
                     <div className="aspect-[16/10] overflow-hidden">
-                      <img
+                      <ImageWithFallback
                         src={post.image}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        fallbackClassName="w-full h-full"
                       />
                     </div>
                     <div className="p-5">
