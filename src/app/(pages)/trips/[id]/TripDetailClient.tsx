@@ -7,7 +7,6 @@ import {
   Star,
   Clock,
   MapPin,
-  Heart,
   Calendar,
   Check,
   ChevronDown,
@@ -23,7 +22,8 @@ import {
 import { type Trip } from "@/lib/data"
 import { type TripDetailContent } from "@/lib/content-db"
 import { useApp } from "@/context/AppContext"
-import { translations, formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 const toDateInputValue = (date: Date) => {
   const year = date.getFullYear()
@@ -86,13 +86,13 @@ export default function TripDetailClient({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
-  const { language, currency, toggleWishlist, isWishlisted } = useApp()
-  const t = translations[language]
+  const { currency } = useApp()
 
   const heroTitle = trip.id === "desert-3day" ? "3-Day Sahara Desert Experience from Marrakech" : trip.title
   const originalPrice = Math.round(trip.price * 1.15)
   const savings = originalPrice - trip.price
   const galleryImages = [trip.image, ...trip.images]
+  const whatsappMessage = encodeURIComponent(`Hi, I want to reserve ${trip.title}. Can you help me?`)
 
   const itinerary = useMemo(
     () =>
@@ -199,7 +199,15 @@ export default function TripDetailClient({
 
             <div className="grid gap-4 lg:gap-6">
               <div className="relative rounded-3xl overflow-hidden bg-stone-900 shadow-lg h-[400px] sm:h-[500px] lg:h-[600px]">
-                <img src={galleryImages[selectedImage]} alt={trip.title} className="w-full h-full object-cover" />
+                <ImageWithFallback
+                  src={galleryImages[selectedImage]}
+                  alt={trip.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  preload
+                  className="object-cover"
+                  fallbackClassName="h-full w-full"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/20 to-transparent" />
               </div>
 
@@ -214,7 +222,14 @@ export default function TripDetailClient({
                         : 'border-stone-200 hover:border-primary/50'
                     }`}
                   >
-                    <img src={image} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                    <ImageWithFallback
+                      src={image}
+                      alt={`Gallery ${index + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 20vw"
+                      className="object-cover"
+                      fallbackClassName="h-full w-full"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-stone-950/30 to-transparent group-hover:from-stone-950/50 transition-all" />
                   </button>
                 ))}
@@ -403,13 +418,25 @@ export default function TripDetailClient({
                 </div>
               </div>
 
-              <button type="button" className="w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-6 py-4 mt-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30">
+              <button
+                type="button"
+                data-analytics-event="booking_click"
+                data-analytics-label={trip.id}
+                className="w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-6 py-4 mt-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              >
                 <Calendar size={18} /> Book Now
               </button>
 
-              <button type="button" className="w-full inline-flex items-center justify-center gap-2 rounded-3xl border border-stone-300 bg-white px-6 py-4 text-sm font-semibold text-stone-700 transition duration-300 ease-out hover:border-primary hover:text-primary mt-3">
+              <a
+                href={`https://wa.me/212XXXXXXXXX?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics-event="booking_whatsapp_click"
+                data-analytics-label={trip.id}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-3xl border border-stone-300 bg-white px-6 py-4 text-sm font-semibold text-stone-700 transition duration-300 ease-out hover:border-primary hover:text-primary mt-3"
+              >
                 <MessageCircle size={18} /> Reserve with WhatsApp
-              </button>
+              </a>
 
               <div className="mt-6 rounded-3xl bg-amber-50 border border-amber-100 p-4 text-sm text-stone-700">
                 <p className="font-semibold">Limited availability for selected dates.</p>
@@ -566,7 +593,14 @@ export default function TripDetailClient({
 
                               <div className="space-y-4">
                                 <div className="relative h-48 rounded-xl overflow-hidden">
-                                  <img src={day.image} alt={day.title} className="w-full h-full object-cover" />
+                                  <ImageWithFallback
+                                    src={day.image}
+                                    alt={day.title}
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, 55vw"
+                                    className="object-cover"
+                                    fallbackClassName="h-full w-full"
+                                  />
                                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                                 </div>
 
@@ -642,7 +676,16 @@ export default function TripDetailClient({
                 {reviewCards.map((review) => (
                   <div key={review.name} className="rounded-3xl border border-stone-200 bg-stone-50 p-6">
                     <div className="flex items-center gap-4">
-                      <img src={review.photo} alt={review.name} className="h-14 w-14 rounded-3xl object-cover" />
+                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-3xl">
+                        <ImageWithFallback
+                          src={review.photo}
+                          alt={review.name}
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                          fallbackClassName="h-14 w-14"
+                        />
+                      </div>
                       <div>
                         <p className="font-semibold text-stone-900">{review.name}</p>
                         <p className="text-sm text-stone-500">{review.location}</p>
@@ -689,10 +732,13 @@ export default function TripDetailClient({
           <div className="space-y-10">
             <div className="rounded-[2rem] bg-white shadow-2xl border border-stone-200 overflow-hidden">
               <div className="relative h-[420px] overflow-hidden bg-stone-900 text-white">
-                <img
+                <ImageWithFallback
                   src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80"
                   alt="Morocco route map"
-                  className="absolute inset-0 h-full w-full object-cover opacity-30"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 58vw"
+                  className="object-cover opacity-30"
+                  fallbackClassName="h-full w-full"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-transparent" />
                 <div className="relative h-full p-8 flex flex-col justify-between">
@@ -728,7 +774,14 @@ export default function TripDetailClient({
                     className="group block rounded-[2rem] overflow-hidden border border-stone-200 bg-stone-50 shadow-sm transition hover:shadow-xl"
                   >
                     <div className="relative h-44 overflow-hidden">
-                      <img src={related.image} alt={related.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <ImageWithFallback
+                        src={related.image}
+                        alt={related.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 24rem"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        fallbackClassName="h-full w-full"
+                      />
                     </div>
                     <div className="p-5">
                       <p className="text-sm text-stone-500">{related.duration} days · {related.locations[0]}</p>

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, MessageCircle, Mail, Send, ChevronDown } from "lucide-react"
 import { type Destination, type DestinationDetails } from "@/lib/data"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function DestinationDetailClient({ destination }: { destination: Destination }) {
   const [activeTab, setActiveTab] = useState("overview")
@@ -35,7 +36,15 @@ export default function DestinationDetailClient({ destination }: { destination: 
   return (
     <div className="pt-15 lg:pt-20">
       <div className="relative h-[50vh] lg:h-[60vh]">
-        <img src={dest.images[0]} alt={dest.name} className="w-full h-full object-cover" />
+        <ImageWithFallback
+          src={dest.images[0] || dest.image}
+          alt={dest.name}
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover"
+          fallbackClassName="h-full w-full"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           <Link href="/destinations" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
@@ -148,7 +157,16 @@ export default function DestinationDetailClient({ destination }: { destination: 
                   <h3 className="text-xl font-bold text-stone-900 mb-4">Gallery</h3>
                   <div className="grid grid-cols-2 gap-3">
                     {dest.images.map((img, i) => (
-                      <img key={i} src={img} alt={`${dest.name} ${i + 1}`} className="rounded-xl w-full aspect-video object-cover hover:opacity-90 transition-opacity cursor-pointer" />
+                      <div key={i} className="relative aspect-video overflow-hidden rounded-xl">
+                        <ImageWithFallback
+                          src={img}
+                          alt={`${dest.name} ${i + 1}`}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                          className="object-cover transition-opacity hover:opacity-90"
+                          fallbackClassName="h-full w-full"
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>

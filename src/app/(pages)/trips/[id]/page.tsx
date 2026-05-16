@@ -3,6 +3,7 @@ import TripDetailClient from "./TripDetailClient"
 import { notFound } from "next/navigation"
 import { getPublishedTripById, getRelatedTrips } from "@/lib/trips-db"
 import { getTripDetailContent } from "@/lib/content-db"
+import { cleanImageList, tripJsonLd } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
 
@@ -15,10 +16,21 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: trip.seo?.title || trip.title,
     description: trip.seo?.description || trip.description,
+    alternates: {
+      canonical: `/trips/${trip.id}`,
+    },
     openGraph: {
       title: trip.seo?.title || trip.title,
       description: trip.seo?.description || trip.description,
-      images: [trip.seo?.image || trip.image],
+      url: `/trips/${trip.id}`,
+      type: "website",
+      images: cleanImageList([trip.seo?.image, trip.image]),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: trip.seo?.title || trip.title,
+      description: trip.seo?.description || trip.description,
+      images: cleanImageList([trip.seo?.image, trip.image]),
     },
   }
 }
@@ -32,5 +44,13 @@ export default async function TripDetailPage({ params }: { params: Promise<{ id:
     getTripDetailContent(),
   ])
 
-  return <TripDetailClient trip={trip} relatedTrips={relatedTrips} detailContent={detailContent} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(tripJsonLd(trip)) }}
+      />
+      <TripDetailClient trip={trip} relatedTrips={relatedTrips} detailContent={detailContent} />
+    </>
+  )
 }

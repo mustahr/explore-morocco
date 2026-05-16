@@ -23,7 +23,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [curOpen, setCurOpen] = useState(false)
-  const { language, setLanguage, currency, setCurrency, wishlist } = useApp()
+  const { language, setLanguage, currency, setCurrency } = useApp()
   const pathname = usePathname()
   const t = translations[language]
   const isHomePage = pathname === "/"

@@ -22,6 +22,7 @@ import {
 import { type Experience } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 type ExperienceDetail = {
   overview: string
@@ -115,7 +116,15 @@ export default function ExperienceDetailClient({
     <div className="pt-14 lg:pt-20">
       <section className="relative min-h-[720px] overflow-hidden">
         <div className="absolute inset-0">
-          <img src={experience.image} alt={experience.title} className="h-full w-full object-cover" />
+          <ImageWithFallback
+            src={experience.image}
+            alt={experience.title}
+            fill
+            preload
+            sizes="100vw"
+            className="object-cover"
+            fallbackClassName="h-full w-full"
+          />
           <div className="absolute inset-0 bg-gradient-to-br from-stone-950 via-stone-950/70 to-primary/55" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(217,119,6,0.45),transparent_28%),radial-gradient(circle_at_20%_82%,rgba(14,165,233,0.22),transparent_30%)]" />
           <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-white via-white/80 to-transparent" />
@@ -176,7 +185,16 @@ export default function ExperienceDetailClient({
               className="rounded-[2rem] border border-white/25 bg-white/15 p-4 shadow-2xl shadow-stone-950/30 backdrop-blur-xl"
             >
               <div className="overflow-hidden rounded-[1.5rem]">
-                <img src={experience.image} alt="" className="h-56 w-full object-cover" />
+                <div className="relative h-56">
+                  <ImageWithFallback
+                    src={experience.image}
+                    alt=""
+                    fill
+                    sizes="24rem"
+                    className="object-cover"
+                    fallbackClassName="h-full w-full"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-3 gap-3 pt-4 text-center">
                 <div className="rounded-2xl bg-white p-3">
@@ -275,8 +293,15 @@ export default function ExperienceDetailClient({
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     {relatedExperiences.map((item) => (
                       <Link key={item.id} href={`/experiences/${item.id}`} className="group block overflow-hidden rounded-2xl border border-stone-100 bg-white shadow-sm">
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <img src={item.image} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        <div className="relative aspect-[4/3] overflow-hidden">
+                          <ImageWithFallback
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            fallbackClassName="h-full w-full"
+                          />
                         </div>
                         <div className="p-4">
                           <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>

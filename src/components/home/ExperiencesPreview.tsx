@@ -7,6 +7,7 @@ import { ArrowRight, Clock } from "lucide-react"
 import { type Experience } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations, formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function ExperiencesPreview() {
   const { language, currency } = useApp()
@@ -56,10 +57,13 @@ export function ExperiencesPreview() {
             >
               <Link href={`/experiences/${exp.id}`} className="group block">
                 <div className="relative rounded-2xl overflow-hidden aspect-square card-hover">
-                  <img
+                  <ImageWithFallback
                     src={exp.image}
                     alt={exp.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    fallbackClassName="h-full w-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">

@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { Star, Clock, MapPin, Heart, SlidersHorizontal, X, ArrowRight, Sparkles } from "lucide-react"
 import { type Trip } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
-import { translations, formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 const categories = ["all", "favorited", "luxury", "budget", "adventure", "cultural", "romantic", "family"]
@@ -18,8 +18,7 @@ export default function TripsPage() {
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 15000])
   const [showFilters, setShowFilters] = useState(false)
-  const { language, currency, toggleWishlist, isWishlisted } = useApp()
-  const t = translations[language]
+  const { currency, toggleWishlist, isWishlisted } = useApp()
 
   useEffect(() => {
     let ignore = false
@@ -59,10 +58,15 @@ export default function TripsPage() {
     <div>
       <section className="relative min-h-[520px] lg:min-h-[600px] overflow-hidden bg-stone-950 flex items-center">
         <div className="absolute inset-0 overflow-hidden">
-          <img
+          <ImageWithFallback
             src="https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2000&q=80"
             alt="Morocco desert"
-            className="w-full h-full object-cover"
+            fill
+            preload
+            sizes="100vw"
+            quality={80}
+            className="object-cover"
+            fallbackClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/60 to-stone-950/30" />
         </div>
@@ -262,7 +266,9 @@ export default function TripsPage() {
                             <ImageWithFallback
                               src={trip.image}
                               alt={trip.title}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 50vw"
+                              className="object-cover group-hover:scale-110 transition-transform duration-700"
                               fallbackClassName="w-full h-full"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/30 to-transparent" />

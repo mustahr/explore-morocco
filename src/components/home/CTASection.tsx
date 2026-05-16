@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function CTASection() {
   const { language } = useApp()
@@ -13,10 +14,13 @@ export function CTASection() {
   return (
     <section className="py-20 lg:py-28 relative overflow-hidden">
       <div className="absolute inset-0">
-        <img
+        <ImageWithFallback
           src="https://images.unsplash.com/photo-1542401886-65d6c61db217?w=1920&h=600&fit=crop"
           alt="Sahara desert"
-          className="w-full h-full object-cover"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          fallbackClassName="h-full w-full"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-dark/90" />
       </div>

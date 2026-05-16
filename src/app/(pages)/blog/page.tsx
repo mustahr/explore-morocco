@@ -37,10 +37,15 @@ export default function BlogPage() {
     <div className="pt-15 lg:pt-20">
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="absolute inset-0">
-          <img
+          <ImageWithFallback
             src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=2000&q=80"
             alt="Morocco coastal travel journal"
-            className="h-full w-full object-cover"
+            fill
+            preload
+            sizes="100vw"
+            quality={80}
+            className="object-cover"
+            fallbackClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/70 to-primary/45" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_22%,rgba(217,119,6,0.45),transparent_27%),radial-gradient(circle_at_18%_80%,rgba(14,165,233,0.22),transparent_30%)]" />

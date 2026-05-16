@@ -5,10 +5,10 @@ import { ExperiencesPreview } from "@/components/home/ExperiencesPreview"
 import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { CTASection } from "@/components/home/CTASection"
 import { getPublishedDestinations } from "@/lib/destinations-db"
-import { connection } from "next/server"
+
+export const revalidate = 300
 
 export default async function Home() {
-  await connection()
   const destinations = await getPublishedDestinations()
 
   return (

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { getPublishedBlogPostBySlug, getPublishedBlogPosts, getRelatedBlogPosts } from "@/lib/blog-db"
 import { notFound } from "next/navigation"
 import BlogPostClient from "./BlogPostClient"
+import { blogPostJsonLd, cleanImageList } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
 
@@ -19,10 +20,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.seo?.title || post.title,
     description: post.seo?.description || post.excerpt,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.seo?.title || post.title,
       description: post.seo?.description || post.excerpt,
-      images: [post.seo?.image || post.image],
+      url: `/blog/${post.slug}`,
+      type: "article",
+      images: cleanImageList([post.seo?.image, post.image]),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.seo?.title || post.title,
+      description: post.seo?.description || post.excerpt,
+      images: cleanImageList([post.seo?.image, post.image]),
     },
   }
 }
@@ -35,5 +47,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const relatedPosts = await getRelatedBlogPosts(post)
 
-  return <BlogPostClient post={post} relatedPosts={relatedPosts} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd(post)) }}
+      />
+      <BlogPostClient post={post} relatedPosts={relatedPosts} />
+    </>
+  )
 }

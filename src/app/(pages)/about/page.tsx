@@ -3,16 +3,21 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { MapPin, Heart, Lightbulb, ArrowRight, Shield, Compass, TentTree, Route, Plane, Luggage } from "lucide-react"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function AboutPage() {
   return (
     <div className="pt-10">
       <section className="relative py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <ImageWithFallback
             src="https://images.unsplash.com/photo-1675782357250-8329a7677819"
             alt="Morocco riad"
-            className="w-full h-full object-cover"
+            fill
+            preload
+            sizes="100vw"
+            className="object-cover"
+            fallbackClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900/90 to-stone-900/70" />
         </div>
@@ -83,11 +88,16 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img
+                <div className="relative h-full w-full">
+                  <ImageWithFallback
                   src="https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800&h=600&fit=crop"
                   alt="Marrakech"
-                  className="w-full h-full object-cover"
-                />
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    fallbackClassName="h-full w-full"
+                  />
+                </div>
               </div>
             </motion.div>
           </div>
@@ -123,6 +133,67 @@ export default function AboutPage() {
             ))}
           </div>
 
+          <div className="mb-20">
+            <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <span className="text-primary font-semibold text-sm uppercase tracking-wider">Meet Your Local Team</span>
+                <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-stone-900">
+                  Guides who make the details feel effortless
+                </h2>
+              </div>
+              <p className="max-w-2xl text-stone-600">
+                Each itinerary is supported by people who know when to slow down, when to skip a crowded stop, and how to make a trip feel personal.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  name: "Youssef Ait Lahcen",
+                  role: "Atlas & Desert Guide",
+                  image: "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?auto=format&fit=crop&w=900&q=80",
+                  detail: "Specializes in mountain routes, kasbah stops, and calm desert logistics.",
+                },
+                {
+                  name: "Nadia El Fassi",
+                  role: "Medina Culture Host",
+                  image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80",
+                  detail: "Connects guests with artisans, food makers, and quieter corners of old cities.",
+                },
+                {
+                  name: "Amine Berrada",
+                  role: "Family Trip Planner",
+                  image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+                  detail: "Builds flexible routes with reliable drivers, riads, and kid-friendly pacing.",
+                },
+              ].map((guide, index) => (
+                <motion.article
+                  key={guide.name}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+                >
+                  <div className="relative aspect-[4/3]">
+                    <ImageWithFallback
+                      src={guide.image}
+                      alt={guide.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover"
+                      fallbackClassName="h-full w-full"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{guide.role}</p>
+                    <h3 className="mt-2 text-xl font-bold text-stone-900">{guide.name}</h3>
+                    <p className="mt-3 text-sm leading-6 text-stone-600">{guide.detail}</p>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-16 border-t border-b border-stone-200 mb-20">
             {[
               { number: "50K+", label: "Happy Travelers" },
@@ -152,11 +223,16 @@ export default function AboutPage() {
               className="order-2 lg:order-1"
             >
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img
+                <div className="relative h-full w-full">
+                  <ImageWithFallback
                   src="https://images.unsplash.com/photo-1535191198992-fe460a2d0af1"
                   alt="Sahara Desert"
-                  className="w-full h-full object-cover"
-                />
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    fallbackClassName="h-full w-full"
+                  />
+                </div>
               </div>
             </motion.div>
             <motion.div

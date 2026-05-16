@@ -4,6 +4,9 @@ import "./globals.css"
 import { AppShell } from "@/components/layout/AppShell"
 import { AppProvider } from "@/context/AppContext"
 import { GlobalImageHandler } from "@/components/ui/GlobalImageHandler"
+import { getSiteUrl, siteName } from "@/lib/site"
+import { Analytics } from "@vercel/analytics/react"
+import { AnalyticsEvents } from "@/components/analytics/AnalyticsEvents"
 
 const heading = Space_Grotesk({
   variable: "--font-heading",
@@ -20,14 +23,42 @@ const body = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
+    template: `%s | ${siteName}`,
+  },
   description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco. Let AI create your perfect itinerary.",
   keywords: ["Morocco travel", "Morocco tours", "AI travel planner", "Marrakech", "Sahara desert", "Chefchaouen", "Morocco experiences"],
+  applicationName: siteName,
+  creator: siteName,
+  publisher: siteName,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     title: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
     description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco.",
+    url: "/",
+    siteName,
     type: "website",
     locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
+    description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco.",
   },
 }
 
@@ -44,6 +75,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <AppProvider>
           <GlobalImageHandler />
+          <Analytics />
+          <AnalyticsEvents />
           <AppShell>{children}</AppShell>
         </AppProvider>
       </body>

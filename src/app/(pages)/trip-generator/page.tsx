@@ -4,9 +4,8 @@ import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Sparkles, ArrowRight, Clock, MapPin, DollarSign, Users,
-  Heart, Share2, Download, ChevronDown, ChevronUp, Check, Plus, X
+  Heart, Share2, Download, ChevronDown, ChevronUp, Check, Plus
 } from "lucide-react"
-import { useApp } from "@/context/AppContext"
 import { formatPrice } from "@/lib/utils"
 import { type TripGeneratorOptions } from "@/lib/content-db"
 

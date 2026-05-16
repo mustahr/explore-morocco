@@ -6,6 +6,7 @@ import { Star, ArrowRight } from "lucide-react"
 import { type Destination } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 interface FeaturedDestinationsProps {
   destinations: Destination[]
@@ -44,11 +45,14 @@ export function FeaturedDestinations({ destinations }: FeaturedDestinationsProps
             >
               <Link href={`/destinations/${dest.slug}`} className="group block">
                 <div className="relative overflow-hidden rounded-2xl bg-white shadow-sm card-hover">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <ImageWithFallback
                       src={dest.image}
                       alt={dest.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      fallbackClassName="h-full w-full"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                   </div>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { track } from "@vercel/analytics";
 import {
   ArrowLeft,
   BarChart3,
@@ -45,6 +46,7 @@ import {
   type Experience,
   type Trip,
 } from "@/lib/data";
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback";
 
 type TripFormState = {
   id: string;
@@ -142,6 +144,21 @@ type MediaUploadResponse = {
   error?: string;
 };
 
+type SystemStatusResponse = {
+  siteUrl: string;
+  environment: string;
+  variables: Array<{
+    name: string;
+    configured: boolean;
+    required?: boolean;
+  }>;
+  optionalVariables?: Array<{
+    name: string;
+    configured: boolean;
+    required?: boolean;
+  }>;
+};
+
 const categories: Trip["category"][] = [
   "luxury",
   "budget",
@@ -175,6 +192,14 @@ const leadStatuses: LeadStatus[] = [
   "won",
   "lost",
 ];
+const allowedMediaTypes = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/avif",
+]);
+const maxMediaUploadBytes = 10 * 1024 * 1024;
 
 const sectionTransition = {
   initial: { opacity: 0, y: 18, filter: "blur(6px)" },
@@ -744,6 +769,9 @@ export default function AdminTripsPage() {
   const [uploadingMediaKey, setUploadingMediaKey] = useState<string | null>(
     null,
   );
+  const [systemStatus, setSystemStatus] = useState<SystemStatusResponse | null>(
+    null,
+  );
 
   const isEditing = Boolean(selectedTripId);
   const selectedTrip = useMemo(
@@ -1162,6 +1190,9 @@ export default function AdminTripsPage() {
       fetch("/api/leads").then(
         (response) => response.json() as Promise<{ leads: Lead[] }>,
       ),
+      fetch("/api/admin/system-status").then(
+        (response) => response.json() as Promise<SystemStatusResponse>,
+      ),
     ]).then(
       ([
         tripsData,
@@ -1173,6 +1204,7 @@ export default function AdminTripsPage() {
         tripDetailData,
         bookingsData,
         leadsData,
+        systemStatusData,
       ]) => {
         if (!ignoreRef?.current) {
           setTrips(tripsData.trips);
@@ -1190,6 +1222,7 @@ export default function AdminTripsPage() {
           );
           setBookings(bookingsData.bookings);
           setLeads(leadsData.leads);
+          setSystemStatus(systemStatusData);
         }
       },
     );
@@ -1333,13 +1366,36 @@ export default function AdminTripsPage() {
   ) {
     if (files.length === 0) return;
 
+    const invalidFile = files.find((file) => !allowedMediaTypes.has(file.type));
+    if (invalidFile) {
+      track("admin_upload_failure", {
+        reason: "unsupported_type",
+        uploadKey,
+        fileType: invalidFile.type,
+      });
+      setMessage(`${invalidFile.name} is not supported. Upload JPG, PNG, WebP, GIF, or AVIF images.`);
+      return;
+    }
+
+    const oversizedFile = files.find((file) => file.size > maxMediaUploadBytes);
+    if (oversizedFile) {
+      track("admin_upload_failure", {
+        reason: "file_too_large",
+        uploadKey,
+        fileSize: oversizedFile.size,
+      });
+      setMessage(`${oversizedFile.name} is too large. Images must be 10MB or smaller.`);
+      return;
+    }
+
     setUploadingMediaKey(uploadKey);
-    setMessage("");
+    setMessage(`Preparing ${files.length} image${files.length === 1 ? "" : "s"}...`);
 
     try {
       const urls: string[] = [];
 
-      for (const file of files) {
+      for (const [index, file] of files.entries()) {
+        setMessage(`Uploading ${index + 1} of ${files.length}: ${file.name}`);
         const body = new FormData();
         body.append("file", file);
         body.append("folder", folder);
@@ -1351,6 +1407,11 @@ export default function AdminTripsPage() {
         const data = (await response.json()) as MediaUploadResponse;
 
         if (!response.ok || !data.url) {
+          track("admin_upload_failure", {
+            reason: data.error ?? "upload_error",
+            uploadKey,
+            status: response.status,
+          });
           setMessage(data.error ?? "Could not upload image.");
           return;
         }
@@ -3407,6 +3468,7 @@ export default function AdminTripsPage() {
 
                 {activeSection === "settings" && (
                   <section className="mt-8 grid gap-6 lg:grid-cols-2">
+                    <SystemStatusCard status={systemStatus} />
                     <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg">
                       <h3 className="text-xl font-bold text-stone-900">
                         Site controls
@@ -3482,11 +3544,16 @@ export default function AdminTripsPage() {
                             }`}
                           >
                             <div className="flex gap-3">
-                              <img
+                              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
+                                <ImageWithFallback
                                 src={destination.image}
                                 alt={destination.name}
-                                className="h-16 w-16 flex-shrink-0 rounded-xl object-cover"
-                              />
+                                  fill
+                                  sizes="64px"
+                                  className="object-cover"
+                                  fallbackClassName="h-16 w-16"
+                                />
+                              </div>
                               <div className="min-w-0">
                                 <div className="flex items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
@@ -3897,11 +3964,16 @@ export default function AdminTripsPage() {
                             }`}
                           >
                             <div className="flex gap-3">
-                              <img
+                              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
+                                <ImageWithFallback
                                 src={experience.image}
                                 alt={experience.title}
-                                className="h-16 w-16 flex-shrink-0 rounded-xl object-cover"
-                              />
+                                  fill
+                                  sizes="64px"
+                                  className="object-cover"
+                                  fallbackClassName="h-16 w-16"
+                                />
+                              </div>
                               <div className="min-w-0">
                                 <div className="flex items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
@@ -4164,11 +4236,16 @@ export default function AdminTripsPage() {
                             }`}
                           >
                             <div className="flex gap-3">
-                              <img
+                              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
+                                <ImageWithFallback
                                 src={trip.image}
                                 alt={trip.title}
-                                className="h-16 w-16 flex-shrink-0 rounded-xl object-cover"
-                              />
+                                  fill
+                                  sizes="64px"
+                                  className="object-cover"
+                                  fallbackClassName="h-16 w-16"
+                                />
+                              </div>
                               <div className="min-w-0">
                                 <div className="flex items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
@@ -4459,6 +4536,79 @@ function StatCard({
   );
 }
 
+function SystemStatusCard({ status }: { status: SystemStatusResponse | null }) {
+  const configuredCount =
+    status?.variables.filter((variable) => variable.configured).length ?? 0;
+  const totalCount = status?.variables.length ?? 0;
+  const allConfigured = totalCount > 0 && configuredCount === totalCount;
+
+  return (
+    <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-xl font-bold text-stone-900">System status</h3>
+          <p className="mt-2 text-sm text-stone-500">
+            Production readiness without exposing secret values.
+          </p>
+        </div>
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
+            allConfigured
+              ? "bg-green-50 text-green-700"
+              : "bg-amber-50 text-amber-700"
+          }`}
+        >
+          {status ? `${configuredCount}/${totalCount} set` : "Loading"}
+        </span>
+      </div>
+
+      <div className="mt-5 grid gap-3">
+        {status ? (
+          [...status.variables, ...(status.optionalVariables ?? [])].map((variable) => (
+            <div
+              key={variable.name}
+              className="flex items-center justify-between gap-4 rounded-2xl border border-stone-200 px-4 py-3"
+            >
+              <div className="min-w-0">
+                <span className="block truncate text-sm font-semibold text-stone-700">
+                  {variable.name}
+                </span>
+                {!variable.required && (
+                  <span className="text-xs text-stone-400">Optional</span>
+                )}
+              </div>
+              <span
+                className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${
+                  variable.configured
+                    ? "bg-green-50 text-green-700"
+                    : "bg-red-50 text-red-700"
+                }`}
+              >
+                {variable.configured ? "Set" : "Missing"}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className="rounded-2xl border border-stone-200 px-4 py-3 text-sm text-stone-500">
+            Checking environment...
+          </div>
+        )}
+      </div>
+
+      {status && (
+        <div className="mt-5 rounded-2xl bg-stone-50 p-4 text-sm text-stone-600">
+          <p>
+            Site URL: <span className="font-semibold">{status.siteUrl}</span>
+          </p>
+          <p className="mt-1">
+            Runtime: <span className="font-semibold">{status.environment}</span>
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ContentCard({
   title,
   count,
@@ -4579,6 +4729,7 @@ function MediaUploadField({
   value,
   multiple,
   isUploading,
+  progress,
   uploadKey,
   onChange,
   onUpload,
@@ -4587,6 +4738,7 @@ function MediaUploadField({
   value: string;
   multiple?: boolean;
   isUploading: boolean;
+  progress?: string;
   uploadKey: string;
   onChange: (value: string) => void;
   onUpload: (files: File[]) => void;
@@ -4621,11 +4773,15 @@ function MediaUploadField({
             {urls.map((url) => (
               <div
                 key={url}
-                className="group relative overflow-hidden rounded-2xl border border-stone-200 bg-white"
+                className={`group relative overflow-hidden rounded-2xl border border-stone-200 bg-white ${
+                  multiple ? "h-28" : "h-40"
+                }`}
               >
-                <img
+                <ImageWithFallback
                   src={url}
                   alt=""
+                  fill
+                  sizes={multiple ? "(max-width: 640px) 50vw, 160px" : "420px"}
                   onLoad={() =>
                     setFailedPreviewUrls((current) =>
                       current.filter((item) => item !== url),
@@ -4638,9 +4794,10 @@ function MediaUploadField({
                   }
                   className={
                     multiple
-                      ? "h-28 w-full object-cover"
-                      : "h-40 w-full object-cover"
+                      ? "object-cover"
+                      : "object-cover"
                   }
+                  fallbackClassName={multiple ? "h-28 w-full" : "h-40 w-full"}
                 />
                 {failedPreviewUrls.includes(url) && (
                   <div className="absolute inset-x-2 bottom-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-semibold text-red-700 shadow-sm">
@@ -4689,6 +4846,11 @@ function MediaUploadField({
             <Upload size={16} />
             {isUploading ? "Uploading..." : urls.length ? "Replace or add" : "Upload image"}
           </label>
+          {(progress || isUploading) && (
+            <span className="text-xs font-semibold text-stone-500">
+              {progress || "Uploading image..."}
+            </span>
+          )}
           {urls.length > 0 && (
             <a
               href={urls[0]}

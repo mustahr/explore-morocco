@@ -7,6 +7,7 @@ import { Star, Clock, MapPin, ArrowRight, Heart } from "lucide-react"
 import { type Trip } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations, formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function FeaturedTrips() {
   const [trips, setTrips] = useState<Trip[]>([])
@@ -61,10 +62,13 @@ export function FeaturedTrips() {
             >
               <div className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 card-hover">
                 <div className="relative aspect-[16/10] overflow-hidden">
-                  <img
+                  <ImageWithFallback
                     src={trip.image}
                     alt={trip.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    fallbackClassName="h-full w-full"
                   />
                   <button
                     onClick={() => toggleWishlist(trip.id)}

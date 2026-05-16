@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Star, ArrowRight, MapPin, Calendar } from "lucide-react"
 import { type Destination } from "@/lib/data"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function DestinationsPage() {
   const [destinations, setDestinations] = useState<Destination[]>([])
@@ -27,10 +28,15 @@ export default function DestinationsPage() {
     <div className="pt-16 lg:pt-14">
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="absolute inset-0">
-          <img
+          <ImageWithFallback
             src="https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=2000&q=80"
             alt="Moroccan desert and kasbah landscape"
-            className="h-full w-full object-cover"
+            fill
+            preload
+            sizes="100vw"
+            quality={80}
+            className="object-cover"
+            fallbackClassName="h-full w-full"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/70 to-primary/45" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_18%,rgba(217,119,6,0.45),transparent_26%),radial-gradient(circle_at_18%_82%,rgba(14,165,233,0.22),transparent_30%)]" />
@@ -83,10 +89,13 @@ export default function DestinationsPage() {
                     index === 0 ? "col-span-2 aspect-[2/1]" : "aspect-square"
                   }`}
                 >
-                  <img
+                  <ImageWithFallback
                     src={destination.image}
                     alt={destination.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    fill
+                    sizes="28rem"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    fallbackClassName="h-full w-full"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/10 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
@@ -119,10 +128,13 @@ export default function DestinationsPage() {
               >
                 <div className={index % 2 === 1 ? "lg:order-2" : ""}>
                   <div className="relative rounded-2xl overflow-hidden aspect-[4/3] group">
-                    <img
+                    <ImageWithFallback
                       src={dest.image}
                       alt={dest.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      fallbackClassName="h-full w-full"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   </div>

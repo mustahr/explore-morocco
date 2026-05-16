@@ -7,6 +7,7 @@ import { Star, Clock, MapPin, ArrowRight, Filter } from "lucide-react"
 import { type Experience } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { formatPrice } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 const categories = ["All", "Adventure", "Wellness", "Food & Drink", "Culture"]
 
@@ -85,10 +86,13 @@ export default function ExperiencesPage() {
                   className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 card-hover"
                 >
                   <div className="relative aspect-square overflow-hidden">
-                    <img
+                    <ImageWithFallback
                       src={exp.image}
                       alt={exp.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      fallbackClassName="h-full w-full"
                     />
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-stone-700">
                       {exp.category}

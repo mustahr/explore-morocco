@@ -12,12 +12,42 @@ export default function ContactPage() {
     message: "",
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
-    setFormData({ name: "", email: "", subject: "", message: "" })
+    setIsSubmitting(true)
+    setError("")
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          interest: formData.subject,
+          message: formData.message,
+          source: "Contact page",
+        }),
+      })
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string }
+        throw new Error(data.error || "Could not send your message.")
+      }
+
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 3000)
+      setFormData({ name: "", email: "", subject: "", message: "" })
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : "Could not send your message.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -54,6 +84,11 @@ export default function ContactPage() {
                 {submitted && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700">
                     Thank you! We{"'"}ll get back to you within 24 hours.
+                  </div>
+                )}
+                {error && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
+                    {error}
                   </div>
                 )}
 
@@ -106,10 +141,13 @@ export default function ContactPage() {
                   </div>
                   <button
                     type="submit"
+                    disabled={isSubmitting}
+                    data-analytics-event="contact_form_submit"
+                    data-analytics-label="Contact page"
                     className="w-full btn-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2"
                   >
                     <Send size={18} />
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               </motion.div>
@@ -172,6 +210,8 @@ export default function ContactPage() {
                   href="https://wa.me/212XXXXXXXXX"
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-analytics-event="whatsapp_click"
+                  data-analytics-label="Contact page"
                   className="w-full bg-white text-green-500 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
                 >
                   <MessageCircle size={18} />

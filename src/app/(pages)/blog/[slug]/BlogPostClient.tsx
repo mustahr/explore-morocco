@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from "lucide-react"
 import { type BlogPost } from "@/lib/data"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost; relatedPosts: BlogPost[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -29,7 +30,15 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
     <article className="bg-stone-50 pt-15 lg:pt-20">
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+          <ImageWithFallback
+            src={post.image}
+            alt={post.title}
+            fill
+            preload
+            sizes="100vw"
+            className="object-cover"
+            fallbackClassName="h-full w-full"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/70 to-primary/45" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_20%,rgba(217,119,6,0.42),transparent_28%),radial-gradient(circle_at_18%_82%,rgba(14,165,233,0.2),transparent_30%)]" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-stone-50 to-transparent" />
@@ -134,8 +143,15 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
                 <div className="grid gap-5 sm:grid-cols-2">
                   {relatedPosts.map((relatedPost) => (
                     <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`} className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                      <div className="aspect-[16/10] overflow-hidden">
-                        <img src={relatedPost.image} alt={relatedPost.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <div className="relative aspect-[16/10] overflow-hidden">
+                        <ImageWithFallback
+                          src={relatedPost.image}
+                          alt={relatedPost.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover transition duration-500 group-hover:scale-105"
+                          fallbackClassName="h-full w-full"
+                        />
                       </div>
                       <div className="p-5">
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{relatedPost.category}</p>

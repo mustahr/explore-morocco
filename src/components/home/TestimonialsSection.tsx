@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Star, Quote } from "lucide-react"
 import { type Testimonial } from "@/lib/content-db"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
@@ -55,11 +56,16 @@ export function TestimonialsSection() {
               </div>
               <p className="text-stone-600 mb-6 leading-relaxed">&ldquo;{testimonial.text}&rdquo;</p>
               <div className="flex items-center gap-4">
-                <img
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                  <ImageWithFallback
                   src={testimonial.avatar}
                   alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                    fill
+                    sizes="48px"
+                    className="object-cover"
+                    fallbackClassName="h-12 w-12"
+                  />
+                </div>
                 <div>
                   <p className="font-semibold text-stone-900">{testimonial.name}</p>
                   <p className="text-sm text-stone-400">{testimonial.location}</p>

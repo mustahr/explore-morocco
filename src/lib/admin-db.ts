@@ -87,6 +87,19 @@ export async function getLeads() {
   return (await getCloudRecords<Lead>("leads")) ?? readJsonDatabase<Lead>(leadsPath)
 }
 
+export async function createLead(lead: Lead) {
+  const cloudLeads = await getCloudRecords<Lead>("leads")
+  if (cloudLeads !== undefined) {
+    await upsertCloudRecord("leads", lead.id, lead, cloudLeads.length)
+    return lead
+  }
+
+  const leads = await getLeads()
+  leads.unshift(lead)
+  await writeJsonDatabase(leadsPath, leads)
+  return lead
+}
+
 export async function updateLead(id: string, updates: Partial<Lead>) {
   const cloudLead = await getCloudRecord<Lead>("leads", id)
   if (cloudLead !== undefined) {

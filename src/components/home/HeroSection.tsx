@@ -19,18 +19,17 @@ export function HeroSection() {
         <ImageWithFallback
           src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=1920&q=80"
           alt="Morocco landscape"
-          className="w-full h-full object-cover"
+          fill
+          preload
+          sizes="100vw"
+          quality={80}
+          className="object-cover"
           fallbackClassName="w-full h-full"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-24 pb-10"
-      >
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-24 pb-10">
 
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
@@ -41,12 +40,7 @@ export function HeroSection() {
           {t.hero.subheadline}
         </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="max-w-2xl mx-auto"
-        >
+        <div className="max-w-2xl mx-auto">
           <div className="relative">
             <input
               type="text"
@@ -63,7 +57,7 @@ export function HeroSection() {
               <span className="hidden sm:inline">{t.hero.ctaGenerate}</span>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -107,7 +101,7 @@ export function HeroSection() {
             <p className="text-sm">Average Rating</p>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       <motion.div
         animate={{ y: [0, 10, 0] }}

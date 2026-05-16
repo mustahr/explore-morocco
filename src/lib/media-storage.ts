@@ -43,8 +43,12 @@ export function isMediaStorageConfigured() {
 }
 
 export async function uploadImageToStorage(file: File, folder = "uploads") {
-  if (!isMediaStorageConfigured()) {
-    throw new Error("Supabase storage is not configured.")
+  if (!getSupabaseUrl()) {
+    throw new Error("NEXT_PUBLIC_SUPABASE_URL or SUPABASE_URL is missing in the deployment environment.")
+  }
+
+  if (!getSupabaseServiceKey()) {
+    throw new Error("SUPABASE_SERVICE_ROLE_KEY is missing in the deployment environment.")
   }
 
   if (!isWebSafeImage(file)) {
@@ -64,7 +68,9 @@ export async function uploadImageToStorage(file: File, folder = "uploads") {
   })
 
   const { data: buckets, error: listError } = await supabase.storage.listBuckets()
-  if (listError) throw new Error(listError.message)
+  if (listError) {
+    throw new Error(`Could not read Supabase storage buckets: ${listError.message}`)
+  }
 
   const existingBucket = buckets.find((item) => item.name === bucket)
 
@@ -73,13 +79,17 @@ export async function uploadImageToStorage(file: File, folder = "uploads") {
       public: true,
     })
 
-    if (createError) throw new Error(createError.message)
+    if (createError) {
+      throw new Error(`Could not create the public Supabase storage bucket "${bucket}": ${createError.message}`)
+    }
   } else if (!existingBucket.public) {
     const { error: updateError } = await supabase.storage.updateBucket(bucket, {
       public: true,
     })
 
-    if (updateError) throw new Error(updateError.message)
+    if (updateError) {
+      throw new Error(`Could not make the Supabase storage bucket "${bucket}" public: ${updateError.message}`)
+    }
   }
 
   const safeFolder = sanitizePathSegment(folder) || "uploads"
@@ -91,7 +101,9 @@ export async function uploadImageToStorage(file: File, folder = "uploads") {
     upsert: false,
   })
 
-  if (uploadError) throw new Error(uploadError.message)
+  if (uploadError) {
+    throw new Error(`Could not upload to Supabase Storage bucket "${bucket}": ${uploadError.message}`)
+  }
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(path)
   const publicResponse = await fetch(data.publicUrl, { method: "HEAD" })
