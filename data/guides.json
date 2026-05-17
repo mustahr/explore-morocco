@@ -1,0 +1,171 @@
+[
+  {
+    "id": "youssef-atlas",
+    "name": "Youssef Ait Lahcen",
+    "role": "Atlas & Desert Guide",
+    "location": "High Atlas",
+    "image": "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?auto=format&fit=crop&w=900&q=80",
+    "bio": "Specializes in mountain routes, kasbah stops, and calm desert logistics.",
+    "specialties": [
+      "Atlas crossings",
+      "Desert camps",
+      "Kasbah routes"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English",
+      "Tamazight"
+    ],
+    "yearsExperience": 9,
+    "status": "published"
+  },
+  {
+    "id": "nadia-medina",
+    "name": "Nadia El Fassi",
+    "role": "Medina Culture Host",
+    "location": "Fes",
+    "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80",
+    "bio": "Connects guests with artisans, food makers, and quieter corners of old cities.",
+    "specialties": [
+      "Medina walks",
+      "Artisan visits",
+      "Food stories"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English"
+    ],
+    "yearsExperience": 7,
+    "status": "published"
+  },
+  {
+    "id": "amine-family",
+    "name": "Amine Berrada",
+    "role": "Family Trip Planner",
+    "location": "Marrakech",
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+    "bio": "Builds flexible routes with reliable drivers, riads, and kid-friendly pacing.",
+    "specialties": [
+      "Family travel",
+      "Private drivers",
+      "Riad stays"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English",
+      "Spanish"
+    ],
+    "yearsExperience": 11,
+    "status": "published"
+  },
+  {
+    "id": "salma-coast",
+    "name": "Salma Rihani",
+    "role": "Coastal Experience Guide",
+    "location": "Essaouira",
+    "image": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=80",
+    "bio": "Plans relaxed Atlantic routes with seafood stops, beach rides, Gnawa music, and wind-friendly timing.",
+    "specialties": [
+      "Essaouira medina",
+      "Coastal day trips",
+      "Seafood tastings",
+      "Beach activities"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English"
+    ],
+    "yearsExperience": 6,
+    "status": "published"
+  },
+  {
+    "id": "hassan-sahara",
+    "name": "Hassan Oubaha",
+    "role": "Sahara Camp Host",
+    "location": "Merzouga",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=900&q=80",
+    "bio": "Coordinates dune camps, camel treks, 4x4 transfers, sunrise viewpoints, and smooth desert arrivals.",
+    "specialties": [
+      "Erg Chebbi dunes",
+      "Luxury camps",
+      "Camel trekking",
+      "Stargazing"
+    ],
+    "languages": [
+      "Arabic",
+      "English",
+      "French",
+      "Tamazight"
+    ],
+    "yearsExperience": 12,
+    "status": "published"
+  },
+  {
+    "id": "layla-food",
+    "name": "Layla Bennani",
+    "role": "Food & Market Host",
+    "location": "Marrakech",
+    "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80",
+    "bio": "Creates market-to-table experiences with spice stories, family recipes, and practical food tips.",
+    "specialties": [
+      "Cooking classes",
+      "Souk food walks",
+      "Spice markets",
+      "Vegetarian-friendly routes"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English"
+    ],
+    "yearsExperience": 8,
+    "status": "published"
+  },
+  {
+    "id": "omar-photography",
+    "name": "Omar Ziani",
+    "role": "Photography Route Guide",
+    "location": "Chefchaouen",
+    "image": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=900&q=80",
+    "bio": "Builds early-light photo walks through blue streets, mountain viewpoints, and quiet local corners.",
+    "specialties": [
+      "Chefchaouen photo walks",
+      "Sunrise viewpoints",
+      "Street photography",
+      "Rif Mountains"
+    ],
+    "languages": [
+      "Arabic",
+      "Spanish",
+      "French",
+      "English"
+    ],
+    "yearsExperience": 5,
+    "status": "published"
+  },
+  {
+    "id": "meryem-wellness",
+    "name": "Meryem Tazi",
+    "role": "Wellness & Riad Concierge",
+    "location": "Marrakech",
+    "image": "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=900&q=80",
+    "bio": "Arranges hammam rituals, peaceful riad stays, garden visits, and slow-paced luxury days.",
+    "specialties": [
+      "Hammam rituals",
+      "Riad stays",
+      "Garden visits",
+      "Luxury slow travel"
+    ],
+    "languages": [
+      "Arabic",
+      "French",
+      "English"
+    ],
+    "yearsExperience": 10,
+    "status": "draft"
+  }
+]

@@ -36,6 +36,8 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
             fill
             preload
             sizes="100vw"
+            parallax
+            parallaxOffset={84}
             className="object-cover"
             fallbackClassName="h-full w-full"
           />
@@ -219,7 +221,7 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
           </aside>
         </div>
 
-        <div className="mt-10 rounded-[2rem] bg-linear-to-r from-primary to-orange-500 p-8 text-center text-white shadow-[0_20px_60px_-30px_rgba(251,146,60,0.6)]">
+        <div className="mt-10 rounded-[2rem] bg-linear-to-r from-[#0D0D0D] via-[#1F1A14] to-[#0F3D2E] p-8 text-center text-white shadow-[0_20px_60px_-30px_rgba(13,13,13,0.7)] ring-1 ring-primary/20">
           <h2 className="text-2xl font-bold">Ready to Plan Your Trip?</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/90">Let our AI create your perfect Morocco itinerary from the ideas in this guide.</p>
           <Link href="/trip-generator" className="mt-6 inline-flex items-center justify-center rounded-full bg-stone-950 px-8 py-4 text-sm font-semibold shadow-lg shadow-stone-950/20 transition hover:bg-stone-900">

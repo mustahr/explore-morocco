@@ -1,11 +1,29 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { MapPin, Heart, Lightbulb, ArrowRight, Shield, Compass, TentTree, Route, Plane, Luggage } from "lucide-react"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
+import { type Guide } from "@/lib/content-db"
 
 export default function AboutPage() {
+  const [guides, setGuides] = useState<Guide[]>([])
+
+  useEffect(() => {
+    let ignore = false
+
+    fetch("/api/guides")
+      .then((response) => response.json() as Promise<{ guides: Guide[] }>)
+      .then((data) => {
+        if (!ignore) setGuides(data.guides)
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [])
+
   return (
     <div className="pt-10">
       <section className="relative py-24 lg:py-32 overflow-hidden">
@@ -16,6 +34,8 @@ export default function AboutPage() {
             fill
             preload
             sizes="100vw"
+            parallax
+            parallaxOffset={76}
             className="object-cover"
             fallbackClassName="h-full w-full"
           />
@@ -146,26 +166,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-              {[
-                {
-                  name: "Youssef Ait Lahcen",
-                  role: "Atlas & Desert Guide",
-                  image: "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?auto=format&fit=crop&w=900&q=80",
-                  detail: "Specializes in mountain routes, kasbah stops, and calm desert logistics.",
-                },
-                {
-                  name: "Nadia El Fassi",
-                  role: "Medina Culture Host",
-                  image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=80",
-                  detail: "Connects guests with artisans, food makers, and quieter corners of old cities.",
-                },
-                {
-                  name: "Amine Berrada",
-                  role: "Family Trip Planner",
-                  image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-                  detail: "Builds flexible routes with reliable drivers, riads, and kid-friendly pacing.",
-                },
-              ].map((guide, index) => (
+              {guides.map((guide, index) => (
                 <motion.article
                   key={guide.name}
                   initial={{ opacity: 0, y: 24 }}
@@ -187,7 +188,8 @@ export default function AboutPage() {
                   <div className="p-5">
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{guide.role}</p>
                     <h3 className="mt-2 text-xl font-bold text-stone-900">{guide.name}</h3>
-                    <p className="mt-3 text-sm leading-6 text-stone-600">{guide.detail}</p>
+                    <p className="mt-1 text-sm font-semibold text-stone-500">{guide.location} - {guide.yearsExperience} years</p>
+                    <p className="mt-3 text-sm leading-6 text-stone-600">{guide.bio}</p>
                   </div>
                 </motion.article>
               ))}

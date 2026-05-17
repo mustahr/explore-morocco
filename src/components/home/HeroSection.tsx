@@ -23,13 +23,15 @@ export function HeroSection() {
           preload
           sizes="100vw"
           quality={80}
+          parallax
+          parallaxOffset={96}
           className="object-cover"
           fallbackClassName="w-full h-full"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-24 pb-10">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-32 pb-10">
 
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">

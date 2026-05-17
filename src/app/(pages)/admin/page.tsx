@@ -8,6 +8,8 @@ import { track } from "@vercel/analytics";
 import {
   ArrowLeft,
   BarChart3,
+  Check,
+  ChevronDown,
   Database,
   Edit3,
   FileText,
@@ -19,6 +21,7 @@ import {
   MessageCircle,
   Plus,
   Save,
+  Search,
   Settings,
   Sparkles,
   Trash2,
@@ -35,6 +38,7 @@ import {
   type PaymentStatus,
 } from "@/lib/admin-db";
 import {
+  type Guide,
   type Testimonial,
   type TripDetailContent,
   type TripGeneratorOptions,
@@ -139,6 +143,19 @@ type TestimonialFormState = {
   rating: string;
 };
 
+type GuideFormState = {
+  id: string;
+  status: ContentStatus;
+  name: string;
+  role: string;
+  location: string;
+  image: string;
+  bio: string;
+  specialties: string;
+  languages: string;
+  yearsExperience: string;
+};
+
 type MediaUploadResponse = {
   url?: string;
   error?: string;
@@ -184,6 +201,17 @@ const paymentStatuses: PaymentStatus[] = [
   "deposit",
   "paid",
   "refunded",
+];
+
+const bookingSortOptions: Array<{ value: BookingSortOption; label: string }> = [
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "name", label: "Name A-Z" },
+  { value: "highest-total", label: "Highest total" },
+  { value: "lowest-total", label: "Lowest total" },
+  { value: "travelers", label: "Most travelers" },
+  { value: "status", label: "Status A-Z" },
+  { value: "payment", label: "Payment A-Z" },
 ];
 const leadStatuses: LeadStatus[] = [
   "new",
@@ -297,6 +325,19 @@ const emptyTestimonialForm: TestimonialFormState = {
   avatar: "",
   text: "",
   rating: "5",
+};
+
+const emptyGuideForm: GuideFormState = {
+  id: "",
+  status: "published",
+  name: "",
+  role: "",
+  location: "",
+  image: "",
+  bio: "",
+  specialties: "",
+  languages: "",
+  yearsExperience: "5",
 };
 
 const emptyTripGeneratorOptions: TripGeneratorOptions = {
@@ -712,6 +753,32 @@ const formStateToTestimonial = (form: TestimonialFormState): Testimonial => ({
   rating: Number(form.rating),
 });
 
+const guideToFormState = (guide: Guide): GuideFormState => ({
+  id: guide.id,
+  status: guide.status ?? "published",
+  name: guide.name,
+  role: guide.role,
+  location: guide.location,
+  image: guide.image,
+  bio: guide.bio,
+  specialties: guide.specialties.join("\n"),
+  languages: guide.languages.join("\n"),
+  yearsExperience: String(guide.yearsExperience),
+});
+
+const formStateToGuide = (form: GuideFormState): Guide => ({
+  id: slugify(form.id || form.name),
+  status: form.status,
+  name: form.name.trim(),
+  role: form.role.trim(),
+  location: form.location.trim(),
+  image: form.image.trim(),
+  bio: form.bio.trim(),
+  specialties: splitLines(form.specialties),
+  languages: splitLines(form.languages),
+  yearsExperience: Number(form.yearsExperience),
+});
+
 type ContentIssue = {
   id: string;
   type: string;
@@ -721,18 +788,31 @@ type ContentIssue = {
   onAction: () => void;
 };
 
+type BookingSortOption =
+  | "newest"
+  | "oldest"
+  | "name"
+  | "highest-total"
+  | "lowest-total"
+  | "travelers"
+  | "status"
+  | "payment";
+
 export default function AdminTripsPage() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [guides, setGuides] = useState<Guide[]>([]);
   const [tripGeneratorOptions, setTripGeneratorOptions] =
     useState<TripGeneratorOptions>(emptyTripGeneratorOptions);
   const [tripDetailContent, setTripDetailContent] = useState<TripDetailContent>(
     emptyTripDetailContent,
   );
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookingSearchQuery, setBookingSearchQuery] = useState("");
+  const [bookingSort, setBookingSort] = useState<BookingSortOption>("newest");
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
   const [selectedDestinationSlug, setSelectedDestinationSlug] = useState<
@@ -745,6 +825,7 @@ export default function AdminTripsPage() {
   const [selectedTestimonialId, setSelectedTestimonialId] = useState<
     string | null
   >(null);
+  const [selectedGuideId, setSelectedGuideId] = useState<string | null>(null);
   const [form, setForm] = useState<TripFormState>(emptyTripForm);
   const [destinationForm, setDestinationForm] =
     useState<DestinationFormState>(emptyDestinationForm);
@@ -754,6 +835,7 @@ export default function AdminTripsPage() {
     useState<BlogPostFormState>(emptyBlogPostForm);
   const [testimonialForm, setTestimonialForm] =
     useState<TestimonialFormState>(emptyTestimonialForm);
+  const [guideForm, setGuideForm] = useState<GuideFormState>(emptyGuideForm);
   const [tripGeneratorOptionsJson, setTripGeneratorOptionsJson] = useState("");
   const [tripDetailContentJson, setTripDetailContentJson] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -807,6 +889,11 @@ export default function AdminTripsPage() {
       ) ?? null,
     [selectedTestimonialId, testimonials],
   );
+  const isEditingGuide = Boolean(selectedGuideId);
+  const selectedGuide = useMemo(
+    () => guides.find((guide) => guide.id === selectedGuideId) ?? null,
+    [selectedGuideId, guides],
+  );
   const blogPostPreviewHtml = useMemo(
     () => markdownToHtml(blogPostForm.contentMarkdown),
     [blogPostForm.contentMarkdown],
@@ -832,6 +919,64 @@ export default function AdminTripsPage() {
   const pendingBookings = bookings.filter(
     (booking) => booking.status === "pending",
   ).length;
+  const bookingsWithTrips = useMemo(
+    () =>
+      bookings.map((booking) => ({
+        booking,
+        trip: trips.find((item) => item.id === booking.tripId) ?? null,
+      })),
+    [bookings, trips],
+  );
+  const visibleBookings = useMemo(() => {
+    const query = bookingSearchQuery.trim().toLowerCase();
+
+    return bookingsWithTrips
+      .filter(({ booking, trip }) => {
+        if (!query) return true;
+
+        return [
+          booking.id,
+          booking.customerName,
+          booking.customerEmail,
+          booking.customerPhone,
+          booking.tripId,
+          trip?.title,
+          booking.startDate,
+          booking.createdAt,
+          booking.status,
+          booking.paymentStatus,
+          booking.travelers,
+          booking.totalMAD,
+          booking.notes,
+        ]
+          .filter((value) => value !== undefined && value !== null)
+          .some((value) => String(value).toLowerCase().includes(query));
+      })
+      .sort((first, second) => {
+        const firstBooking = first.booking;
+        const secondBooking = second.booking;
+
+        switch (bookingSort) {
+          case "oldest":
+            return new Date(firstBooking.createdAt).getTime() - new Date(secondBooking.createdAt).getTime();
+          case "name":
+            return firstBooking.customerName.localeCompare(secondBooking.customerName);
+          case "highest-total":
+            return secondBooking.totalMAD - firstBooking.totalMAD;
+          case "lowest-total":
+            return firstBooking.totalMAD - secondBooking.totalMAD;
+          case "travelers":
+            return secondBooking.travelers - firstBooking.travelers;
+          case "status":
+            return firstBooking.status.localeCompare(secondBooking.status);
+          case "payment":
+            return firstBooking.paymentStatus.localeCompare(secondBooking.paymentStatus);
+          case "newest":
+          default:
+            return new Date(secondBooking.createdAt).getTime() - new Date(firstBooking.createdAt).getTime();
+        }
+      });
+  }, [bookingSearchQuery, bookingSort, bookingsWithTrips]);
   const openLeads = leads.filter(
     (lead) => !["won", "lost"].includes(lead.status),
   ).length;
@@ -1005,14 +1150,42 @@ export default function AdminTripsPage() {
       }
     });
 
+    guides.forEach((guide) => {
+      const missing = [
+        !guide.name.trim() && "name",
+        !guide.role.trim() && "role",
+        !guide.location.trim() && "location",
+        !guide.image.trim() && "image",
+        !guide.bio.trim() && "bio",
+        guide.specialties.length === 0 && "specialties",
+        guide.languages.length === 0 && "languages",
+        !Number.isFinite(guide.yearsExperience) && "years experience",
+        guide.image.trim() &&
+          brokenImageKeySet.has(`guide:${guide.id}:profile:${guide.image}`) &&
+          "broken image",
+      ].filter(Boolean) as string[];
+
+      if (missing.length > 0) {
+        issues.push({
+          id: `guide-${guide.id}`,
+          type: "Guide",
+          title: guide.name || guide.id || "Untitled guide",
+          missing,
+          actionLabel: "Fix guide",
+          onAction: () => startEditingGuide(guide),
+        });
+      }
+    });
+
     return issues;
-  }, [blogPosts, brokenImageKeySet, destinations, experiences, testimonials, trips]);
+  }, [blogPosts, brokenImageKeySet, destinations, experiences, guides, testimonials, trips]);
   const contentItemCount =
     trips.length +
     experiences.length +
     destinations.length +
     blogPosts.length +
-    testimonials.length;
+    testimonials.length +
+    guides.length;
   const healthyContentCount = Math.max(
     contentItemCount - contentIssues.length,
     0,
@@ -1063,6 +1236,9 @@ export default function AdminTripsPage() {
         testimonial.avatar,
       );
     });
+    guides.forEach((guide) => {
+      addImageTarget("guide", guide.id, "profile", guide.image);
+    });
 
     if (imageTargets.length === 0) {
       window.setTimeout(() => {
@@ -1111,7 +1287,7 @@ export default function AdminTripsPage() {
       isCancelled = true;
       window.clearTimeout(checkingTimeout);
     };
-  }, [blogPosts, destinations, experiences, testimonials, trips]);
+  }, [blogPosts, destinations, experiences, guides, testimonials, trips]);
 
   async function loadTrips() {
     const response = await fetch("/api/trips?admin=1");
@@ -1141,6 +1317,12 @@ export default function AdminTripsPage() {
     const response = await fetch("/api/testimonials");
     const data = (await response.json()) as { testimonials: Testimonial[] };
     setTestimonials(data.testimonials);
+  }
+
+  async function loadGuides() {
+    const response = await fetch("/api/guides?admin=1");
+    const data = (await response.json()) as { guides: Guide[] };
+    setGuides(data.guides);
   }
 
   async function loadOperations() {
@@ -1176,6 +1358,9 @@ export default function AdminTripsPage() {
         (response) =>
           response.json() as Promise<{ testimonials: Testimonial[] }>,
       ),
+      fetch("/api/guides?admin=1").then(
+        (response) => response.json() as Promise<{ guides: Guide[] }>,
+      ),
       fetch("/api/trip-generator-options").then(
         (response) =>
           response.json() as Promise<{ options: TripGeneratorOptions }>,
@@ -1200,6 +1385,7 @@ export default function AdminTripsPage() {
         experiencesData,
         blogData,
         testimonialsData,
+        guidesData,
         tripGeneratorData,
         tripDetailData,
         bookingsData,
@@ -1212,6 +1398,7 @@ export default function AdminTripsPage() {
           setExperiences(experiencesData.experiences);
           setBlogPosts(blogData.posts);
           setTestimonials(testimonialsData.testimonials);
+          setGuides(guidesData.guides);
           setTripGeneratorOptions(tripGeneratorData.options);
           setTripGeneratorOptionsJson(
             JSON.stringify(tripGeneratorData.options, null, 2),
@@ -1345,6 +1532,7 @@ export default function AdminTripsPage() {
     setExperiences([]);
     setBlogPosts([]);
     setTestimonials([]);
+    setGuides([]);
     setBookings([]);
     setLeads([]);
     setShowWelcome(false);
@@ -1356,6 +1544,13 @@ export default function AdminTripsPage() {
     value: TestimonialFormState[K],
   ) {
     setTestimonialForm((currentForm) => ({ ...currentForm, [field]: value }));
+  }
+
+  function updateGuideField<K extends keyof GuideFormState>(
+    field: K,
+    value: GuideFormState[K],
+  ) {
+    setGuideForm((currentForm) => ({ ...currentForm, [field]: value }));
   }
 
   async function uploadMediaFiles(
@@ -1463,6 +1658,13 @@ export default function AdminTripsPage() {
     setActiveSection("testimonials");
   }
 
+  function startNewGuide() {
+    setSelectedGuideId(null);
+    setGuideForm(emptyGuideForm);
+    setMessage("");
+    setActiveSection("guides");
+  }
+
   function startEditingTrip(trip: Trip) {
     setSelectedTripId(trip.id);
     setForm(tripToFormState(trip));
@@ -1496,6 +1698,13 @@ export default function AdminTripsPage() {
     setTestimonialForm(testimonialToFormState(testimonial));
     setMessage("");
     setActiveSection("testimonials");
+  }
+
+  function startEditingGuide(guide: Guide) {
+    setSelectedGuideId(guide.id);
+    setGuideForm(guideToFormState(guide));
+    setMessage("");
+    setActiveSection("guides");
   }
 
   async function saveTrip() {
@@ -1793,6 +2002,64 @@ export default function AdminTripsPage() {
     await loadTestimonials();
     startNewTestimonial();
     setMessage("Testimonial deleted.");
+  }
+
+  async function saveGuide() {
+    setIsSaving(true);
+    setMessage("");
+
+    try {
+      const guide = formStateToGuide(guideForm);
+
+      if (!guide.image) {
+        setMessage("Upload a profile image before saving this guide.");
+        return;
+      }
+
+      const response = await fetch(
+        isEditingGuide ? `/api/guides/${selectedGuideId}` : "/api/guides",
+        {
+          method: isEditingGuide ? "PATCH" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(guide),
+        },
+      );
+      const data = (await response.json()) as {
+        guide?: Guide;
+        error?: string;
+      };
+
+      if (!response.ok || !data.guide) {
+        setMessage(data.error ?? "Could not save guide.");
+        return;
+      }
+
+      await loadGuides();
+      setSelectedGuideId(data.guide.id);
+      setGuideForm(guideToFormState(data.guide));
+      setMessage(isEditingGuide ? "Guide updated." : "Guide created.");
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function deleteSelectedGuide() {
+    if (!selectedGuide) return;
+    const confirmed = window.confirm(`Delete "${selectedGuide.name}"?`);
+    if (!confirmed) return;
+
+    const response = await fetch(`/api/guides/${selectedGuide.id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      setMessage("Could not delete guide.");
+      return;
+    }
+
+    await loadGuides();
+    startNewGuide();
+    setMessage("Guide deleted.");
   }
 
   async function saveTripGeneratorOptions() {
@@ -2093,6 +2360,7 @@ export default function AdminTripsPage() {
                   label: "Testimonials",
                   icon: MessageCircle,
                 },
+                { id: "guides", label: "Guides", icon: Users },
                 { id: "site-content", label: "Site Content", icon: Settings },
                 { id: "bookings", label: "Bookings", icon: Users },
                 { id: "leads", label: "Leads", icon: MessageCircle },
@@ -2214,6 +2482,7 @@ export default function AdminTripsPage() {
                     {activeSection === "experiences" && "Experience management"}
                     {activeSection === "bookings" && "Booking operations"}
                     {activeSection === "leads" && "Lead pipeline"}
+                    {activeSection === "guides" && "Guide management"}
                     {activeSection === "content" && "Content control"}
                     {activeSection === "database" && "Database status"}
                     {activeSection === "settings" && "Settings"}
@@ -2560,6 +2829,12 @@ export default function AdminTripsPage() {
                         count={testimonials.length}
                         status="Editable database"
                         detail="Home testimonials are powered by data/testimonials.json."
+                      />
+                      <ContentCard
+                        title="Guides"
+                        count={guides.length}
+                        status="Editable database"
+                        detail="Local guide profiles are powered by data/guides.json."
                       />
                       <ContentCard
                         title="Trip generator"
@@ -3169,6 +3444,222 @@ export default function AdminTripsPage() {
                   </div>
                 )}
 
+                {activeSection === "guides" && (
+                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                    <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
+                      <div className="flex items-center justify-between px-2 pb-4">
+                        <div>
+                          <h2 className="text-lg font-bold text-stone-900">
+                            Guides
+                          </h2>
+                          <span className="mt-1 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600">
+                            {guides.length} total
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={startNewGuide}
+                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          aria-label="Add guide"
+                        >
+                          <Plus size={18} />
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {guides.map((guide) => (
+                          <button
+                            key={guide.id}
+                            type="button"
+                            onClick={() => startEditingGuide(guide)}
+                            className={`w-full rounded-2xl border p-3 text-left transition ${selectedGuideId === guide.id ? "border-primary bg-amber-50" : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"}`}
+                          >
+                            <div className="flex gap-3">
+                              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+                                <ImageWithFallback
+                                  src={guide.image}
+                                  alt={guide.name}
+                                  fill
+                                  sizes="56px"
+                                  className="object-cover"
+                                  fallbackClassName="h-14 w-14"
+                                />
+                              </div>
+                              <div className="min-w-0">
+                                <p className="truncate font-semibold text-stone-900">
+                                  {guide.name}
+                                </p>
+                                <p className="mt-1 truncate text-xs text-stone-500">
+                                  {guide.role} - {guide.status ?? "published"}
+                                </p>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </aside>
+
+                    <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <h2 className="text-2xl font-bold text-stone-900">
+                            {isEditingGuide ? "Edit guide" : "Add guide"}
+                          </h2>
+                          <p className="mt-1 text-sm text-stone-500">
+                            {isEditingGuide
+                              ? selectedGuide?.id
+                              : "Create a new guide profile"}
+                          </p>
+                        </div>
+                        <div className="flex gap-3">
+                          {isEditingGuide && (
+                            <button
+                              type="button"
+                              onClick={deleteSelectedGuide}
+                              className="inline-flex items-center justify-center gap-2 rounded-3xl border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-700 transition hover:bg-red-50"
+                            >
+                              <Trash2 size={16} />
+                              Delete
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={saveGuide}
+                            disabled={isSaving}
+                            className="inline-flex items-center justify-center gap-2 rounded-3xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-700 disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {isEditingGuide ? (
+                              <Edit3 size={16} />
+                            ) : (
+                              <Save size={16} />
+                            )}
+                            {isSaving ? "Saving..." : "Save guide"}
+                          </button>
+                        </div>
+                      </div>
+                      <div className="grid gap-5 lg:grid-cols-2">
+                        <Field label="ID">
+                          <input
+                            value={guideForm.id}
+                            onChange={(event) =>
+                              updateGuideField("id", event.target.value)
+                            }
+                            disabled={isEditingGuide}
+                            className="admin-input disabled:bg-stone-100 disabled:text-stone-400"
+                            placeholder="youssef-atlas"
+                          />
+                        </Field>
+                        <Field label="Publishing status">
+                          <FancySelect
+                            value={guideForm.status}
+                            onChange={(value) =>
+                              updateGuideField(
+                                "status",
+                                value as ContentStatus,
+                              )
+                            }
+                            options={[
+                              { value: "published", label: "Published" },
+                              { value: "draft", label: "Draft" },
+                            ]}
+                          />
+                        </Field>
+                        <Field label="Name">
+                          <input
+                            value={guideForm.name}
+                            onChange={(event) =>
+                              updateGuideField("name", event.target.value)
+                            }
+                            className="admin-input"
+                            placeholder="Youssef Ait Lahcen"
+                          />
+                        </Field>
+                        <Field label="Role">
+                          <input
+                            value={guideForm.role}
+                            onChange={(event) =>
+                              updateGuideField("role", event.target.value)
+                            }
+                            className="admin-input"
+                            placeholder="Atlas & Desert Guide"
+                          />
+                        </Field>
+                        <Field label="Location">
+                          <input
+                            value={guideForm.location}
+                            onChange={(event) =>
+                              updateGuideField("location", event.target.value)
+                            }
+                            className="admin-input"
+                            placeholder="High Atlas"
+                          />
+                        </Field>
+                        <Field label="Years experience">
+                          <input
+                            type="number"
+                            min="0"
+                            value={guideForm.yearsExperience}
+                            onChange={(event) =>
+                              updateGuideField(
+                                "yearsExperience",
+                                event.target.value,
+                              )
+                            }
+                            className="admin-input"
+                          />
+                        </Field>
+                        <MediaUploadField
+                          label="Profile image"
+                          value={guideForm.image}
+                          uploadKey="guide-profile"
+                          isUploading={uploadingMediaKey === "guide-profile"}
+                          onChange={(value) => updateGuideField("image", value)}
+                          onUpload={(files) =>
+                            void uploadMediaFiles(
+                              "guide-profile",
+                              "guides/profile",
+                              files,
+                              ([url]) => updateGuideField("image", url),
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="mt-5 grid gap-5">
+                        <Field label="Bio">
+                          <textarea
+                            value={guideForm.bio}
+                            onChange={(event) =>
+                              updateGuideField("bio", event.target.value)
+                            }
+                            className="admin-input min-h-28"
+                            placeholder="Short guide description shown on the About page."
+                          />
+                        </Field>
+                        <Field label="Specialties, one per line">
+                          <textarea
+                            value={guideForm.specialties}
+                            onChange={(event) =>
+                              updateGuideField(
+                                "specialties",
+                                event.target.value,
+                              )
+                            }
+                            className="admin-input min-h-24"
+                          />
+                        </Field>
+                        <Field label="Languages, one per line">
+                          <textarea
+                            value={guideForm.languages}
+                            onChange={(event) =>
+                              updateGuideField("languages", event.target.value)
+                            }
+                            className="admin-input min-h-24"
+                          />
+                        </Field>
+                      </div>
+                    </section>
+                  </div>
+                )}
+
                 {activeSection === "site-content" && (
                   <section className="mt-8 grid gap-6 xl:grid-cols-2">
                     <div className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
@@ -3247,27 +3738,66 @@ export default function AdminTripsPage() {
                       </span>
                     </div>
 
-                    <div className="grid gap-4">
-                      {bookings.map((booking) => {
-                        const trip = trips.find(
-                          (item) => item.id === booking.tripId,
-                        );
+                    <div className="mb-6 grid gap-3 lg:grid-cols-[1fr_240px]">
+                      <label className="relative block">
+                        <span className="sr-only">Search bookings</span>
+                        <Search
+                          size={18}
+                          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-primary-dark"
+                        />
+                        <input
+                          value={bookingSearchQuery}
+                          onChange={(event) =>
+                            setBookingSearchQuery(event.target.value)
+                          }
+                          placeholder="Search by name, BK number, email, trip, date..."
+                          className="admin-input admin-search-input"
+                        />
+                      </label>
+                      <FancySelect
+                        value={bookingSort}
+                        options={bookingSortOptions}
+                        onChange={(value) =>
+                          setBookingSort(value as BookingSortOption)
+                        }
+                        ariaLabel="Sort bookings"
+                      />
+                      <p className="text-sm text-stone-500 lg:col-span-2">
+                        Showing {visibleBookings.length} of {bookings.length}{" "}
+                        bookings
+                      </p>
+                    </div>
 
+                    <div className="grid gap-4">
+                      {visibleBookings.map(({ booking, trip }) => {
                         return (
                           <div
                             key={booking.id}
                             className="grid gap-4 rounded-2xl border border-stone-200 p-4 xl:grid-cols-[1.2fr_0.8fr_0.8fr_auto] xl:items-center"
                           >
                             <div>
+                              <p className="mb-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-600">
+                                {booking.id}
+                              </p>
                               <p className="font-bold text-stone-900">
                                 {booking.customerName}
                               </p>
                               <p className="mt-1 text-sm text-stone-500">
                                 {booking.customerEmail}
                               </p>
+                              {booking.customerPhone && (
+                                <p className="mt-1 text-sm text-stone-500">
+                                  {booking.customerPhone}
+                                </p>
+                              )}
                               <p className="mt-2 text-sm text-stone-700">
                                 {trip?.title ?? booking.tripId}
                               </p>
+                              {booking.notes && (
+                                <p className="mt-2 text-xs text-stone-500">
+                                  {booking.notes}
+                                </p>
+                              )}
                             </div>
                             <div className="text-sm">
                               <p className="font-semibold text-stone-900">
@@ -3279,37 +3809,30 @@ export default function AdminTripsPage() {
                               </p>
                             </div>
                             <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
-                              <select
+                              <FancySelect
                                 value={booking.status}
-                                onChange={(event) =>
+                                onChange={(value) =>
                                   updateBookingStatus(booking.id, {
-                                    status: event.target.value as BookingStatus,
+                                    status: value as BookingStatus,
                                   })
                                 }
-                                className="admin-input"
-                              >
-                                {bookingStatuses.map((status) => (
-                                  <option key={status} value={status}>
-                                    {status}
-                                  </option>
-                                ))}
-                              </select>
-                              <select
+                                options={bookingStatuses.map((status) => ({
+                                  value: status,
+                                  label: status,
+                                }))}
+                              />
+                              <FancySelect
                                 value={booking.paymentStatus}
-                                onChange={(event) =>
+                                onChange={(value) =>
                                   updateBookingStatus(booking.id, {
-                                    paymentStatus: event.target
-                                      .value as PaymentStatus,
+                                    paymentStatus: value as PaymentStatus,
                                   })
                                 }
-                                className="admin-input"
-                              >
-                                {paymentStatuses.map((status) => (
-                                  <option key={status} value={status}>
-                                    {status}
-                                  </option>
-                                ))}
-                              </select>
+                                options={paymentStatuses.map((status) => ({
+                                  value: status,
+                                  label: status,
+                                }))}
+                              />
                             </div>
                             <button
                               type="button"
@@ -3322,6 +3845,11 @@ export default function AdminTripsPage() {
                           </div>
                         );
                       })}
+                      {visibleBookings.length === 0 && (
+                        <div className="rounded-2xl border border-dashed border-stone-300 p-8 text-center text-sm text-stone-500">
+                          No bookings match your search.
+                        </div>
+                      )}
                     </div>
                   </section>
                 )}
@@ -3365,22 +3893,19 @@ export default function AdminTripsPage() {
                             {lead.interest}
                           </p>
                           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                            <select
+                            <FancySelect
                               value={lead.status}
-                              onChange={(event) =>
+                              onChange={(value) =>
                                 updateLeadStatus(
                                   lead.id,
-                                  event.target.value as LeadStatus,
+                                  value as LeadStatus,
                                 )
                               }
-                              className="admin-input"
-                            >
-                              {leadStatuses.map((status) => (
-                                <option key={status} value={status}>
-                                  {status}
-                                </option>
-                              ))}
-                            </select>
+                              options={leadStatuses.map((status) => ({
+                                value: status,
+                                label: status,
+                              }))}
+                            />
                             <button
                               type="button"
                               onClick={() => deleteLeadRecord(lead.id)}
@@ -4060,22 +4585,19 @@ export default function AdminTripsPage() {
                           />
                         </Field>
                         <Field label="Category">
-                          <select
+                          <FancySelect
                             value={experienceForm.category}
-                            onChange={(event) =>
+                            onChange={(value) =>
                               updateExperienceField(
                                 "category",
-                                event.target.value,
+                                value,
                               )
                             }
-                            className="admin-input"
-                          >
-                            {experienceCategories.map((category) => (
-                              <option key={category} value={category}>
-                                {category}
-                              </option>
-                            ))}
-                          </select>
+                            options={experienceCategories.map((category) => ({
+                              value: category,
+                              label: category,
+                            }))}
+                          />
                         </Field>
                         <Field label="Location">
                           <input
@@ -4330,22 +4852,19 @@ export default function AdminTripsPage() {
                           />
                         </Field>
                         <Field label="Category">
-                          <select
+                          <FancySelect
                             value={form.category}
-                            onChange={(event) =>
+                            onChange={(value) =>
                               updateField(
                                 "category",
-                                event.target.value as Trip["category"],
+                                value as Trip["category"],
                               )
                             }
-                            className="admin-input"
-                          >
-                            {categories.map((category) => (
-                              <option key={category} value={category}>
-                                {category}
-                              </option>
-                            ))}
-                          </select>
+                            options={categories.map((category) => ({
+                              value: category,
+                              label: category,
+                            }))}
+                          />
                         </Field>
                         <MediaUploadField
                           label="Hero image"
@@ -4875,6 +5394,86 @@ function MediaUploadField({
   );
 }
 
+function FancySelect({
+  value,
+  options,
+  onChange,
+  ariaLabel,
+}: {
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (value: string) => void;
+  ariaLabel?: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption =
+    options.find((option) => option.value === value) ?? options[0];
+
+  return (
+    <div
+      className="relative"
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setIsOpen(false);
+        }
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setIsOpen((open) => !open)}
+        className="flex min-h-12 w-full items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-[#fffaf0] px-4 py-3 text-left text-sm font-semibold text-stone-950 shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_14px_30px_-24px_rgba(13,13,13,0.45)] transition hover:-translate-y-0.5 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
+        aria-label={ariaLabel}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+      >
+        <span className="truncate">{selectedOption?.label ?? value}</span>
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-stone-950 text-primary shadow-inner">
+          <ChevronDown
+            size={16}
+            className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
+        </span>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            className="absolute right-0 top-full z-50 mt-3 max-h-72 w-full min-w-48 overflow-y-auto rounded-2xl border border-amber-200 bg-[#fffaf0] p-1.5 shadow-2xl shadow-stone-950/20"
+            role="listbox"
+          >
+            {options.map((option) => {
+              const isSelected = option.value === value;
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition ${
+                    isSelected
+                      ? "bg-stone-950 text-primary"
+                      : "text-stone-700 hover:bg-white hover:text-stone-950"
+                  }`}
+                  role="option"
+                  aria-selected={isSelected}
+                >
+                  <span className="truncate">{option.label}</span>
+                  {isSelected && <Check size={15} />}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 function PublishingSeoPanel({
   status,
   seoTitle,
@@ -4904,16 +5503,14 @@ function PublishingSeoPanel({
     <div className="mt-5 rounded-[2rem] border border-stone-200 bg-stone-50 p-5">
       <div className="grid gap-5 lg:grid-cols-2">
         <Field label="Publishing status">
-          <select
+          <FancySelect
             value={status}
-            onChange={(event) =>
-              onStatusChange(event.target.value as ContentStatus)
-            }
-            className="admin-input bg-white"
-          >
-            <option value="published">Published</option>
-            <option value="draft">Draft</option>
-          </select>
+            onChange={(value) => onStatusChange(value as ContentStatus)}
+            options={[
+              { value: "published", label: "Published" },
+              { value: "draft", label: "Draft" },
+            ]}
+          />
         </Field>
         <Field label="SEO title">
           <input
@@ -4948,11 +5545,11 @@ function PublishingSeoPanel({
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <label className="block">
+    <div className="block">
       <span className="mb-2 block text-sm font-semibold text-stone-700">
         {label}
       </span>
       {children}
-    </label>
+    </div>
   );
 }

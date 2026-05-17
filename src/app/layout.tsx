@@ -71,8 +71,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${heading.variable} ${body.variable} h-full antialiased scroll-smooth`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full flex flex-col bg-background text-foreground" suppressHydrationWarning>
         <AppProvider>
           <GlobalImageHandler />
           <Analytics />

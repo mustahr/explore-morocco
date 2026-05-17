@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Mail, Phone, MapPin, Send } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
@@ -34,12 +35,30 @@ export function Footer() {
   const [email, setEmail] = useState("")
 
   return (
-    <footer className="bg-stone-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="relative isolate overflow-hidden bg-[#0D0D0D] text-white md:fixed md:inset-x-0 md:bottom-0 md:z-0 md:h-[28rem]">
+      <div
+        className="absolute inset-0 -z-20 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2000&q=80')",
+        }}
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 -z-10 bg-[#0D0D0D]/88" aria-hidden="true" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0D0D0D] via-[#0D0D0D]/80 to-[#0F3D2E]/55" aria-hidden="true" />
+
+      <div className="mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <Link href="/" className="text-2xl font-bold mb-4 block">
-              Morocco<span className="text-accent">AI</span>
+            <Link href="/" className="mb-4 block w-56" aria-label="Saharavanta Morocco home">
+              <Image
+                src="/saharavanta-logo.png"
+                alt="Saharavanta Morocco"
+                width={1024}
+                height={378}
+                className="h-auto w-full bg-transparent"
+                style={{ background: "none" }}
+              />
             </Link>
             <p className="text-stone-400 text-sm leading-relaxed mb-6">
               {t.footer.description}
@@ -101,7 +120,7 @@ export function Footer() {
                 placeholder={t.footer.newsletterPlaceholder}
                 className="flex-1 bg-stone-800 border-0 rounded-l-xl px-4 py-3 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-primary"
               />
-              <button className="bg-primary hover:bg-primary-light px-4 rounded-r-xl transition-colors">
+              <button className="bg-primary px-4 text-stone-950 transition-colors hover:bg-primary-light">
                 <Send size={18} />
               </button>
             </div>

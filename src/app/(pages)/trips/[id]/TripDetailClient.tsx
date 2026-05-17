@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { useMemo, useState, useEffect, useRef } from "react"
+import { useMemo, useState, useEffect, useRef, type FormEvent } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import {
@@ -65,6 +65,13 @@ export default function TripDetailClient({
   const [travelers, setTravelers] = useState(2)
   const [travelersDropdownOpen, setTravelersDropdownOpen] = useState(false)
   const [dateDropdownOpen, setDateDropdownOpen] = useState(false)
+  const [customerName, setCustomerName] = useState("")
+  const [customerEmail, setCustomerEmail] = useState("")
+  const [customerPhone, setCustomerPhone] = useState("")
+  const [bookingNotes, setBookingNotes] = useState("")
+  const [bookingStatus, setBookingStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
+  const [bookingError, setBookingError] = useState("")
+  const [bookingReference, setBookingReference] = useState("")
   const dropdownRef = useRef<HTMLDivElement>(null)
   const dateDropdownRef = useRef<HTMLDivElement>(null)
 
@@ -91,8 +98,45 @@ export default function TripDetailClient({
   const heroTitle = trip.id === "desert-3day" ? "3-Day Sahara Desert Experience from Marrakech" : trip.title
   const originalPrice = Math.round(trip.price * 1.15)
   const savings = originalPrice - trip.price
+  const totalPrice = trip.price * travelers
   const galleryImages = [trip.image, ...trip.images]
   const whatsappMessage = encodeURIComponent(`Hi, I want to reserve ${trip.title}. Can you help me?`)
+
+  const handleBookingSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setBookingStatus("submitting")
+    setBookingError("")
+
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          tripId: trip.id,
+          customerName,
+          customerEmail,
+          customerPhone,
+          startDate: selectedStartDate,
+          travelers,
+          notes: bookingNotes,
+        }),
+      })
+
+      const data = (await response.json()) as { booking?: { id: string }; error?: string }
+
+      if (!response.ok || !data.booking) {
+        throw new Error(data.error || "We could not create this booking request.")
+      }
+
+      setBookingReference(data.booking.id)
+      setBookingStatus("success")
+    } catch (error) {
+      setBookingStatus("error")
+      setBookingError(error instanceof Error ? error.message : "We could not create this booking request.")
+    }
+  }
 
   const itinerary = useMemo(
     () =>
@@ -237,8 +281,8 @@ export default function TripDetailClient({
             </div>
           </section>
 
-          <aside className="hidden lg:block">
-            <div className="sticky top-28 rounded-3xl border border-stone-200/80 bg-white/95 backdrop-blur-xl shadow-2xl p-6 lg:p-8">
+          <aside id="booking">
+            <div className="lg:sticky lg:top-28 rounded-3xl border border-stone-200/80 bg-white/95 backdrop-blur-xl shadow-2xl p-6 lg:p-8">
               <div className="mb-6">
                 <div className="flex items-baseline gap-3">
                   <span className="text-4xl font-bold text-stone-900">{formatPrice(trip.price, currency)}</span>
@@ -247,7 +291,7 @@ export default function TripDetailClient({
                 <p className="mt-2 text-sm text-stone-500">Early booking savings applied · Save {formatPrice(savings, currency)}</p>
               </div>
 
-              <div className="grid gap-4">
+              <form className="grid gap-4" onSubmit={handleBookingSubmit}>
                 <div className="space-y-2">
                   <label htmlFor="trip-start-date" className="text-sm font-semibold text-stone-700">Starting date</label>
                   <div className="relative" ref={dateDropdownRef}>
@@ -259,7 +303,7 @@ export default function TripDetailClient({
                     >
                       <div className="flex items-center justify-between gap-3">
                         <div className="flex min-w-0 items-center gap-3">
-                          <div className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-blue-500 to-sky-400 text-white shadow-md shadow-blue-500/20">
+                          <div className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#D4AF37] via-[#C9A46A] to-[#0F3D2E] text-white shadow-md shadow-amber-700/20">
                             <span className="text-xs font-semibold uppercase leading-none">{selectedStartDateParts.month}</span>
                             <span className="text-xl font-bold leading-none">{selectedStartDateParts.day}</span>
                           </div>
@@ -280,10 +324,10 @@ export default function TripDetailClient({
                         initial={{ opacity: 0, y: -8, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                        className="absolute top-full left-0 right-0 z-50 mt-2 overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-2xl"
+                        className="absolute top-full left-0 right-0 z-50 mt-2 overflow-hidden rounded-3xl border border-amber-200/80 bg-[#fffaf0] shadow-2xl shadow-stone-950/15"
                       >
-                        <div className="border-b border-stone-100 bg-stone-50 px-4 py-3">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">Choose departure</p>
+                        <div className="border-b border-amber-100 bg-gradient-to-r from-amber-50 via-white to-emerald-50 px-4 py-3">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-primary-dark">Choose departure</p>
                           <p className="mt-1 text-xs text-stone-500">Pick a sample date or choose any date below.</p>
                         </div>
 
@@ -300,12 +344,12 @@ export default function TripDetailClient({
                                   setDateDropdownOpen(false)
                                 }}
                                 className={`w-full rounded-2xl px-3 py-3 text-left transition-colors ${
-                                  isSelected ? 'bg-blue-50 text-blue-950' : 'text-stone-700 hover:bg-stone-50'
+                                  isSelected ? 'bg-amber-100 text-stone-950 shadow-inner' : 'text-stone-700 hover:bg-white'
                                 }`}
                               >
                                 <div className="flex items-center gap-3">
                                   <div className={`grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl border ${
-                                    isSelected ? 'border-blue-200 bg-white text-blue-700' : 'border-stone-200 bg-stone-50 text-stone-700'
+                                    isSelected ? 'border-amber-300 bg-white text-primary-dark' : 'border-stone-200 bg-stone-50 text-stone-700'
                                   }`}>
                                     <span className="text-[10px] font-semibold uppercase leading-none">{option.month}</span>
                                     <span className="text-lg font-bold leading-none">{option.day}</span>
@@ -318,9 +362,9 @@ export default function TripDetailClient({
                                     <p className="mt-1 text-xs text-stone-500">Ends {formatDateForDisplay(option.end)} · {trip.duration - 1} nights</p>
                                   </div>
                                   <div className={`grid h-6 w-6 flex-shrink-0 place-items-center rounded-full border ${
-                                    isSelected ? 'border-blue-500 bg-blue-500' : 'border-stone-300'
+                                    isSelected ? 'border-primary bg-primary text-stone-950' : 'border-stone-300 bg-white'
                                   }`}>
-                                    {isSelected && <Check size={12} className="text-white" />}
+                                    {isSelected && <Check size={12} />}
                                   </div>
                                 </div>
                               </button>
@@ -339,7 +383,7 @@ export default function TripDetailClient({
                                 if (!startDate) return
                                 setSelectedStartDate(startDate)
                               }}
-                              className="mt-2 w-full rounded-2xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm font-medium text-stone-900 outline-none transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20"
+                              className="mt-2 w-full rounded-2xl border border-amber-200 bg-white px-3 py-2.5 text-sm font-medium text-stone-900 outline-none transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20"
                             />
                           </div>
                         </div>
@@ -378,7 +422,7 @@ export default function TripDetailClient({
                         initial={{ opacity: 0, y: -10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-stone-200 shadow-xl z-50 overflow-hidden"
+                        className="absolute top-full left-0 right-0 mt-2 overflow-hidden rounded-2xl border border-amber-200/80 bg-[#fffaf0] shadow-xl shadow-stone-950/15 z-50"
                       >
                         {[1, 2, 3, 4, 5, 6, 7, 8].map((value) => (
                           <button
@@ -388,16 +432,16 @@ export default function TripDetailClient({
                               setTravelers(value)
                               setTravelersDropdownOpen(false)
                             }}
-                            className={`w-full px-4 py-3 text-left hover:bg-amber-50 transition-colors flex items-center gap-3 ${
-                              travelers === value ? 'bg-amber-100 text-amber-900' : 'text-stone-700'
+                            className={`w-full px-4 py-3 text-left transition-colors flex items-center gap-3 ${
+                              travelers === value ? 'bg-amber-100 text-stone-950' : 'text-stone-700 hover:bg-white'
                             }`}
                           >
                             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
                               travelers === value
-                                ? 'border-amber-500 bg-amber-500'
-                                : 'border-stone-300'
+                                ? 'border-primary bg-primary text-stone-950'
+                                : 'border-stone-300 bg-white'
                             }`}>
-                              {travelers === value && <Check size={12} className="text-white" />}
+                              {travelers === value && <Check size={12} />}
                             </div>
                             <div className="flex items-center gap-2">
                               <Users size={14} className="text-stone-500" />
@@ -416,16 +460,76 @@ export default function TripDetailClient({
                     )}
                   </div>
                 </div>
-              </div>
 
-              <button
-                type="button"
-                data-analytics-event="booking_click"
-                data-analytics-label={trip.id}
-                className="w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-6 py-4 mt-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-              >
-                <Calendar size={18} /> Book Now
-              </button>
+                <div className="grid gap-3">
+                  <label htmlFor="booking-name" className="text-sm font-semibold text-stone-700">Your details</label>
+                  <input
+                    id="booking-name"
+                    type="text"
+                    value={customerName}
+                    onChange={(event) => setCustomerName(event.target.value)}
+                    placeholder="Full name"
+                    autoComplete="name"
+                    required
+                    className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                  <input
+                    type="email"
+                    value={customerEmail}
+                    onChange={(event) => setCustomerEmail(event.target.value)}
+                    placeholder="Email address"
+                    autoComplete="email"
+                    required
+                    className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                  <input
+                    type="tel"
+                    value={customerPhone}
+                    onChange={(event) => setCustomerPhone(event.target.value)}
+                    placeholder="Phone or WhatsApp"
+                    autoComplete="tel"
+                    className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                  <textarea
+                    value={bookingNotes}
+                    onChange={(event) => setBookingNotes(event.target.value)}
+                    placeholder="Anything we should know?"
+                    rows={3}
+                    className="w-full resize-none rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 shadow-sm outline-none transition-all placeholder:text-stone-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+
+                <div className="rounded-3xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-stone-600">Estimated total</span>
+                    <span className="font-bold text-stone-950">{formatPrice(totalPrice, currency)}</span>
+                  </div>
+                  <p className="mt-1 text-xs text-stone-500">Final confirmation and payment instructions are sent after review.</p>
+                </div>
+
+                {bookingStatus === "success" && (
+                  <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+                    <p className="font-semibold">Booking request received.</p>
+                    <p className="mt-1">Reference {bookingReference}. Our team will contact you shortly.</p>
+                  </div>
+                )}
+
+                {bookingStatus === "error" && (
+                  <div className="rounded-3xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                    {bookingError}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={bookingStatus === "submitting"}
+                  data-analytics-event="booking_click"
+                  data-analytics-label={trip.id}
+                  className="w-full inline-flex items-center justify-center gap-3 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-6 py-4 mt-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0"
+                >
+                  <Calendar size={18} /> {bookingStatus === "submitting" ? "Sending request..." : "Book Now"}
+                </button>
+              </form>
 
               <a
                 href={`https://wa.me/212XXXXXXXXX?text=${whatsappMessage}`}
@@ -837,7 +941,11 @@ export default function TripDetailClient({
             <p className="text-sm text-stone-500">Starting from</p>
             <p className="text-lg font-semibold text-stone-900">{formatPrice(trip.price, currency)}</p>
           </div>
-          <button type="button" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-5 py-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30">
+          <button
+            type="button"
+            onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-5 py-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+          >
             Book Now
           </button>
         </div>

@@ -11,7 +11,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isAdminRoute && <Navbar />}
-      <main className="flex-1">{children}</main>
+      <main className={!isAdminRoute ? "relative z-10 mb-0 bg-background shadow-[0_30px_80px_rgba(13,13,13,0.35)] md:mb-[28rem]" : "flex-1"}>
+        {children}
+      </main>
       {!isAdminRoute && <Footer />}
     </>
   )

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, Heart, Globe, ChevronDown } from "lucide-react"
@@ -42,17 +43,23 @@ export function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isHomePage
           ? isScrolled
-            ? "bg-white/95 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-          : "bg-stone-900/95 backdrop-blur-md shadow-lg"
+            ? "bg-[#0D0D0D]/92 shadow-lg backdrop-blur-md"
+            : "border-b border-[#D4AF37]/15 bg-[#0D0D0D]/78 shadow-2xl shadow-black/20 backdrop-blur-md"
+          : "bg-[#0D0D0D]/95 backdrop-blur-md shadow-lg"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          <Link href="/" className="flex items-center gap-2">
-            <span className={`text-xl lg:text-2xl font-bold ${isHomePage ? (isScrolled ? "text-primary" : "text-white") : "text-white"}`}>
-              Morocco<span className="text-accent">AI</span>
-            </span>
+        <div className="flex h-20 items-center justify-between lg:h-24">
+          <Link href="/" className="flex shrink-0 items-center" aria-label="Saharavanta Morocco home">
+            <Image
+              src="/saharavanta-logo.png"
+              alt="Saharavanta Morocco"
+              width={1024}
+              height={378}
+              priority
+              className="h-auto w-44 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-56 lg:w-64"
+              style={{ background: "none" }}
+            />
           </Link>
 
           <div className="hidden lg:flex items-center gap-1">
@@ -62,12 +69,10 @@ export function Navbar() {
                 href={link.href}
                 className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
                   pathname === link.href
-                    ? isHomePage
-                      ? "text-primary"
-                      : "text-primary-light"
+                    ? "text-primary-light"
                     : isHomePage
                       ? isScrolled
-                        ? "text-stone-600 hover:text-primary"
+                        ? "text-white/80 hover:text-white"
                         : "text-white/90 hover:text-white"
                       : "text-white/80 hover:text-white"
                 }`}
@@ -98,7 +103,7 @@ export function Navbar() {
                 className={`flex items-center gap-1 p-2 rounded-full transition-colors ${
                   isHomePage
                     ? isScrolled
-                      ? "text-stone-600 hover:text-primary"
+                      ? "text-white/80 hover:text-white"
                       : "text-white/90 hover:text-white"
                     : "text-white/80 hover:text-white"
                 }`}
@@ -109,17 +114,17 @@ export function Navbar() {
               <AnimatePresence>
                 {langOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-stone-200 py-2 w-40"
+                    initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                    className="absolute right-0 top-full mt-3 w-44 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0]/95 p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
                   >
                     {(["en", "fr", "ar"] as LanguageCode[]).map((lang) => (
                       <button
                         key={lang}
                         onClick={() => { setLanguage(lang); setLangOpen(false) }}
-                        className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 transition-colors ${
-                          language === lang ? "text-primary font-semibold" : "text-stone-600"
+                        className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
+                          language === lang ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
                       >
                         {lang === "en" ? "English" : lang === "fr" ? "Fran\u00E7ais" : "\u0627\u0644\u0639\u0631\u0628\u064A\u0629"}
@@ -136,7 +141,7 @@ export function Navbar() {
                 className={`flex items-center gap-1 p-2 rounded-full text-sm font-medium transition-colors ${
                   isHomePage
                     ? isScrolled
-                      ? "text-stone-600 hover:text-primary"
+                      ? "text-white/80 hover:text-white"
                       : "text-white/90 hover:text-white"
                     : "text-white/80 hover:text-white"
                 }`}
@@ -147,17 +152,17 @@ export function Navbar() {
               <AnimatePresence>
                 {curOpen && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-stone-200 py-2 w-36"
+                    initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                    className="absolute right-0 top-full mt-3 w-40 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0]/95 p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
                   >
                     {(Object.keys(currencies) as CurrencyCode[]).map((cur) => (
                       <button
                         key={cur}
                         onClick={() => { setCurrency(cur); setCurOpen(false) }}
-                        className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 transition-colors ${
-                          currency === cur ? "text-primary font-semibold" : "text-stone-600"
+                        className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
+                          currency === cur ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
                       >
                         {currencies[cur].symbol} {cur}
@@ -170,7 +175,7 @@ export function Navbar() {
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2 rounded-full ${isHomePage ? (isScrolled ? "text-stone-800" : "text-white") : "text-white"}`}
+              className="p-2 text-white lg:hidden"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

@@ -42,6 +42,8 @@ export default function DestinationDetailClient({ destination }: { destination: 
           fill
           preload
           sizes="100vw"
+          parallax
+          parallaxOffset={84}
           className="object-cover"
           fallbackClassName="h-full w-full"
         />

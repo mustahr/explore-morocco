@@ -62,6 +62,9 @@ export function ExperiencesPreview() {
                     alt={exp.title}
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    parallax
+                    parallaxOffset={64}
+                    parallaxStrength={1.1}
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     fallbackClassName="h-full w-full"
                   />

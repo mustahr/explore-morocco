@@ -65,6 +65,8 @@ export default function TripsPage() {
             preload
             sizes="100vw"
             quality={80}
+            parallax
+            parallaxOffset={96}
             className="object-cover"
             fallbackClassName="h-full w-full"
           />
@@ -344,7 +346,7 @@ export default function TripsPage() {
                                 <p className="text-xs text-green-600 font-semibold mt-1">Save {formatPrice(savings, currency)}</p>
                               </div>
                               <div className="text-right">
-                                <span className="inline-flex items-center gap-2 text-primary font-semibold hover:text-amber-600 transition-colors">
+                                <span className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-dark transition-colors">
                                   Explore <ArrowRight size={18} />
                                 </span>
                               </div>
@@ -366,7 +368,7 @@ export default function TripsPage() {
                       setSelectedDuration(null)
                       setPriceRange([0, 15000])
                     }}
-                    className="px-6 py-3 bg-primary text-white rounded-3xl font-semibold hover:bg-amber-700 transition-colors cursor-pointer"
+                    className="px-6 py-3 bg-primary text-stone-950 rounded-3xl font-semibold hover:bg-primary-light transition-colors cursor-pointer"
                   >
                     Clear all filters
                   </button>

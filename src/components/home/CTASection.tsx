@@ -19,10 +19,12 @@ export function CTASection() {
           alt="Sahara desert"
           fill
           sizes="100vw"
+          parallax
+          parallaxOffset={76}
           className="object-cover"
           fallbackClassName="h-full w-full"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary-dark/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D0D]/90 via-[#0D0D0D]/72 to-[#0F3D2E]/76" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -44,7 +46,7 @@ export function CTASection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/trip-generator"
-              className="bg-white text-primary px-8 py-4 rounded-full font-semibold flex items-center gap-2 text-lg hover:bg-white/90 transition-colors"
+              className="bg-primary px-8 py-4 rounded-full font-semibold text-stone-950 flex items-center gap-2 text-lg hover:bg-primary-light transition-colors"
             >
               {t.hero.ctaGenerate}
               <ArrowRight size={20} />

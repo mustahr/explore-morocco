@@ -11,12 +11,14 @@ export interface Booking {
   tripId: string
   customerName: string
   customerEmail: string
+  customerPhone?: string
   startDate: string
   travelers: number
   totalMAD: number
   status: BookingStatus
   paymentStatus: PaymentStatus
   createdAt: string
+  notes?: string
 }
 
 export interface Lead {
@@ -42,7 +44,21 @@ async function writeJsonDatabase<T>(filePath: string, data: T[]) {
 }
 
 export async function getBookings() {
-  return (await getCloudRecords<Booking>("bookings")) ?? readJsonDatabase<Booking>(bookingsPath)
+  const bookings = (await getCloudRecords<Booking>("bookings")) ?? await readJsonDatabase<Booking>(bookingsPath)
+  return [...bookings].sort((first, second) => new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime())
+}
+
+export async function createBooking(booking: Booking) {
+  const cloudBookings = await getCloudRecords<Booking>("bookings")
+  if (cloudBookings !== undefined) {
+    await upsertCloudRecord("bookings", booking.id, booking, cloudBookings.length)
+    return booking
+  }
+
+  const bookings = await getBookings()
+  bookings.unshift(booking)
+  await writeJsonDatabase(bookingsPath, bookings)
+  return booking
 }
 
 export async function updateBooking(id: string, updates: Partial<Booking>) {

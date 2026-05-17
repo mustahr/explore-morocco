@@ -67,6 +67,9 @@ export function FeaturedTrips() {
                     alt={trip.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    parallax
+                    parallaxOffset={64}
+                    parallaxStrength={1.1}
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     fallbackClassName="h-full w-full"
                   />

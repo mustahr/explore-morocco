@@ -44,6 +44,8 @@ export default function BlogPage() {
             preload
             sizes="100vw"
             quality={80}
+            parallax
+            parallaxOffset={76}
             className="object-cover"
             fallbackClassName="h-full w-full"
           />
