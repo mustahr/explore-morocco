@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -8,8 +8,10 @@ import { track } from "@vercel/analytics";
 import {
   ArrowLeft,
   BarChart3,
+  Bell,
   Check,
   ChevronDown,
+  CircleAlert,
   Database,
   Edit3,
   FileText,
@@ -228,6 +230,86 @@ const allowedMediaTypes = new Set([
   "image/avif",
 ]);
 const maxMediaUploadBytes = 10 * 1024 * 1024;
+const adminNotificationStorageKey = "morocco-admin-seen-notifications";
+
+function readSeenAdminNotificationIds() {
+  if (typeof window === "undefined") return new Set<string>();
+
+  try {
+    const storedIds = JSON.parse(
+      window.localStorage.getItem(adminNotificationStorageKey) ?? "[]",
+    ) as string[];
+
+    return new Set(storedIds);
+  } catch {
+    return new Set<string>();
+  }
+}
+
+function getBrowserNotificationPermission(): NotificationPermission {
+  if (typeof window === "undefined" || !("Notification" in window)) {
+    return "default";
+  }
+
+  return Notification.permission;
+}
+
+function urlBase64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = `${base64String}${padding}`
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let index = 0; index < rawData.length; index += 1) {
+    outputArray[index] = rawData.charCodeAt(index);
+  }
+
+  return outputArray;
+}
+
+async function subscribeToAdminPush(
+  registration: ServiceWorkerRegistration,
+  publicKey: string,
+) {
+  const existingSubscription = await registration.pushManager.getSubscription();
+
+  if (existingSubscription) {
+    return existingSubscription;
+  }
+
+  return registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicKey),
+  });
+}
+
+function getPushSetupErrorMessage(error: unknown) {
+  if (!(error instanceof Error)) {
+    return "Could not enable background notifications.";
+  }
+
+  const message = error.message.toLowerCase();
+
+  if (error.name === "NotAllowedError" || message.includes("permission")) {
+    return "Notifications are blocked for this browser. Allow notifications for this site, then try again.";
+  }
+
+  if (
+    error.name === "NotSupportedError" ||
+    message.includes("push service") ||
+    message.includes("registration failed")
+  ) {
+    return "The browser push service could not create a subscription. Open the admin from http://localhost:3000/admin or use HTTPS, then try again in Chrome or Edge.";
+  }
+
+  if (message.includes("service worker")) {
+    return "The notification worker could not start. Refresh the admin page and try again.";
+  }
+
+  return error.message;
+}
 
 const sectionTransition = {
   initial: { opacity: 0, y: 18, filter: "blur(6px)" },
@@ -788,6 +870,15 @@ type ContentIssue = {
   onAction: () => void;
 };
 
+type AdminNotification = {
+  id: string;
+  section: string;
+  title: string;
+  detail: string;
+  tone: "amber" | "green" | "red" | "sky";
+  createdAt?: string;
+};
+
 type BookingSortOption =
   | "newest"
   | "oldest"
@@ -853,6 +944,15 @@ export default function AdminTripsPage() {
   );
   const [systemStatus, setSystemStatus] = useState<SystemStatusResponse | null>(
     null,
+  );
+  const [browserNotificationPermission, setBrowserNotificationPermission] =
+    useState<NotificationPermission>(getBrowserNotificationPermission);
+  const [pushConfigured, setPushConfigured] = useState(false);
+  const [pushEnabledForDevice, setPushEnabledForDevice] = useState(false);
+  const [pushSubscriptionCount, setPushSubscriptionCount] = useState(0);
+  const [isEnablingPush, setIsEnablingPush] = useState(false);
+  const seenNotificationIdsRef = useRef<Set<string>>(
+    readSeenAdminNotificationIds(),
   );
 
   const isEditing = Boolean(selectedTripId);
@@ -1193,6 +1293,234 @@ export default function AdminTripsPage() {
   const contentHealth = contentItemCount
     ? Math.round((healthyContentCount / contentItemCount) * 100)
     : 0;
+  const newLeads = useMemo(
+    () =>
+      [...leads]
+        .filter((lead) => lead.status === "new")
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        ),
+    [leads],
+  );
+  const pendingBookingRecords = useMemo(
+    () =>
+      [...bookings]
+        .filter((booking) => booking.status === "pending")
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        ),
+    [bookings],
+  );
+  const adminNotifications: AdminNotification[] = [
+    ...newLeads.slice(0, 5).map((lead) => ({
+      id: `lead-${lead.id}`,
+      section: "leads",
+      title: `New message from ${lead.name}`,
+      detail: lead.message || lead.interest || lead.email,
+      tone: "green" as const,
+      createdAt: lead.createdAt,
+    })),
+    ...pendingBookingRecords.slice(0, 5).map((booking) => ({
+      id: `booking-${booking.id}`,
+      section: "bookings",
+      title: `Pending booking: ${booking.customerName}`,
+      detail: `${booking.travelers} travelers - ${booking.startDate} - MAD ${booking.totalMAD.toLocaleString()}`,
+      tone: "amber" as const,
+      createdAt: booking.createdAt,
+    })),
+    ...contentIssues.slice(0, 4).map((issue) => ({
+      id: `content-${issue.id}`,
+      section: "content",
+      title: `${issue.type} needs attention`,
+      detail: `${issue.title}: ${issue.missing.join(", ")}`,
+      tone: "red" as const,
+      createdAt: undefined,
+    })),
+  ].sort((first, second) => {
+    const firstTime = first.createdAt ? new Date(first.createdAt).getTime() : 0;
+    const secondTime = second.createdAt ? new Date(second.createdAt).getTime() : 0;
+
+    return secondTime - firstTime;
+  });
+  const sectionBadges: Record<string, number> = {
+    overview: adminNotifications.length,
+    bookings: pendingBookingRecords.length,
+    leads: newLeads.length,
+    content: contentIssues.length,
+  };
+  const notificationIdSignature = adminNotifications
+    .map((notification) => notification.id)
+    .join("|");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!isAuthenticated) return;
+
+    const seenIds = seenNotificationIdsRef.current;
+    const storageWasInitialized = Boolean(
+      window.localStorage.getItem(adminNotificationStorageKey),
+    );
+    const currentIds = adminNotifications.map((notification) => notification.id);
+
+    if (!storageWasInitialized) {
+      currentIds.forEach((id) => seenIds.add(id));
+      window.localStorage.setItem(
+        adminNotificationStorageKey,
+        JSON.stringify([...seenIds]),
+      );
+      return;
+    }
+
+    const unseenNotifications = adminNotifications.filter(
+      (notification) => !seenIds.has(notification.id),
+    );
+
+    if (unseenNotifications.length === 0) return;
+
+    unseenNotifications.forEach((notification) => seenIds.add(notification.id));
+    window.localStorage.setItem(
+      adminNotificationStorageKey,
+      JSON.stringify([...seenIds].slice(-200)),
+    );
+
+    if (
+      "Notification" in window &&
+      browserNotificationPermission === "granted"
+    ) {
+      unseenNotifications.slice(0, 3).forEach((notification) => {
+        const deviceNotification = new Notification(notification.title, {
+          body: notification.detail,
+          icon: "/saharavanta-logo.png",
+          tag: notification.id,
+        });
+
+        deviceNotification.onclick = () => {
+          window.focus();
+          setActiveSection(notification.section);
+          deviceNotification.close();
+        };
+      });
+    }
+  }, [
+    adminNotifications,
+    browserNotificationPermission,
+    isAuthenticated,
+    notificationIdSignature,
+  ]);
+
+  async function enableBrowserNotifications() {
+    if (
+      typeof window === "undefined" ||
+      !("Notification" in window) ||
+      !("serviceWorker" in navigator) ||
+      !("PushManager" in window)
+    ) {
+      setMessage("This browser does not support background push notifications.");
+      return;
+    }
+
+    if (!window.isSecureContext) {
+      setMessage(
+        "Background notifications need HTTPS or localhost. Open http://localhost:3000/admin on this device, then try again.",
+      );
+      return;
+    }
+
+    setIsEnablingPush(true);
+
+    try {
+      const configResponse = await fetch("/api/admin/push-subscriptions");
+      const config = (await configResponse.json()) as {
+        configured?: boolean;
+        publicKey?: string;
+        count?: number;
+        error?: string;
+      };
+
+      if (!configResponse.ok || !config.configured || !config.publicKey) {
+        throw new Error(config.error || "Push notification keys are not configured.");
+      }
+
+      const permission = await Notification.requestPermission();
+      setBrowserNotificationPermission(permission);
+
+      if (permission !== "granted") {
+        setMessage("Device notifications were not enabled.");
+        return;
+      }
+
+      await navigator.serviceWorker.register("/admin-push-sw.js", {
+        scope: "/",
+      });
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await subscribeToAdminPush(
+        registration,
+        config.publicKey,
+      );
+
+      const response = await fetch("/api/admin/push-subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subscription: subscription.toJSON() }),
+      });
+
+      if (!response.ok) {
+        const data = (await response.json()) as { error?: string };
+        throw new Error(data.error || "Could not save push subscription.");
+      }
+
+      setPushConfigured(true);
+      setPushEnabledForDevice(true);
+      setPushSubscriptionCount(Math.max(config.count ?? 0, 1));
+      setMessage("True background notifications enabled for this device.");
+    } catch (error) {
+      setMessage(getPushSetupErrorMessage(error));
+    } finally {
+      setIsEnablingPush(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let ignore = false;
+
+    fetch("/api/admin/push-subscriptions")
+      .then((response) => response.json() as Promise<{ configured?: boolean; count?: number }>)
+      .then(async (data) => {
+        if (ignore) return;
+        setPushConfigured(Boolean(data.configured));
+        setPushSubscriptionCount(data.count ?? 0);
+
+        if (
+          typeof window !== "undefined" &&
+          window.isSecureContext &&
+          "serviceWorker" in navigator &&
+          "PushManager" in window
+        ) {
+          const registration = await navigator.serviceWorker.getRegistration("/");
+          const subscription = await registration?.pushManager.getSubscription();
+
+          if (!ignore) {
+            setPushEnabledForDevice(Boolean(subscription));
+          }
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setPushConfigured(false);
+          setPushEnabledForDevice(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const imageTargets: Array<{ key: string; url: string }> = [];
@@ -2369,6 +2697,7 @@ export default function AdminTripsPage() {
                 { id: "settings", label: "Settings", icon: Settings },
               ].map((item) => {
                 const Icon = item.icon;
+                const badgeCount = sectionBadges[item.id] ?? 0;
 
                 return (
                   <motion.button
@@ -2391,6 +2720,17 @@ export default function AdminTripsPage() {
                     <span className="truncate whitespace-nowrap">
                       {item.label}
                     </span>
+                    {badgeCount > 0 && (
+                      <span
+                        className={`ml-auto inline-flex min-w-6 items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
+                          activeSection === item.id
+                            ? "bg-stone-950 text-white"
+                            : "bg-amber-300 text-stone-950"
+                        }`}
+                      >
+                        {badgeCount > 99 ? "99+" : badgeCount}
+                      </span>
+                    )}
                   </motion.button>
                 );
               })}
@@ -2493,34 +2833,69 @@ export default function AdminTripsPage() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 text-center sm:w-[24rem]">
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
+                <div className="space-y-3 sm:w-[24rem]">
+                  <button
+                    type="button"
+                    onClick={enableBrowserNotifications}
+                    disabled={isEnablingPush || pushEnabledForDevice}
+                    className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/15 disabled:cursor-default disabled:text-emerald-200"
                   >
-                    <p className="text-2xl font-bold">{trips.length}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
-                      Trips
+                    <span className="inline-flex items-center gap-2">
+                      <Bell size={17} />
+                      {pushEnabledForDevice
+                        ? "Background notifications on"
+                        : isEnablingPush
+                          ? "Enabling notifications..."
+                          : "Enable background notifications"}
+                    </span>
+                    <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs uppercase tracking-wide text-stone-300">
+                      {pushEnabledForDevice
+                        ? `${pushSubscriptionCount} device${pushSubscriptionCount === 1 ? "" : "s"}`
+                        : pushConfigured
+                          ? browserNotificationPermission
+                          : "setup needed"}
+                    </span>
+                  </button>
+                  {!pushEnabledForDevice && (
+                    <p className="text-xs leading-relaxed text-stone-300">
+                      Use Chrome or Edge on HTTPS, or open this admin from
+                      {" "}
+                      <span className="font-semibold text-white">
+                        http://localhost:3000/admin
+                      </span>
+                      {" "}
+                      for local testing.
                     </p>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
-                  >
-                    <p className="text-2xl font-bold">{experiences.length}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
-                      Experiences
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ y: -4 }}
-                    className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
-                  >
-                    <p className="text-2xl font-bold">{pendingBookings}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
-                      Pending
-                    </p>
-                  </motion.div>
+                  )}
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
+                    >
+                      <p className="text-2xl font-bold">{trips.length}</p>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
+                        Trips
+                      </p>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
+                    >
+                      <p className="text-2xl font-bold">{experiences.length}</p>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
+                        Experiences
+                      </p>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ y: -4 }}
+                      className="rounded-2xl bg-white/10 p-4 backdrop-blur-md ring-1 ring-white/15"
+                    >
+                      <p className="text-2xl font-bold">{pendingBookings}</p>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-300">
+                        Pending
+                      </p>
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -2542,6 +2917,92 @@ export default function AdminTripsPage() {
               <motion.div key={activeSection} {...sectionTransition}>
                 {activeSection === "overview" && (
                   <section className="mt-8 space-y-8">
+                    <section className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-xl shadow-stone-950/5">
+                      <div className="flex flex-col gap-4 border-b border-stone-200 bg-gradient-to-r from-stone-950 to-stone-800 p-6 text-white lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-300 text-stone-950">
+                            <Bell size={22} />
+                          </div>
+                          <div>
+                            <h3 className="text-2xl font-bold">What&apos;s new</h3>
+                            <p className="mt-1 text-sm text-stone-300">
+                              Fresh messages, pending bookings, and catalog issues surface here first.
+                            </p>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3 text-center">
+                          <div className="rounded-2xl bg-white/10 px-4 py-3">
+                            <p className="text-2xl font-bold">{newLeads.length}</p>
+                            <p className="text-xs font-semibold uppercase tracking-wider text-stone-300">Messages</p>
+                          </div>
+                          <div className="rounded-2xl bg-white/10 px-4 py-3">
+                            <p className="text-2xl font-bold">{pendingBookingRecords.length}</p>
+                            <p className="text-xs font-semibold uppercase tracking-wider text-stone-300">Bookings</p>
+                          </div>
+                          <div className="rounded-2xl bg-white/10 px-4 py-3">
+                            <p className="text-2xl font-bold">{contentIssues.length}</p>
+                            <p className="text-xs font-semibold uppercase tracking-wider text-stone-300">Issues</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-4 p-5 lg:grid-cols-2">
+                        {adminNotifications.length > 0 ? (
+                          adminNotifications.slice(0, 8).map((notification) => (
+                            <motion.button
+                              key={notification.id}
+                              type="button"
+                              whileHover={{ y: -3 }}
+                              onClick={() => setActiveSection(notification.section)}
+                              className="group flex items-start gap-4 rounded-2xl border border-stone-200 bg-stone-50 p-4 text-left transition hover:border-primary/50 hover:bg-white hover:shadow-lg"
+                            >
+                              <span
+                                className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                                  notification.tone === "green"
+                                    ? "bg-emerald-50 text-emerald-700"
+                                    : notification.tone === "red"
+                                      ? "bg-red-50 text-red-700"
+                                      : notification.tone === "sky"
+                                        ? "bg-sky-50 text-sky-700"
+                                        : "bg-amber-50 text-amber-700"
+                                }`}
+                              >
+                                {notification.tone === "red" ? (
+                                  <CircleAlert size={18} />
+                                ) : notification.section === "leads" ? (
+                                  <MessageCircle size={18} />
+                                ) : notification.section === "bookings" ? (
+                                  <Users size={18} />
+                                ) : (
+                                  <Bell size={18} />
+                                )}
+                              </span>
+                              <span className="min-w-0 flex-1">
+                                <span className="flex items-center gap-2">
+                                  <span className="truncate font-bold text-stone-900">
+                                    {notification.title}
+                                  </span>
+                                  <span className="rounded-full bg-white px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-primary shadow-sm">
+                                    New
+                                  </span>
+                                </span>
+                                <span className="mt-1 line-clamp-2 block text-sm leading-6 text-stone-600">
+                                  {notification.detail}
+                                </span>
+                                <span className="mt-3 inline-flex text-xs font-bold uppercase tracking-wider text-primary group-hover:underline">
+                                  Open {notification.section}
+                                </span>
+                              </span>
+                            </motion.button>
+                          ))
+                        ) : (
+                          <div className="rounded-2xl border border-dashed border-stone-300 p-8 text-center text-sm font-semibold text-stone-500 lg:col-span-2">
+                            No new admin notifications. Everything is quiet.
+                          </div>
+                        )}
+                      </div>
+                    </section>
+
                     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                       <StatCard
                         label="Trips"
@@ -3856,42 +4317,88 @@ export default function AdminTripsPage() {
 
                 {activeSection === "leads" && (
                   <section className="mt-8 rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                    <div className="mb-6 flex items-center justify-between gap-4 border-b border-stone-200 pb-6">
+                    <div className="mb-6 flex flex-col gap-5 border-b border-stone-200 pb-6 lg:flex-row lg:items-center lg:justify-between">
                       <div>
                         <h3 className="text-2xl font-bold text-stone-900">
-                          Leads
+                          Messages & leads
                         </h3>
                         <p className="mt-1 text-sm text-stone-500">
-                          Track inquiry status and sales pipeline.
+                          Read contact messages, track inquiry status, and move each lead through the sales pipeline.
                         </p>
                       </div>
-                      <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-stone-600">
-                        {leads.length} leads
-                      </span>
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div className="rounded-2xl bg-emerald-50 px-4 py-3">
+                          <p className="text-2xl font-bold text-emerald-800">{newLeads.length}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">New</p>
+                        </div>
+                        <div className="rounded-2xl bg-amber-50 px-4 py-3">
+                          <p className="text-2xl font-bold text-amber-800">{openLeads}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">Open</p>
+                        </div>
+                        <div className="rounded-2xl bg-stone-100 px-4 py-3">
+                          <p className="text-2xl font-bold text-stone-900">{leads.length}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">Total</p>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="grid gap-4 lg:grid-cols-2">
-                      {leads.map((lead) => (
+                      {[...leads]
+                        .sort(
+                          (first, second) =>
+                            new Date(second.createdAt).getTime() -
+                            new Date(first.createdAt).getTime(),
+                        )
+                        .map((lead) => (
                         <div
                           key={lead.id}
-                          className="rounded-2xl border border-stone-200 p-4"
+                          className={`rounded-2xl border p-4 ${
+                            lead.status === "new"
+                              ? "border-emerald-200 bg-emerald-50/45"
+                              : "border-stone-200"
+                          }`}
                         >
                           <div className="flex items-start justify-between gap-4">
                             <div>
-                              <p className="font-bold text-stone-900">
-                                {lead.name}
-                              </p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <p className="font-bold text-stone-900">
+                                  {lead.name}
+                                </p>
+                                {lead.status === "new" && (
+                                  <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-emerald-700">
+                                    New message
+                                  </span>
+                                )}
+                              </div>
                               <p className="mt-1 text-sm text-stone-500">
                                 {lead.email}
+                              </p>
+                              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-400">
+                                {new Date(lead.createdAt).toLocaleString()}
                               </p>
                             </div>
                             <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold capitalize text-amber-800">
                               {lead.source}
                             </span>
                           </div>
-                          <p className="mt-4 text-sm text-stone-700">
-                            {lead.interest}
-                          </p>
+                          <div className="mt-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-stone-200/70">
+                            <p className="text-xs font-bold uppercase tracking-wider text-primary-dark">
+                              Subject
+                            </p>
+                            <p className="mt-1 text-sm font-semibold text-stone-800">
+                              {lead.interest}
+                            </p>
+                            {lead.message && (
+                              <>
+                                <p className="mt-4 text-xs font-bold uppercase tracking-wider text-primary-dark">
+                                  Message
+                                </p>
+                                <p className="mt-1 whitespace-pre-line text-sm leading-6 text-stone-700">
+                                  {lead.message}
+                                </p>
+                              </>
+                            )}
+                          </div>
                           <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                             <FancySelect
                               value={lead.status}
@@ -3917,6 +4424,11 @@ export default function AdminTripsPage() {
                           </div>
                         </div>
                       ))}
+                      {leads.length === 0 && (
+                        <div className="rounded-2xl border border-dashed border-stone-300 p-8 text-center text-sm text-stone-500 lg:col-span-2">
+                          No messages or leads yet.
+                        </div>
+                      )}
                     </div>
                   </section>
                 )}

@@ -1,12 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, Heart, Globe, ChevronDown } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations, type LanguageCode, type CurrencyCode, currencies } from "@/lib/utils"
+import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navLinks = [
@@ -51,14 +51,15 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between lg:h-24">
           <Link href="/" className="flex shrink-0 items-center" aria-label="Saharavanta Morocco home">
-            <Image
+            <ImageWithFallback
               src="/saharavanta-logo.png"
               alt="Saharavanta Morocco"
               width={1024}
               height={378}
-              priority
+              preload
+              parallaxOffset={4}
+              parallaxStrength={0.4}
               className="h-auto w-44 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-56 lg:w-64"
-              style={{ background: "none" }}
             />
           </Link>
 

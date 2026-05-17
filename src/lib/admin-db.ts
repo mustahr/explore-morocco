@@ -6,6 +6,14 @@ export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled"
 export type PaymentStatus = "unpaid" | "deposit" | "paid" | "refunded"
 export type LeadStatus = "new" | "contacted" | "quoted" | "won" | "lost"
 
+export interface AdminPushSubscription {
+  id: string
+  endpoint: string
+  subscription: PushSubscriptionJSON
+  createdAt: string
+  updatedAt: string
+}
+
 export interface Booking {
   id: string
   tripId: string
@@ -26,6 +34,7 @@ export interface Lead {
   name: string
   email: string
   interest: string
+  message?: string
   source: string
   status: LeadStatus
   createdAt: string
@@ -33,6 +42,7 @@ export interface Lead {
 
 const bookingsPath = path.join(process.cwd(), "data", "bookings.json")
 const leadsPath = path.join(process.cwd(), "data", "leads.json")
+const pushSubscriptionsPath = path.join(process.cwd(), "data", "push-subscriptions.json")
 
 async function readJsonDatabase<T>(filePath: string): Promise<T[]> {
   const file = await readFile(filePath, "utf8")
@@ -162,4 +172,71 @@ export async function replaceBookings(bookings: Booking[]) {
 export async function replaceLeads(leads: Lead[]) {
   await replaceCloudRecords("leads", leads.map((lead) => ({ key: lead.id, data: lead as unknown as Record<string, unknown> })))
   return leads
+}
+
+export async function getAdminPushSubscriptions() {
+  const cloudSubscriptions = await getCloudRecords<AdminPushSubscription>("admin_push_subscriptions")
+  if (cloudSubscriptions !== undefined) return cloudSubscriptions
+
+  try {
+    return await readJsonDatabase<AdminPushSubscription>(pushSubscriptionsPath)
+  } catch {
+    return []
+  }
+}
+
+export async function upsertAdminPushSubscription(subscription: PushSubscriptionJSON) {
+  if (!subscription.endpoint) throw new Error("Push subscription endpoint is required.")
+
+  const now = new Date().toISOString()
+  const id = Buffer.from(subscription.endpoint).toString("base64url")
+  const record: AdminPushSubscription = {
+    id,
+    endpoint: subscription.endpoint,
+    subscription,
+    createdAt: now,
+    updatedAt: now,
+  }
+  const cloudSubscriptions = await getCloudRecords<AdminPushSubscription>("admin_push_subscriptions")
+
+  if (cloudSubscriptions !== undefined) {
+    const existing = cloudSubscriptions.find((item) => item.endpoint === subscription.endpoint)
+    await upsertCloudRecord("admin_push_subscriptions", id, {
+      ...record,
+      createdAt: existing?.createdAt ?? record.createdAt,
+    })
+    return record
+  }
+
+  const subscriptions = await getAdminPushSubscriptions()
+  const existingIndex = subscriptions.findIndex((item) => item.endpoint === subscription.endpoint)
+
+  if (existingIndex >= 0) {
+    subscriptions[existingIndex] = {
+      ...record,
+      createdAt: subscriptions[existingIndex].createdAt,
+    }
+  } else {
+    subscriptions.unshift(record)
+  }
+
+  await writeJsonDatabase(pushSubscriptionsPath, subscriptions)
+  return record
+}
+
+export async function deleteAdminPushSubscription(endpoint: string) {
+  const id = Buffer.from(endpoint).toString("base64url")
+  const cloudSubscriptions = await getCloudRecords<AdminPushSubscription>("admin_push_subscriptions")
+
+  if (cloudSubscriptions !== undefined) {
+    await deleteCloudRecord("admin_push_subscriptions", id)
+    return true
+  }
+
+  const subscriptions = await getAdminPushSubscriptions()
+  await writeJsonDatabase(
+    pushSubscriptionsPath,
+    subscriptions.filter((item) => item.endpoint !== endpoint),
+  )
+  return true
 }

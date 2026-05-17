@@ -1,6 +1,7 @@
 import { createLead, getLeads } from "@/lib/admin-db"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
 import { notifyOperations } from "@/lib/notifications"
+import { sendAdminPushNotification } from "@/lib/admin-push"
 
 export const dynamic = "force-dynamic"
 
@@ -29,6 +30,7 @@ export async function POST(request: Request) {
     name: body.name.trim(),
     email: body.email.trim(),
     interest: body.interest?.trim() || body.message?.trim() || "General inquiry",
+    message: body.message?.trim(),
     source: body.source?.trim() || "Website contact form",
     status: "new",
     createdAt: new Date().toISOString(),
@@ -41,8 +43,16 @@ export async function POST(request: Request) {
       name: lead.name,
       email: lead.email,
       interest: lead.interest,
+      message: lead.message,
       source: lead.source,
     },
+  })
+
+  await sendAdminPushNotification({
+    title: `New message from ${lead.name}`,
+    body: lead.message || lead.interest || lead.email,
+    url: "/admin",
+    tag: lead.id,
   })
 
   return Response.json({ lead }, { status: 201 })

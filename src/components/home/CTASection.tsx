@@ -35,13 +35,13 @@ export function CTASection() {
         >
           <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-8">
             <Sparkles size={16} className="text-white" />
-            <span className="text-white/90 text-sm font-medium">Start Planning Today</span>
+            <span className="text-white/90 text-sm font-medium">Morocco tours with AI planning</span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-            Ready to Explore Morocco?
+            Ready to Make Your Morocco Dream Trip Real?
           </h2>
           <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Let our AI create a personalized itinerary just for you. No travel agent needed.
+            Choose the Moroccan experiences you love, then let our AI shape them into a personalized trip with routes, timing, and tour ideas.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

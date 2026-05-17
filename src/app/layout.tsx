@@ -25,10 +25,10 @@ const body = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
+    default: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
     template: `%s | ${siteName}`,
   },
-  description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco. Let AI create your perfect itinerary.",
+  description: "Discover Moroccan trips and tours, from Sahara escapes to medina experiences. Use AI planning to turn your dream Morocco trip into a personalized itinerary.",
   keywords: ["Morocco travel", "Morocco tours", "AI travel planner", "Marrakech", "Sahara desert", "Chefchaouen", "Morocco experiences"],
   applicationName: siteName,
   creator: siteName,
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
-    description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco.",
+    title: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
+    description: "Discover Moroccan trips and tours, then use AI planning to turn your dream trip into a personalized itinerary.",
     url: "/",
     siteName,
     type: "website",
@@ -57,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MoroccoAI - Plan Your Perfect Morocco Trip with AI",
-    description: "Discover curated experiences, hidden gems, and authentic adventures across Morocco.",
+    title: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
+    description: "Discover Moroccan trips and tours, then use AI planning to turn your dream trip into a personalized itinerary.",
   },
 }
 

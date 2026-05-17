@@ -511,6 +511,9 @@ export default function TripDetailClient({
                   <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
                     <p className="font-semibold">Booking request received.</p>
                     <p className="mt-1">Reference {bookingReference}. Our team will contact you shortly.</p>
+                    <Link href="/trips" className="mt-3 inline-flex text-sm font-semibold text-emerald-800 underline-offset-4 hover:underline">
+                      Back to trips
+                    </Link>
                   </div>
                 )}
 

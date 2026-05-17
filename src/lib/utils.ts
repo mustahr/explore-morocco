@@ -21,9 +21,9 @@ export function formatPrice(priceInMAD: number, currency: CurrencyCode = "MAD"):
 export const translations = {
   en: {
     nav: { home: "Home", trips: "Trips & Tours", destinations: "Destinations", experiences: "Experiences", blog: "Blog", about: "About", contact: "Contact", generateTrip: "AI Trip Generator" },
-    hero: { headline: "Plan your Morocco trip in seconds with AI", subheadline: "Discover curated experiences, hidden gems, and authentic adventures across Morocco. Let AI create your perfect itinerary.", ctaGenerate: "Generate your trip", ctaExplore: "Explore trips", promptPlaceholder: "Describe your dream Morocco trip..." },
+    hero: { headline: "Moroccan Trips & Tours, Planned with AI", subheadline: "Explore authentic Moroccan tours, desert escapes, medina walks, and coastal adventures. Tell us your dream trip, and our AI helps shape it into a personalized Morocco itinerary.", ctaGenerate: "Create my dream trip", ctaExplore: "Explore Morocco tours", promptPlaceholder: "Tell us your dream Moroccan tour..." },
     common: { price: "Price", duration: "Duration", rating: "Rating", reviews: "Reviews", bookNow: "Book Now", learnMore: "Learn More", readMore: "Read More", viewAll: "View All", featured: "Featured", popular: "Popular", search: "Search", filter: "Filter", save: "Save", share: "Share" },
-    footer: { description: "Your AI-powered Moroccan travel platform. Authentic experiences, local expertise, unforgettable memories.", quickLinks: "Quick Links", support: "Support", newsletter: "Newsletter", newsletterPlaceholder: "Enter your email", subscribe: "Subscribe", rights: "All rights reserved." },
+    footer: { description: "Moroccan trips and tours with smart AI planning, local expertise, and unforgettable experiences.", quickLinks: "Quick Links", support: "Support", newsletter: "Newsletter", newsletterPlaceholder: "Enter your email", subscribe: "Subscribe", rights: "All rights reserved." },
   },
   fr: {
     nav: { home: "Accueil", trips: "Voyages & Circuits", destinations: "Destinations", experiences: "Exp\u00E9riences", blog: "Blog", about: "\u00C0 propos", contact: "Contact", generateTrip: "G\u00E9n\u00E9rateur IA" },

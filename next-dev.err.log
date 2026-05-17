@@ -1,0 +1,959 @@
+⚠ Fast Refresh had to perform a full reload when ./src/lib/utils.ts changed. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head headCacheNode={{rsc:{...}, ...}}>
+                    <__next_viewport_boundary__>
+                    <MetadataWrapper>
+                      <div
+                        hidden={true}
+-                       bis_skin_checked="1"
+                      >
+                    ...
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en" className="space_grot..." suppressHydrationWarning={true}>
+                          <body className="min-h-full..." suppressHydrationWarning={true}>
+                            <AppProvider>
+                              <div
+                                dir="ltr"
+                                lang="en"
+-                               bis_skin_checked="1"
+                              >
+                                <GlobalImageHandler>
+                                <Analytics>
+                                <AnalyticsEvents>
+                                <AppShell>
+                                  <Navbar>
+                                    <motion.nav initial={{y:-100}} animate={{y:0}} transition={{duration:0.5}} ...>
+                                      <nav className="fixed top-..." style={{...}} ...>
+                                        <div
+                                          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+-                                         bis_skin_checked="1"
+                                        >
+                                          <div
+                                            className="flex h-20 items-center justify-between lg:h-24"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <LinkComponent>
+                                            <div
+                                              className="hidden lg:flex items-center gap-1"
+-                                             bis_skin_checked="1"
+                                            >
+                                            <div
+                                              className="flex items-center gap-3"
+-                                             bis_skin_checked="1"
+                                            >
+                                              <LinkComponent>
+                                              <LinkComponent>
+                                              <div
+                                                className="relative"
+-                                               bis_skin_checked="1"
+                                              >
+                                              <div
+                                                className="relative"
+-                                               bis_skin_checked="1"
+                                              >
+                                              ...
+                                        ...
+                                  ...
+                                    <Home>
+                                      <HeroSection>
+                                        <section className="relative m...">
+                                          <div
+                                            className="absolute inset-0"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <ImageWithFallback src={"https://..."} alt="Morocco la..." fill={true} ...>
+                                              <ParallaxImage fill={true} offset={96} className={undefined} strength={1}>
+                                                <div
+                                                  ref={{current:null}}
+                                                  className="absolute inset-0"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <motion.div className="absolute i..." style={{y:{...},top:-96, ...}}>
+                                                    <div
+                                                      className="absolute inset-x-0"
+                                                      style={{top:-96,bottom:-96,willChange:"transform",transform:"scale(1.18)"}}
+                                                      ref={function useMotionRef.useCallback}
+-                                                     bis_skin_checked="1"
+                                                    >
+                                            <div
+                                              className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 ..."
+-                                             bis_skin_checked="1"
+                                            >
+                                          <div
+                                            className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-32 ..."
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="mb-6 inline-flex items-center rounded-full border border-wh..."
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
++                                               {"Moroccan trips & tours, powered by AI"}
+                                            <h1>
+                                            <p>
+                                            <div
+                                              className="max-w-2xl mx-auto"
+-                                             bis_skin_checked="1"
+                                            >
+                                            <motion.div initial={{opacity:0}} animate={{opacity:1}} ...>
+                                              <div
+                                                className="flex flex-col sm:flex-row items-center justify-center gap-4..."
+                                                style={{opacity:0}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                            <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="flex items-center justify-center gap-8 mt-12 text-white/70"
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                                <div
+                                                  className="text-center"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                <div
+                                                  className="w-px h-10 bg-white/20"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                <div
+                                                  className="text-center"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                <div
+                                                  className="w-px h-10 bg-white/20"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                <div
+                                                  className="text-center"
+-                                                 bis_skin_checked="1"
+                                                >
+                                          <motion.div animate={{y:[...]}} transition={{duration:2, ...}} ...>
+                                            <div
+                                              className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50"
+                                              style={{}}
+                                              ref={function useMotionRef.useCallback}
+-                                             bis_skin_checked="1"
+                                            >
+                                              <div
+                                                className="w-6 h-10 border-2 border-white/30 rounded-full flex justify..."
+-                                               bis_skin_checked="1"
+                                              >
+                                                <div
+                                                  className="w-1 h-2 bg-white/50 rounded-full"
+-                                                 bis_skin_checked="1"
+                                                >
+                                      <FeaturedDestinations destinations={[...]}>
+                                        <section className="py-20 lg:p...">
+                                          <div
+                                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="text-center mb-16"
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                            <div
+                                              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+-                                             bis_skin_checked="1"
+                                            >
+                                              <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                                <div
+                                                  style={{opacity:0,transform:"translateY..."}}
+                                                  ref={function useMotionRef.useCallback}
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <LinkComponent href="/destinati..." className="group block">
+                                                    <a className="group block" ref={function} onClick={function onClick} ...>
+                                                      <div
+                                                        className="relative overflow-hidden rounded-2xl bg-white shado..."
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                        <div
+                                                          className="relative aspect-[4/3] overflow-hidden"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <ImageWithFallback src={"https://..."} alt="Marrakech" ...>
+                                                            <ParallaxImage fill={true} offset={64} className={undefined} ...>
+                                                              <div
+                                                                ref={{current:null}}
+                                                                className="absolute inset-0"
+-                                                               bis_skin_checked="1"
+                                                              >
+                                                                <motion.div className="absolute i..." ...>
+                                                                  <div
+                                                                    className="absolute inset-x-0"
+                                                                    style={{top:-64,bottom:-64,willChange:"transform",transform:"sc..."}}
+                                                                    ref={function useMotionRef.useCallback}
+-                                                                   bis_skin_checked="1"
+                                                                  >
+                                                          <div
+                                                            className="absolute inset-0 bg-gradient-to-t from-black/50..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute bottom-0 left-0 right-0 p-6"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <h3>
+                                                          <div
+                                                            className="flex items-center gap-2 text-white/90 text-sm"
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-..."
+-                                                         bis_skin_checked="1"
+                                                        >
+                                              <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                                <div
+                                                  style={{opacity:0,transform:"translateY..."}}
+                                                  ref={function useMotionRef.useCallback}
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <LinkComponent href="/destinati..." className="group block">
+                                                    <a className="group block" ref={function} onClick={function onClick} ...>
+                                                      <div
+                                                        className="relative overflow-hidden rounded-2xl bg-white shado..."
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                        <div
+                                                          className="relative aspect-[4/3] overflow-hidden"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <ImageWithFallback src="https://im..." alt="Chefchaouen" ...>
+                                                            <ParallaxImage fill={true} offset={64} className={undefined} ...>
+                                                              <div
+                                                                ref={{current:null}}
+                                                                className="absolute inset-0"
+-                                                               bis_skin_checked="1"
+                                                              >
+                                                                <motion.div className="absolute i..." ...>
+                                                                  <div
+                                                                    className="absolute inset-x-0"
+                                                                    style={{top:-64,bottom:-64,willChange:"transform",transform:"sc..."}}
+                                                                    ref={function useMotionRef.useCallback}
+-                                                                   bis_skin_checked="1"
+                                                                  >
+                                                          <div
+                                                            className="absolute inset-0 bg-gradient-to-t from-black/50..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute bottom-0 left-0 right-0 p-6"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <h3>
+                                                          <div
+                                                            className="flex items-center gap-2 text-white/90 text-sm"
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-..."
+-                                                         bis_skin_checked="1"
+                                                        >
+                                              <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                                <div
+                                                  style={{opacity:0,transform:"translateY..."}}
+                                                  ref={function useMotionRef.useCallback}
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <LinkComponent href="/destinati..." className="group block">
+                                                    <a className="group block" ref={function} onClick={function onClick} ...>
+                                                      <div
+                                                        className="relative overflow-hidden rounded-2xl bg-white shado..."
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                        <div
+                                                          className="relative aspect-[4/3] overflow-hidden"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <ImageWithFallback src="https://im..." alt="Sahara Desert" ...>
+                                                            <ParallaxImage fill={true} offset={64} className={undefined} ...>
+                                                              <div
+                                                                ref={{current:null}}
+                                                                className="absolute inset-0"
+-                                                               bis_skin_checked="1"
+                                                              >
+                                                                <motion.div className="absolute i..." ...>
+                                                                  <div
+                                                                    className="absolute inset-x-0"
+                                                                    style={{top:-64,bottom:-64,willChange:"transform",transform:"sc..."}}
+                                                                    ref={function useMotionRef.useCallback}
+-                                                                   bis_skin_checked="1"
+                                                                  >
+                                                          <div
+                                                            className="absolute inset-0 bg-gradient-to-t from-black/50..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute bottom-0 left-0 right-0 p-6"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <h3>
+                                                          <div
+                                                            className="flex items-center gap-2 text-white/90 text-sm"
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-..."
+-                                                         bis_skin_checked="1"
+                                                        >
+                                              <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                                <div
+                                                  style={{opacity:0,transform:"translateY..."}}
+                                                  ref={function useMotionRef.useCallback}
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <LinkComponent href="/destinati..." className="group block">
+                                                    <a className="group block" ref={function} onClick={function onClick} ...>
+                                                      <div
+                                                        className="relative overflow-hidden rounded-2xl bg-white shado..."
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                        <div
+                                                          className="relative aspect-[4/3] overflow-hidden"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <ImageWithFallback src="https://im..." alt="Fes" fill={true} ...>
+                                                            <ParallaxImage fill={true} offset={64} className={undefined} ...>
+                                                              <div
+                                                                ref={{current:null}}
+                                                                className="absolute inset-0"
+-                                                               bis_skin_checked="1"
+                                                              >
+                                                                <motion.div className="absolute i..." ...>
+                                                                  <div
+                                                                    className="absolute inset-x-0"
+                                                                    style={{top:-64,bottom:-64,willChange:"transform",transform:"sc..."}}
+                                                                    ref={function useMotionRef.useCallback}
+-                                                                   bis_skin_checked="1"
+                                                                  >
+                                                          <div
+                                                            className="absolute inset-0 bg-gradient-to-t from-black/50..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute bottom-0 left-0 right-0 p-6"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <h3>
+                                                          <div
+                                                            className="flex items-center gap-2 text-white/90 text-sm"
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-..."
+-                                                         bis_skin_checked="1"
+                                                        >
+                                              <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                                <div
+                                                  style={{opacity:0,transform:"translateY..."}}
+                                                  ref={function useMotionRef.useCallback}
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <LinkComponent href="/destinati..." className="group block">
+                                                    <a className="group block" ref={function} onClick={function onClick} ...>
+                                                      <div
+                                                        className="relative overflow-hidden rounded-2xl bg-white shado..."
+-                                                       bis_skin_checked="1"
+                                                      >
+                                                        <div
+                                                          className="relative aspect-[4/3] overflow-hidden"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <ImageWithFallback src="https://im..." alt="Essaouira" ...>
+                                                            <ParallaxImage fill={true} offset={64} className={undefined} ...>
+                                                              <div
+                                                                ref={{current:null}}
+                                                                className="absolute inset-0"
+-                                                               bis_skin_checked="1"
+                                                              >
+                                                                <motion.div className="absolute i..." ...>
+                                                                  <div
+                                                                    className="absolute inset-x-0"
+                                                                    style={{top:-64,bottom:-64,willChange:"transform",transform:"sc..."}}
+                                                                    ref={function useMotionRef.useCallback}
+-                                                                   bis_skin_checked="1"
+                                                                  >
+                                                          <div
+                                                            className="absolute inset-0 bg-gradient-to-t from-black/50..."
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute bottom-0 left-0 right-0 p-6"
+-                                                         bis_skin_checked="1"
+                                                        >
+                                                          <h3>
+                                                          <div
+                                                            className="flex items-center gap-2 text-white/90 text-sm"
+-                                                           bis_skin_checked="1"
+                                                          >
+                                                        <div
+                                                          className="absolute top-4 right-4 bg-white/90 backdrop-blur-..."
+-                                                         bis_skin_checked="1"
+                                                        >
+                                            <motion.div initial={{opacity:0}} whileInView={{opacity:1}} ...>
+                                              <div
+                                                className="text-center mt-12"
+                                                style={{opacity:0}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                      <FeaturedTrips>
+                                        <section className="py-20 lg:p...">
+                                          <div
+                                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="text-center mb-16"
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                            <div
+                                              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+-                                             bis_skin_checked="1"
+                                            >
+                                            <motion.div initial={{opacity:0}} whileInView={{opacity:1}} ...>
+                                              <div
+                                                className="text-center mt-12"
+                                                style={{opacity:0}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                      <ExperiencesPreview>
+                                        <section className="py-20 lg:p...">
+                                          <div
+                                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="text-center mb-16"
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                            <div
+                                              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6"
+-                                             bis_skin_checked="1"
+                                            >
+                                            <motion.div initial={{opacity:0}} whileInView={{opacity:1}} ...>
+                                              <div
+                                                className="text-center mt-12"
+                                                style={{opacity:0}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                      <TestimonialsSection>
+                                        <section className="py-20 lg:p...">
+                                          <div
+                                            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:20}} whileInView={{opacity:1,y:0}} ...>
+                                              <div
+                                                className="text-center mb-16"
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                            <div
+                                              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+-                                             bis_skin_checked="1"
+                                            >
+                                      <CTASection>
+                                        <section className="py-20 lg:p...">
+                                          <div
+                                            className="absolute inset-0"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <ImageWithFallback src={"https://..."} alt="Sahara desert" fill={true} ...>
+                                              <ParallaxImage fill={true} offset={76} className={undefined} strength={1}>
+                                                <div
+                                                  ref={{current:null}}
+                                                  className="absolute inset-0"
+-                                                 bis_skin_checked="1"
+                                                >
+                                                  <motion.div className="absolute i..." style={{y:{...},top:-76, ...}}>
+                                                    <div
+                                                      className="absolute inset-x-0"
+                                                      style={{top:-76,bottom:-76,willChange:"transform",transform:"scale(1.18)"}}
+                                                      ref={function useMotionRef.useCallback}
+-                                                     bis_skin_checked="1"
+                                                    >
+                                            <div
+                                              className="absolute inset-0 bg-gradient-to-r from-[#0D0D0D]/90 via-[#0D0..."
+-                                             bis_skin_checked="1"
+                                            >
+                                          <div
+                                            className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center"
+-                                           bis_skin_checked="1"
+                                          >
+                                            <motion.div initial={{opacity:0,y:30}} whileInView={{opacity:1,y:0}} ...>
+                                              <div
+                                                style={{opacity:0,transform:"translateY..."}}
+                                                ref={function useMotionRef.useCallback}
+-                                               bis_skin_checked="1"
+                                              >
+                                                <div
+                                                  className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-..."
+-                                                 bis_skin_checked="1"
+                                                >
+                                                <h2>
+                                                <p>
+                                                <div
+                                                  className="flex flex-col sm:flex-row items-center justify-center gap-4"
+-                                                 bis_skin_checked="1"
+                                                >
+                                  <Footer>
+                                    <footer className="relative i...">
+                                      <div
+                                        className="absolute inset-0 -z-20 bg-cover bg-center"
+                                        style={{backgroundImage:"url('https..."}}
+                                        aria-hidden="true"
+-                                       bis_skin_checked="1"
+                                      >
+                                      <div
+                                        className="absolute inset-0 -z-10 bg-[#0D0D0D]/88"
+                                        aria-hidden="true"
+-                                       bis_skin_checked="1"
+                                      >
+                                      <div
+                                        className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0D0D0D] via-[#0D0D0D..."
+                                        aria-hidden="true"
+-                                       bis_skin_checked="1"
+                                      >
+                                      <div
+                                        className="mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-16 sm..."
+-                                       bis_skin_checked="1"
+                                      >
+                                        <div
+                                          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
+-                                         bis_skin_checked="1"
+                                        >
+                                          <div
+-                                           bis_skin_checked="1"
+                                          >
+                                            <LinkComponent>
+                                            <p>
+                                            <div
+                                              className="flex gap-4"
+-                                             bis_skin_checked="1"
+                                            >
+                                          <div
+-                                           bis_skin_checked="1"
+                                          >
+                                          <div
+-                                           bis_skin_checked="1"
+                                          >
+                                          <div
+-                                           bis_skin_checked="1"
+                                          >
+                                            <h3>
+                                            <p>
+                                            <div
+                                              className="flex"
+-                                             bis_skin_checked="1"
+                                            >
+                                        <div
+                                          className="border-t border-stone-800 mt-12 pt-8 flex flex-col md:flex-row ju..."
+-                                         bis_skin_checked="1"
+                                        >
+                                          <p>
+                                          <div
+                                            className="flex gap-6"
+-                                           bis_skin_checked="1"
+                                          >
+                  ...
+ 
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+⨯ upstream image response failed for https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=1920&q=80 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=1920&q=80 404
+⨯ upstream image response failed for https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=1920&q=80 404
+[browser] Image with src "https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2000&q=80" was detected as the Largest Contentful Paint (LCP). Please add the `loading="eager"` property if this image is above the fold.
+Read more: https://nextjs.org/docs/app/api-reference/components/image#loading
+⨯ ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  [90m152 |[0m               </div>
+  [90m153 |[0m             </div>
+[31m[1m>[0m [90m154 |[0m                 </div>
+  [90m    |[0m                       [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m155 |[0m               </div>
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+  [90m156 |[0m             </div>
+  [90m157 |[0m           </motion.div>
+  [90m158 |[0m         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+⨯ ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  [90m152 |[0m               </div>
+  [90m153 |[0m             </div>
+[31m[1m>[0m [90m154 |[0m                 </div>
+  [90m    |[0m                       [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m155 |[0m               </div>
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+  [90m156 |[0m             </div>
+  [90m157 |[0m           </motion.div>
+  [90m158 |[0m         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+⨯ ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  [90m152 |[0m               </div>
+  [90m153 |[0m             </div>
+[31m[1m>[0m [90m154 |[0m                 </div>
+  [90m    |[0m                       [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m155 |[0m               </div>
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+  [90m156 |[0m             </div>
+  [90m157 |[0m           </motion.div>
+  [90m158 |[0m         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+[browser] Uncaught Error: ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(pages)/contact/page.tsx:154:23)
+    at <unknown> (Error: (./src/app/(pages)/contact/page.tsx:154:23)
+[browser] Uncaught Error: ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(pages)/contact/page.tsx:154:23)
+    at <unknown> (Error: (./src/app/(pages)/contact/page.tsx:154:23)
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+⨯ ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  [90m152 |[0m               </div>
+  [90m153 |[0m             </div>
+[31m[1m>[0m [90m154 |[0m                 </div>
+  [90m    |[0m                       [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m155 |[0m               </div>
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+  [90m156 |[0m             </div>
+  [90m157 |[0m           </motion.div>
+  [90m158 |[0m         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+
+[browser] ./src/app/(pages)/contact/page.tsx:154:23
+Expected '</', got 'jsx text'
+  152 |               </div>
+  153 |             </div>
+> 154 |                 </div>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 155 |               </div>
+      | ^^^^^^^^^^^^^^
+  156 |             </div>
+  157 |           </motion.div>
+  158 |         </div>
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(pages)/contact/page.tsx [Client Component Browser]
+    ./src/app/(pages)/contact/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(pages)/contact/page.tsx [Client Component SSR]
+    ./src/app/(pages)/contact/page.tsx [Server Component] 
+⨯ SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at async POST (src\app\api\admin\login\route.ts:6:17)
+  4 |
+  5 | export async function POST(request: Request) {
+> 6 |   const body = (await request.json()) as { password?: string }
+    |                 ^
+  7 |
+  8 |   if (!body.password || !verifyAdminPassword(body.password)) {
+  9 |     return Response.json({ error: "Invalid admin password" }, { status: 401 })
+⨯ SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at async POST (src\app\api\admin\login\route.ts:6:17)
+  4 |
+  5 | export async function POST(request: Request) {
+> 6 |   const body = (await request.json()) as { password?: string }
+    |                 ^
+  7 |
+  8 |   if (!body.password || !verifyAdminPassword(body.password)) {
+  9 |     return Response.json({ error: "Invalid admin password" }, { status: 401 })
+⚠ Fast Refresh had to perform a full reload due to a runtime error.

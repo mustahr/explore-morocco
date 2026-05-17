@@ -35,7 +35,7 @@ export function ImageWithFallback({
   sizes,
   preload,
   quality = 75,
-  parallax = false,
+  parallax = true,
   parallaxOffset = 36,
   parallaxClassName,
   parallaxStrength = 1,
