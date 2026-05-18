@@ -269,21 +269,76 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
-async function subscribeToAdminPush(
-  registration: ServiceWorkerRegistration,
-  publicKey: string,
-) {
-  const existingSubscription = await registration.pushManager.getSubscription();
+  async function subscribeToAdminPush(
+    registration: ServiceWorkerRegistration,
+    publicKey: string,
+  ) {
+    const existingSubscription = await registration.pushManager.getSubscription();
 
-  if (existingSubscription) {
-    return existingSubscription;
+    if (existingSubscription) {
+      const existingKey = existingSubscription.options.applicationServerKey;
+      const currentKey = urlBase64ToUint8Array(publicKey);
+      const existingKeyBytes = existingKey
+        ? new Uint8Array(existingKey)
+        : null;
+      const keyMatches =
+        existingKeyBytes &&
+        existingKeyBytes.length === currentKey.length &&
+        existingKeyBytes.every((value, index) => value === currentKey[index]);
+
+      if (!keyMatches) {
+        await existingSubscription.unsubscribe();
+      } else {
+        return existingSubscription;
+      }
+    }
+
+    return registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey),
+    });
   }
 
-  return registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(publicKey),
-  });
-}
+  async function getCurrentAdminPushSubscription() {
+    if (
+      typeof window === "undefined" ||
+      !window.isSecureContext ||
+      !("serviceWorker" in navigator) ||
+      !("PushManager" in window)
+    ) {
+      return null;
+    }
+
+    const configResponse = await fetch("/api/admin/push-subscriptions");
+    const config = (await configResponse.json()) as {
+      configured?: boolean;
+      publicKey?: string;
+    };
+
+    if (!configResponse.ok || !config.configured || !config.publicKey) {
+      return null;
+    }
+
+    const registration = await navigator.serviceWorker.getRegistration("/");
+    const subscription = await registration?.pushManager.getSubscription();
+
+    if (!subscription) return null;
+
+    const existingKey = subscription.options.applicationServerKey;
+    const currentKey = urlBase64ToUint8Array(config.publicKey);
+    const existingKeyBytes = existingKey ? new Uint8Array(existingKey) : null;
+    const keyMatches =
+      existingKeyBytes &&
+      existingKeyBytes.length === currentKey.length &&
+      existingKeyBytes.every((value, index) => value === currentKey[index]);
+
+    if (!keyMatches) {
+      await subscription.unsubscribe();
+      return null;
+    }
+
+    return subscription;
+  }
 
 function getPushSetupErrorMessage(error: unknown) {
   if (!(error instanceof Error)) {
@@ -1496,20 +1551,12 @@ export default function AdminTripsPage() {
         setPushConfigured(Boolean(data.configured));
         setPushSubscriptionCount(data.count ?? 0);
 
-        if (
-          typeof window !== "undefined" &&
-          window.isSecureContext &&
-          "serviceWorker" in navigator &&
-          "PushManager" in window
-        ) {
-          const registration = await navigator.serviceWorker.getRegistration("/");
-          const subscription = await registration?.pushManager.getSubscription();
+          const subscription = await getCurrentAdminPushSubscription();
 
           if (!ignore) {
             setPushEnabledForDevice(Boolean(subscription));
           }
-        }
-      })
+        })
       .catch(() => {
         if (!ignore) {
           setPushConfigured(false);

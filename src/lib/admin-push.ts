@@ -37,6 +37,7 @@ export async function sendAdminPushNotification(payload: AdminPushPayload) {
 
   const subscriptions = await getAdminPushSubscriptions()
   let sent = 0
+  let failed = 0
 
   await Promise.all(
     subscriptions.map(async (record) => {
@@ -52,6 +53,7 @@ export async function sendAdminPushNotification(payload: AdminPushPayload) {
         )
         sent += 1
       } catch (error) {
+        failed += 1
         const statusCode =
           typeof error === "object" &&
           error !== null &&
@@ -62,9 +64,15 @@ export async function sendAdminPushNotification(payload: AdminPushPayload) {
         if (statusCode === 404 || statusCode === 410) {
           await deleteAdminPushSubscription(record.endpoint)
         }
+
+        console.error("Admin push notification failed", {
+          endpoint: record.endpoint,
+          statusCode,
+          error,
+        })
       }
     }),
   )
 
-  return { sent, configured: true }
+  return { sent, failed, configured: true }
 }
