@@ -231,18 +231,28 @@ const allowedMediaTypes = new Set([
 ]);
 const maxMediaUploadBytes = 10 * 1024 * 1024;
 const adminNotificationStorageKey = "morocco-admin-seen-notifications";
+const adminNotificationOverviewTtlMs = 24 * 60 * 60 * 1000;
 
-function readSeenAdminNotificationIds() {
-  if (typeof window === "undefined") return new Set<string>();
+function readSeenAdminNotificationTimes() {
+  if (typeof window === "undefined") return {};
 
   try {
-    const storedIds = JSON.parse(
+    const storedValue = JSON.parse(
       window.localStorage.getItem(adminNotificationStorageKey) ?? "[]",
-    ) as string[];
+    ) as string[] | Record<string, number>;
 
-    return new Set(storedIds);
+    if (Array.isArray(storedValue)) {
+      const now = Date.now();
+      return Object.fromEntries(storedValue.map((id) => [id, now]));
+    }
+
+    return Object.fromEntries(
+      Object.entries(storedValue).filter(
+        ([id, seenAt]) => id && Number.isFinite(seenAt),
+      ),
+    );
   } catch {
-    return new Set<string>();
+    return {};
   }
 }
 
@@ -1018,9 +1028,10 @@ export default function AdminTripsPage() {
   const [pushSubscriptionCount, setPushSubscriptionCount] = useState(0);
   const [isEnablingPush, setIsEnablingPush] = useState(false);
   const [isTestingPush, setIsTestingPush] = useState(false);
-  const seenNotificationIdsRef = useRef<Set<string>>(
-    readSeenAdminNotificationIds(),
-  );
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
+  const [seenNotificationTimes, setSeenNotificationTimes] = useState<
+    Record<string, number>
+  >(readSeenAdminNotificationTimes);
 
   const isEditing = Boolean(selectedTripId);
   const selectedTrip = useMemo(
@@ -1413,8 +1424,14 @@ export default function AdminTripsPage() {
 
     return secondTime - firstTime;
   });
+  const visibleAdminNotifications = adminNotifications.filter((notification) => {
+    if (!notification.createdAt) return true;
+
+    const seenAt = seenNotificationTimes[notification.id];
+    return !seenAt || currentTime - seenAt < adminNotificationOverviewTtlMs;
+  });
   const sectionBadges: Record<string, number> = {
-    overview: adminNotifications.length,
+    overview: visibleAdminNotifications.length,
     bookings: pendingBookingRecords.length,
     leads: newLeads.length,
     content: contentIssues.length,
@@ -1424,35 +1441,67 @@ export default function AdminTripsPage() {
     .join("|");
 
   useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentTime(Date.now());
+    }, 60 * 1000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     if (!isAuthenticated) return;
 
-    const seenIds = seenNotificationIdsRef.current;
     const storageWasInitialized = Boolean(
       window.localStorage.getItem(adminNotificationStorageKey),
     );
-    const currentIds = adminNotifications.map((notification) => notification.id);
+    const now = Date.now();
+    const currentIds = new Set(
+      adminNotifications.map((notification) => notification.id),
+    );
+    const nextSeenNotificationTimes = { ...seenNotificationTimes };
+    let didChangeSeenTimes = false;
 
     if (!storageWasInitialized) {
-      currentIds.forEach((id) => seenIds.add(id));
+      currentIds.forEach((id) => {
+        nextSeenNotificationTimes[id] = now;
+      });
       window.localStorage.setItem(
         adminNotificationStorageKey,
-        JSON.stringify([...seenIds]),
+        JSON.stringify(nextSeenNotificationTimes),
       );
+      setSeenNotificationTimes(nextSeenNotificationTimes);
       return;
     }
 
     const unseenNotifications = adminNotifications.filter(
-      (notification) => !seenIds.has(notification.id),
+      (notification) => !nextSeenNotificationTimes[notification.id],
     );
+
+    unseenNotifications.forEach((notification) => {
+      nextSeenNotificationTimes[notification.id] = now;
+      didChangeSeenTimes = true;
+    });
+
+    Object.keys(nextSeenNotificationTimes).forEach((id) => {
+      const seenAt = nextSeenNotificationTimes[id];
+      const isCurrent = currentIds.has(id);
+
+      if (!isCurrent || now - seenAt > adminNotificationOverviewTtlMs * 7) {
+        delete nextSeenNotificationTimes[id];
+        didChangeSeenTimes = true;
+      }
+    });
+
+    if (didChangeSeenTimes) {
+      window.localStorage.setItem(
+        adminNotificationStorageKey,
+        JSON.stringify(nextSeenNotificationTimes),
+      );
+      setSeenNotificationTimes(nextSeenNotificationTimes);
+    }
 
     if (unseenNotifications.length === 0) return;
-
-    unseenNotifications.forEach((notification) => seenIds.add(notification.id));
-    window.localStorage.setItem(
-      adminNotificationStorageKey,
-      JSON.stringify([...seenIds].slice(-200)),
-    );
 
     if (
       "Notification" in window &&
@@ -1477,6 +1526,7 @@ export default function AdminTripsPage() {
     browserNotificationPermission,
     isAuthenticated,
     notificationIdSignature,
+    seenNotificationTimes,
   ]);
 
   async function enableBrowserNotifications() {
@@ -3060,8 +3110,8 @@ export default function AdminTripsPage() {
                       </div>
 
                       <div className="grid gap-4 p-5 lg:grid-cols-2">
-                        {adminNotifications.length > 0 ? (
-                          adminNotifications.slice(0, 8).map((notification) => (
+                        {visibleAdminNotifications.length > 0 ? (
+                          visibleAdminNotifications.slice(0, 8).map((notification) => (
                             <motion.button
                               key={notification.id}
                               type="button"
