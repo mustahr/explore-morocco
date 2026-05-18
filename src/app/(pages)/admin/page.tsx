@@ -948,12 +948,58 @@ type ContentIssue = {
 
 type AdminNotification = {
   id: string;
-  section: string;
+  section: AdminSection;
   title: string;
   detail: string;
   tone: "amber" | "green" | "red" | "sky";
   createdAt?: string;
 };
+
+const adminSections = [
+  "overview",
+  "trips",
+  "destinations",
+  "experiences",
+  "blog",
+  "testimonials",
+  "guides",
+  "site-content",
+  "bookings",
+  "leads",
+  "content",
+  "database",
+  "settings",
+] as const;
+
+type AdminSection = (typeof adminSections)[number];
+
+function isAdminSection(section: string | null): section is AdminSection {
+  return Boolean(section && adminSections.includes(section as AdminSection));
+}
+
+function formatAdminNotificationTime(createdAt: string | undefined, now: number) {
+  if (!createdAt) return "Needs attention";
+
+  const createdTime = new Date(createdAt).getTime();
+  if (!Number.isFinite(createdTime)) return "";
+
+  const elapsedSeconds = Math.max(0, Math.floor((now - createdTime) / 1000));
+  const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+  const elapsedHours = Math.floor(elapsedMinutes / 60);
+  const elapsedDays = Math.floor(elapsedHours / 24);
+
+  if (elapsedMinutes < 1) return "Just now";
+  if (elapsedMinutes < 60) return `${elapsedMinutes}m ago`;
+  if (elapsedHours < 24) return `${elapsedHours}h ago`;
+  if (elapsedDays < 7) return `${elapsedDays}d ago`;
+
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(createdAt));
+}
 
 type BookingSortOption =
   | "newest"
@@ -1011,7 +1057,7 @@ export default function AdminTripsPage() {
   const [adminPassword, setAdminPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
-  const [activeSection, setActiveSection] = useState("overview");
+  const [activeSection, setActiveSection] = useState<AdminSection>("overview");
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
   const [brokenImageKeys, setBrokenImageKeys] = useState<string[]>([]);
   const [isCheckingImages, setIsCheckingImages] = useState(false);
@@ -1032,6 +1078,23 @@ export default function AdminTripsPage() {
   const [seenNotificationTimes, setSeenNotificationTimes] = useState<
     Record<string, number>
   >(readSeenAdminNotificationTimes);
+
+  function updateAdminSectionUrl(section: AdminSection, mode: "push" | "replace" = "push") {
+    if (typeof window === "undefined") return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("section", section);
+    window.history[mode === "push" ? "pushState" : "replaceState"](
+      { section },
+      "",
+      url,
+    );
+  }
+
+  function showAdminSection(section: AdminSection, mode: "push" | "replace" = "push") {
+    setActiveSection(section);
+    updateAdminSectionUrl(section, mode);
+  }
 
   const isEditing = Boolean(selectedTripId);
   const selectedTrip = useMemo(
@@ -1396,7 +1459,7 @@ export default function AdminTripsPage() {
   const adminNotifications: AdminNotification[] = [
     ...newLeads.slice(0, 5).map((lead) => ({
       id: `lead-${lead.id}`,
-      section: "leads",
+      section: "leads" as const,
       title: `New message from ${lead.name}`,
       detail: lead.message || lead.interest || lead.email,
       tone: "green" as const,
@@ -1404,7 +1467,7 @@ export default function AdminTripsPage() {
     })),
     ...pendingBookingRecords.slice(0, 5).map((booking) => ({
       id: `booking-${booking.id}`,
-      section: "bookings",
+      section: "bookings" as const,
       title: `Pending booking: ${booking.customerName}`,
       detail: `${booking.travelers} travelers - ${booking.startDate} - MAD ${booking.totalMAD.toLocaleString()}`,
       tone: "amber" as const,
@@ -1412,7 +1475,7 @@ export default function AdminTripsPage() {
     })),
     ...contentIssues.slice(0, 4).map((issue) => ({
       id: `content-${issue.id}`,
-      section: "content",
+      section: "content" as const,
       title: `${issue.type} needs attention`,
       detail: `${issue.title}: ${issue.missing.join(", ")}`,
       tone: "red" as const,
@@ -1439,6 +1502,21 @@ export default function AdminTripsPage() {
   const notificationIdSignature = adminNotifications
     .map((notification) => notification.id)
     .join("|");
+
+  useEffect(() => {
+    const syncSectionFromUrl = () => {
+      const section = new URLSearchParams(window.location.search).get("section");
+
+      if (isAdminSection(section)) {
+        setActiveSection(section);
+      }
+    };
+
+    syncSectionFromUrl();
+    window.addEventListener("popstate", syncSectionFromUrl);
+
+    return () => window.removeEventListener("popstate", syncSectionFromUrl);
+  }, []);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
@@ -1516,7 +1594,7 @@ export default function AdminTripsPage() {
 
         deviceNotification.onclick = () => {
           window.focus();
-          setActiveSection(notification.section);
+          showAdminSection(notification.section);
           deviceNotification.close();
         };
       });
@@ -2102,84 +2180,84 @@ export default function AdminTripsPage() {
     setSelectedTripId(null);
     setForm(emptyTripForm);
     setMessage("");
-    setActiveSection("trips");
+    showAdminSection("trips");
   }
 
   function startNewExperience() {
     setSelectedExperienceId(null);
     setExperienceForm(emptyExperienceForm);
     setMessage("");
-    setActiveSection("experiences");
+    showAdminSection("experiences");
   }
 
   function startNewDestination() {
     setSelectedDestinationSlug(null);
     setDestinationForm(emptyDestinationForm);
     setMessage("");
-    setActiveSection("destinations");
+    showAdminSection("destinations");
   }
 
   function startNewBlogPost() {
     setSelectedBlogSlug(null);
     setBlogPostForm(emptyBlogPostForm);
     setMessage("");
-    setActiveSection("blog");
+    showAdminSection("blog");
   }
 
   function startNewTestimonial() {
     setSelectedTestimonialId(null);
     setTestimonialForm(emptyTestimonialForm);
     setMessage("");
-    setActiveSection("testimonials");
+    showAdminSection("testimonials");
   }
 
   function startNewGuide() {
     setSelectedGuideId(null);
     setGuideForm(emptyGuideForm);
     setMessage("");
-    setActiveSection("guides");
+    showAdminSection("guides");
   }
 
   function startEditingTrip(trip: Trip) {
     setSelectedTripId(trip.id);
     setForm(tripToFormState(trip));
     setMessage("");
-    setActiveSection("trips");
+    showAdminSection("trips");
   }
 
   function startEditingExperience(experience: Experience) {
     setSelectedExperienceId(experience.id);
     setExperienceForm(experienceToFormState(experience));
     setMessage("");
-    setActiveSection("experiences");
+    showAdminSection("experiences");
   }
 
   function startEditingDestination(destination: Destination) {
     setSelectedDestinationSlug(destination.slug);
     setDestinationForm(destinationToFormState(destination));
     setMessage("");
-    setActiveSection("destinations");
+    showAdminSection("destinations");
   }
 
   function startEditingBlogPost(post: BlogPost) {
     setSelectedBlogSlug(post.slug);
     setBlogPostForm(blogPostToFormState(post));
     setMessage("");
-    setActiveSection("blog");
+    showAdminSection("blog");
   }
 
   function startEditingTestimonial(testimonial: Testimonial) {
     setSelectedTestimonialId(testimonial.id);
     setTestimonialForm(testimonialToFormState(testimonial));
     setMessage("");
-    setActiveSection("testimonials");
+    showAdminSection("testimonials");
   }
 
   function startEditingGuide(guide: Guide) {
     setSelectedGuideId(guide.id);
     setGuideForm(guideToFormState(guide));
     setMessage("");
-    setActiveSection("guides");
+    showAdminSection("guides");
   }
 
   async function saveTrip() {
@@ -2851,7 +2929,7 @@ export default function AdminTripsPage() {
                     key={item.id}
                     type="button"
                     onClick={() => {
-                      setActiveSection(item.id);
+                      showAdminSection(item.id as AdminSection);
                       setIsAdminMenuOpen(false);
                     }}
                     whileHover={{ x: 4 }}
@@ -3116,7 +3194,7 @@ export default function AdminTripsPage() {
                               key={notification.id}
                               type="button"
                               whileHover={{ y: -3 }}
-                              onClick={() => setActiveSection(notification.section)}
+                              onClick={() => showAdminSection(notification.section)}
                               className="group flex items-start gap-4 rounded-2xl border border-stone-200 bg-stone-50 p-4 text-left transition hover:border-primary/50 hover:bg-white hover:shadow-lg"
                             >
                               <span
@@ -3151,6 +3229,9 @@ export default function AdminTripsPage() {
                                 </span>
                                 <span className="mt-1 line-clamp-2 block text-sm leading-6 text-stone-600">
                                   {notification.detail}
+                                </span>
+                                <span className="mt-2 block text-xs font-semibold uppercase tracking-wide text-stone-400">
+                                  {formatAdminNotificationTime(notification.createdAt, currentTime)}
                                 </span>
                                 <span className="mt-3 inline-flex text-xs font-bold uppercase tracking-wider text-primary group-hover:underline">
                                   Open {notification.section}
@@ -3363,7 +3444,7 @@ export default function AdminTripsPage() {
                           {contentIssues.length > 4 && (
                             <button
                               type="button"
-                              onClick={() => setActiveSection("content")}
+                              onClick={() => showAdminSection("content")}
                               className="mt-4 text-sm font-semibold text-primary hover:underline"
                             >
                               View {contentIssues.length - 4} more content
