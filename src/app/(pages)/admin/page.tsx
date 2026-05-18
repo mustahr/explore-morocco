@@ -2004,15 +2004,23 @@ export default function AdminTripsPage() {
       });
     };
 
-    const interval = window.setInterval(refreshOperations, 10 * 1000);
+    const handleServiceWorkerMessage = (event: MessageEvent) => {
+      if (event.data?.type === "saharavanta-admin-data-changed") {
+        refreshOperations();
+      }
+    };
+
+    const interval = window.setInterval(refreshOperations, 5 * 1000);
     window.addEventListener("focus", refreshOperations);
     document.addEventListener("visibilitychange", refreshOperations);
+    navigator.serviceWorker?.addEventListener("message", handleServiceWorkerMessage);
 
     return () => {
       isCancelled = true;
       window.clearInterval(interval);
       window.removeEventListener("focus", refreshOperations);
       document.removeEventListener("visibilitychange", refreshOperations);
+      navigator.serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
     };
   }, [isAuthenticated]);
 

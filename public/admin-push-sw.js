@@ -15,19 +15,31 @@ self.addEventListener("push", (event) => {
   }
 
   event.waitUntil(
-    self.registration.showNotification(payload.title, {
-      body: payload.body,
-      icon: "/saharavanta-logo.png",
-      badge: "/saharavanta-logo.png",
-      tag: payload.tag || `saharavanta-admin-${Date.now()}`,
-      timestamp: Date.now(),
-      renotify: true,
-      requireInteraction: true,
-      silent: false,
-      data: {
-        url: payload.url || "/admin",
-      },
-    }),
+    Promise.all([
+      self.registration.showNotification(payload.title, {
+        body: payload.body,
+        icon: "/saharavanta-logo.png",
+        badge: "/saharavanta-logo.png",
+        tag: payload.tag || `saharavanta-admin-${Date.now()}`,
+        timestamp: Date.now(),
+        renotify: true,
+        requireInteraction: true,
+        silent: false,
+        data: {
+          url: payload.url || "/admin",
+        },
+      }),
+      clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+        clientList.forEach((client) => {
+          if (client.url.includes("/admin")) {
+            client.postMessage({
+              type: "saharavanta-admin-data-changed",
+              payload,
+            })
+          }
+        })
+      }),
+    ]),
   )
 })
 
