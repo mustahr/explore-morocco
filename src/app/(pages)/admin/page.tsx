@@ -5,6 +5,7 @@ import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
+import { createClient } from "@supabase/supabase-js";
 import {
   ArrowLeft,
   BarChart3,
@@ -1001,6 +1002,14 @@ function formatAdminNotificationTime(createdAt: string | undefined, now: number)
   }).format(new Date(createdAt));
 }
 
+type AdminRealtimeEvent = {
+  id: number;
+  record_type: string;
+  operation: string;
+  record_key: string | null;
+  created_at: string;
+};
+
 type BookingSortOption =
   | "newest"
   | "oldest"
@@ -1993,6 +2002,7 @@ export default function AdminTripsPage() {
     if (!isAuthenticated) return;
 
     let isCancelled = false;
+    let refreshTimeout: number | null = null;
 
     const refreshOperations = () => {
       if (document.visibilityState !== "visible") return;
@@ -2003,10 +2013,14 @@ export default function AdminTripsPage() {
         }
       });
     };
+    const scheduleOperationsRefresh = () => {
+      if (refreshTimeout) window.clearTimeout(refreshTimeout);
+      refreshTimeout = window.setTimeout(refreshOperations, 150);
+    };
 
     const handleServiceWorkerMessage = (event: MessageEvent) => {
       if (event.data?.type === "saharavanta-admin-data-changed") {
-        refreshOperations();
+        scheduleOperationsRefresh();
       }
     };
 
@@ -2018,9 +2032,68 @@ export default function AdminTripsPage() {
     return () => {
       isCancelled = true;
       window.clearInterval(interval);
+      if (refreshTimeout) window.clearTimeout(refreshTimeout);
       window.removeEventListener("focus", refreshOperations);
       document.removeEventListener("visibilitychange", refreshOperations);
       navigator.serviceWorker?.removeEventListener("message", handleServiceWorkerMessage);
+    };
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabasePublicKey =
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+    if (!supabaseUrl || !supabasePublicKey) return;
+
+    const supabase = createClient(supabaseUrl, supabasePublicKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    });
+    let refreshTimeout: number | null = null;
+
+    const scheduleRefresh = (recordType: string) => {
+      if (refreshTimeout) window.clearTimeout(refreshTimeout);
+
+      refreshTimeout = window.setTimeout(() => {
+        if (recordType === "bookings" || recordType === "leads") {
+          void loadOperations();
+        } else {
+          void loadDashboardData();
+        }
+      }, 150);
+    };
+
+    const channel = supabase
+      .channel("admin-events")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "admin_events",
+        },
+        (payload) => {
+          const event = payload.new as AdminRealtimeEvent;
+          scheduleRefresh(event.record_type);
+        },
+      )
+      .subscribe((status, error) => {
+        if (error) {
+          console.error("Admin realtime subscription failed", error);
+        } else if (status === "CHANNEL_ERROR") {
+          console.error("Admin realtime channel error");
+        }
+      });
+
+    return () => {
+      if (refreshTimeout) window.clearTimeout(refreshTimeout);
+      void supabase.removeChannel(channel);
     };
   }, [isAuthenticated]);
 

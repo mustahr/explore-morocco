@@ -13,6 +13,8 @@ const requiredVariables = [
 ] as const
 
 const optionalVariables = [
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
   "OPERATIONS_WEBHOOK_URL",
   "CONTACT_WEBHOOK_URL",
   "RESEND_API_KEY",

@@ -34,6 +34,23 @@ function getSupabaseClient() {
   return cachedClient
 }
 
+async function notifyAdminRecordChange(
+  supabase: SupabaseClient,
+  recordType: string,
+  operation: "upsert" | "replace" | "delete",
+  recordKey?: string,
+) {
+  const { error } = await supabase.from("admin_events").insert({
+    record_type: recordType,
+    operation,
+    record_key: recordKey,
+  })
+
+  if (error) {
+    console.error("Could not publish admin realtime event", error.message)
+  }
+}
+
 export async function getCloudRecords<T>(recordType: string) {
   const supabase = getSupabaseClient()
   if (!supabase) return undefined
@@ -82,6 +99,8 @@ export async function upsertCloudRecord<T>(recordType: string, recordKey: string
 
   if (error) throw new Error(error.message)
 
+  await notifyAdminRecordChange(supabase, recordType, "upsert", recordKey)
+
   return data
 }
 
@@ -95,7 +114,10 @@ export async function replaceCloudRecords<T extends Record<string, unknown>>(
   const { error: deleteError } = await supabase.from("content_records").delete().eq("record_type", recordType)
   if (deleteError) throw new Error(deleteError.message)
 
-  if (rows.length === 0) return []
+  if (rows.length === 0) {
+    await notifyAdminRecordChange(supabase, recordType, "replace")
+    return []
+  }
 
   const { error } = await supabase.from("content_records").insert(
     rows.map((row, index) => ({
@@ -107,6 +129,8 @@ export async function replaceCloudRecords<T extends Record<string, unknown>>(
   )
 
   if (error) throw new Error(error.message)
+
+  await notifyAdminRecordChange(supabase, recordType, "replace")
 
   return rows.map((row) => row.data)
 }
@@ -122,6 +146,8 @@ export async function deleteCloudRecord(recordType: string, recordKey: string) {
     .eq("record_key", recordKey)
 
   if (error) throw new Error(error.message)
+
+  await notifyAdminRecordChange(supabase, recordType, "delete", recordKey)
 
   return true
 }
