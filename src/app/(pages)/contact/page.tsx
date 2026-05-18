@@ -38,8 +38,12 @@ export default function ContactPage() {
       })
 
       if (!response.ok) {
-        const data = (await response.json()) as { error?: string }
-        throw new Error(data.error || "Could not send your message.")
+        const data = response.headers
+          .get("content-type")
+          ?.includes("application/json")
+          ? ((await response.json().catch(() => null)) as { error?: string } | null)
+          : null
+        throw new Error(data?.error || "Could not send your message.")
       }
 
       setSubmitted(true)
