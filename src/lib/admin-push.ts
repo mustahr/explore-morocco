@@ -11,11 +11,33 @@ type AdminPushPayload = {
   tag?: string
 }
 
-function configureWebPush() {
-  const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
-  const privateKey = process.env.VAPID_PRIVATE_KEY
+function sanitizeVapidKey(key: string | undefined) {
+  return (key || "").trim().replace(/^["']|["']$/g, "").replace(/\s/g, "")
+}
 
-  if (!publicKey || !privateKey) return false
+export function getAdminPushPublicKey() {
+  return sanitizeVapidKey(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
+}
+
+export function isValidVapidPublicKey(publicKey: string) {
+  try {
+    const padding = "=".repeat((4 - (publicKey.length % 4)) % 4)
+    const bytes = Buffer.from(
+      `${publicKey}${padding}`.replace(/-/g, "+").replace(/_/g, "/"),
+      "base64",
+    )
+
+    return bytes.length === 65 && bytes[0] === 4
+  } catch {
+    return false
+  }
+}
+
+function configureWebPush() {
+  const publicKey = getAdminPushPublicKey()
+  const privateKey = sanitizeVapidKey(process.env.VAPID_PRIVATE_KEY)
+
+  if (!publicKey || !privateKey || !isValidVapidPublicKey(publicKey)) return false
 
   webPush.setVapidDetails(
     process.env.VAPID_SUBJECT || "mailto:hello@moroccoai.com",
@@ -27,9 +49,9 @@ function configureWebPush() {
 }
 
 export function isAdminPushConfigured() {
-  return Boolean(
-    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY,
-  )
+  const publicKey = getAdminPushPublicKey()
+
+  return Boolean(publicKey && isValidVapidPublicKey(publicKey) && sanitizeVapidKey(process.env.VAPID_PRIVATE_KEY))
 }
 
 export async function sendAdminPushNotification(payload: AdminPushPayload) {

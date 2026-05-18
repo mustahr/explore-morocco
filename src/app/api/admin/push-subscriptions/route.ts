@@ -4,7 +4,7 @@ import {
   upsertAdminPushSubscription,
 } from "@/lib/admin-db"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
-import { isAdminPushConfigured } from "@/lib/admin-push"
+import { getAdminPushPublicKey, isAdminPushConfigured } from "@/lib/admin-push"
 
 export const dynamic = "force-dynamic"
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
   return Response.json({
     configured: isAdminPushConfigured(),
-    publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "",
+    publicKey: getAdminPushPublicKey(),
     count: subscriptions.length,
   })
 }

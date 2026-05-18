@@ -254,9 +254,14 @@ function getBrowserNotificationPermission(): NotificationPermission {
   return Notification.permission;
 }
 
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = `${base64String}${padding}`
+function cleanVapidPublicKey(publicKey: string) {
+  return publicKey.trim().replace(/^["']|["']$/g, "").replace(/\s/g, "");
+}
+
+function urlBase64ToUint8Array(publicKey: string) {
+  const cleanPublicKey = cleanVapidPublicKey(publicKey);
+  const padding = "=".repeat((4 - (cleanPublicKey.length % 4)) % 4);
+  const base64 = `${cleanPublicKey}${padding}`
     .replace(/-/g, "+")
     .replace(/_/g, "/");
   const rawData = window.atob(base64);
@@ -264,6 +269,12 @@ function urlBase64ToUint8Array(base64String: string) {
 
   for (let index = 0; index < rawData.length; index += 1) {
     outputArray[index] = rawData.charCodeAt(index);
+  }
+
+  if (outputArray.length !== 65 || outputArray[0] !== 4) {
+    throw new Error(
+      "The VAPID public key in Vercel is invalid. Check NEXT_PUBLIC_VAPID_PUBLIC_KEY and redeploy.",
+    );
   }
 
   return outputArray;
