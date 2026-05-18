@@ -1880,8 +1880,8 @@ export default function AdminTripsPage() {
 
   async function loadOperations() {
     const [bookingsResponse, leadsResponse] = await Promise.all([
-      fetch("/api/bookings"),
-      fetch("/api/leads"),
+      fetch("/api/bookings", { cache: "no-store" }),
+      fetch("/api/leads", { cache: "no-store" }),
     ]);
     const bookingsData = (await bookingsResponse.json()) as {
       bookings: Booking[];
@@ -1922,10 +1922,10 @@ export default function AdminTripsPage() {
         (response) =>
           response.json() as Promise<{ content: TripDetailContent }>,
       ),
-      fetch("/api/bookings").then(
+      fetch("/api/bookings", { cache: "no-store" }).then(
         (response) => response.json() as Promise<{ bookings: Booking[] }>,
       ),
-      fetch("/api/leads").then(
+      fetch("/api/leads", { cache: "no-store" }).then(
         (response) => response.json() as Promise<{ leads: Lead[] }>,
       ),
       fetch("/api/admin/system-status").then(
@@ -1988,6 +1988,33 @@ export default function AdminTripsPage() {
       ignoreRef.current = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let isCancelled = false;
+
+    const refreshOperations = () => {
+      if (document.visibilityState !== "visible") return;
+
+      loadOperations().catch((error) => {
+        if (!isCancelled) {
+          console.error("Could not refresh admin operations", error);
+        }
+      });
+    };
+
+    const interval = window.setInterval(refreshOperations, 10 * 1000);
+    window.addEventListener("focus", refreshOperations);
+    document.addEventListener("visibilitychange", refreshOperations);
+
+    return () => {
+      isCancelled = true;
+      window.clearInterval(interval);
+      window.removeEventListener("focus", refreshOperations);
+      document.removeEventListener("visibilitychange", refreshOperations);
+    };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!message) return;
