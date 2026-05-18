@@ -1017,6 +1017,7 @@ export default function AdminTripsPage() {
   const [pushEnabledForDevice, setPushEnabledForDevice] = useState(false);
   const [pushSubscriptionCount, setPushSubscriptionCount] = useState(0);
   const [isEnablingPush, setIsEnablingPush] = useState(false);
+  const [isTestingPush, setIsTestingPush] = useState(false);
   const seenNotificationIdsRef = useRef<Set<string>>(
     readSeenAdminNotificationIds(),
   );
@@ -1547,6 +1548,44 @@ export default function AdminTripsPage() {
       setMessage(getPushSetupErrorMessage(error));
     } finally {
       setIsEnablingPush(false);
+    }
+  }
+
+  async function sendTestPushNotification() {
+    setIsTestingPush(true);
+
+    try {
+      const response = await fetch("/api/admin/push-subscriptions/test", {
+        method: "POST",
+      });
+      const data = (await response.json()) as {
+        sent?: number;
+        failed?: number;
+        configured?: boolean;
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(data.error || "Could not send a test notification.");
+      }
+
+      if (!data.configured) {
+        setMessage("Push notifications are not configured on the server.");
+        return;
+      }
+
+      if ((data.sent ?? 0) < 1) {
+        setMessage(
+          `No browser accepted the test notification. Failed: ${data.failed ?? 0}.`,
+        );
+        return;
+      }
+
+      setMessage("Test notification sent. Check Windows notification center if no banner appears.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Could not send a test notification.");
+    } finally {
+      setIsTestingPush(false);
     }
   }
 
@@ -2913,9 +2952,25 @@ export default function AdminTripsPage() {
                           ? browserNotificationPermission
                           : "setup needed"}
                     </span>
-                  </button>
-                  {!pushEnabledForDevice && (
-                    <p className="text-xs leading-relaxed text-stone-300">
+                    </button>
+                    {pushEnabledForDevice && (
+                      <button
+                        type="button"
+                        onClick={sendTestPushNotification}
+                        disabled={isTestingPush}
+                        className="flex w-full items-center justify-between gap-3 rounded-2xl border border-emerald-200/25 bg-emerald-300/10 px-4 py-3 text-left text-sm font-semibold text-emerald-100 backdrop-blur-md transition hover:bg-emerald-300/15 disabled:cursor-wait disabled:text-emerald-200/60"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <Bell size={17} />
+                          {isTestingPush ? "Sending test..." : "Send test notification"}
+                        </span>
+                        <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs uppercase tracking-wide text-emerald-100">
+                          Test
+                        </span>
+                      </button>
+                    )}
+                    {!pushEnabledForDevice && (
+                      <p className="text-xs leading-relaxed text-stone-300">
                       Use Chrome or Edge on HTTPS, or open this admin from
                       {" "}
                       <span className="font-semibold text-white">

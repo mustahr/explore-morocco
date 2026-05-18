@@ -19,7 +19,11 @@ self.addEventListener("push", (event) => {
       body: payload.body,
       icon: "/saharavanta-logo.png",
       badge: "/saharavanta-logo.png",
-      tag: payload.tag,
+      tag: payload.tag || `saharavanta-admin-${Date.now()}`,
+      timestamp: Date.now(),
+      renotify: true,
+      requireInteraction: true,
+      silent: false,
       data: {
         url: payload.url || "/admin",
       },
