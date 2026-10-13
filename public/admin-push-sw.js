@@ -18,8 +18,8 @@ self.addEventListener("push", (event) => {
     Promise.all([
       self.registration.showNotification(payload.title, {
         body: payload.body,
-        icon: "/saharavanta-logo.png",
-        badge: "/saharavanta-logo.png",
+        icon: "/dunexplore-icon.png",
+        badge: "/dunexplore-icon.png",
         tag: payload.tag || `saharavanta-admin-${Date.now()}`,
         timestamp: Date.now(),
         renotify: true,

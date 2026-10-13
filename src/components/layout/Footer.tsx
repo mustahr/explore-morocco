@@ -54,12 +54,12 @@ export function Footer() {
       <div className="mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <Link href="/" className="mb-4 block w-56" aria-label="Saharavanta Morocco home">
+            <Link href="/" className="mb-4 block w-56" aria-label="Dunexplore Morocco home">
               <ImageWithFallback
-                src="/saharavanta-logo.png"
-                alt="Saharavanta Morocco"
+                src="/dunexplore-logo.png"
+                alt="Dunexplore Morocco"
                 width={1024}
-                height={378}
+                height={400}
                 parallaxOffset={4}
                 parallaxStrength={0.4}
                 className="h-auto w-full bg-transparent"

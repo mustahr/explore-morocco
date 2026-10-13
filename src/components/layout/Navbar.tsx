@@ -50,12 +50,12 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between lg:h-24">
-          <Link href="/" className="flex shrink-0 items-center" aria-label="Saharavanta Morocco home">
+          <Link href="/" className="flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
             <ImageWithFallback
-              src="/saharavanta-logo.png"
-              alt="Saharavanta Morocco"
+              src="/dunexplore-logo.png"
+              alt="Dunexplore Morocco"
               width={1024}
-              height={378}
+              height={400}
               preload
               parallaxOffset={4}
               parallaxStrength={0.4}
