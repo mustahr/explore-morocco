@@ -1,3 +1,4 @@
+import { isCloudDatabaseConfigured } from "@/lib/cloud-db"
 import { createBooking, getBookings } from "@/lib/admin-db"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
 import { notifyOperations } from "@/lib/notifications"
@@ -14,6 +15,10 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  if (process.env.VERCEL && !isCloudDatabaseConfigured()) {
+    return Response.json({ error: "Online requests are temporarily unavailable. Please contact us directly." }, { status: 503 })
+  }
+
   const body = (await request.json()) as {
     tripId?: string
     customTripTitle?: string

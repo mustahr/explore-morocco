@@ -5,7 +5,6 @@ import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
-import { createClient } from "@supabase/supabase-js";
 import {
   ArrowLeft,
   BarChart3,
@@ -167,6 +166,7 @@ type MediaUploadResponse = {
 type SystemStatusResponse = {
   siteUrl: string;
   environment: string;
+  database?: { configured: boolean; connected: boolean; message: string };
   variables: Array<{
     name: string;
     configured: boolean;
@@ -230,7 +230,7 @@ const allowedMediaTypes = new Set([
   "image/gif",
   "image/avif",
 ]);
-const maxMediaUploadBytes = 10 * 1024 * 1024;
+const maxMediaUploadBytes = 4 * 1024 * 1024;
 const adminNotificationStorageKey = "morocco-admin-seen-notifications";
 const adminNotificationOverviewTtlMs = 24 * 60 * 60 * 1000;
 
@@ -1001,14 +1001,6 @@ function formatAdminNotificationTime(createdAt: string | undefined, now: number)
     minute: "2-digit",
   }).format(new Date(createdAt));
 }
-
-type AdminRealtimeEvent = {
-  id: number;
-  record_type: string;
-  operation: string;
-  record_key: string | null;
-  created_at: string;
-};
 
 type BookingSortOption =
   | "newest"
@@ -2039,63 +2031,6 @@ export default function AdminTripsPage() {
     };
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabasePublicKey =
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-
-    if (!supabaseUrl || !supabasePublicKey) return;
-
-    const supabase = createClient(supabaseUrl, supabasePublicKey, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-    });
-    let refreshTimeout: number | null = null;
-
-    const scheduleRefresh = (recordType: string) => {
-      if (refreshTimeout) window.clearTimeout(refreshTimeout);
-
-      refreshTimeout = window.setTimeout(() => {
-        if (recordType === "bookings" || recordType === "leads") {
-          void loadOperations();
-        } else {
-          void loadDashboardData();
-        }
-      }, 150);
-    };
-
-    const channel = supabase
-      .channel("admin-events")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "admin_events",
-        },
-        (payload) => {
-          const event = payload.new as AdminRealtimeEvent;
-          scheduleRefresh(event.record_type);
-        },
-      )
-      .subscribe((status, error) => {
-        if (error) {
-          console.error("Admin realtime subscription failed", error);
-        } else if (status === "CHANNEL_ERROR") {
-          console.error("Admin realtime channel error");
-        }
-      });
-
-    return () => {
-      if (refreshTimeout) window.clearTimeout(refreshTimeout);
-      void supabase.removeChannel(channel);
-    };
-  }, [isAuthenticated]);
 
   useEffect(() => {
     if (!message) return;
@@ -2240,7 +2175,7 @@ export default function AdminTripsPage() {
         uploadKey,
         fileSize: oversizedFile.size,
       });
-      setMessage(`${oversizedFile.name} is too large. Images must be 10MB or smaller.`);
+      setMessage(`${oversizedFile.name} is too large. Images must be 4MB or smaller.`);
       return;
     }
 
@@ -3076,7 +3011,7 @@ export default function AdminTripsPage() {
                 Database
               </p>
               <p className="mt-2 overflow-hidden text-xs text-stone-300">
-                Supabase-ready storage
+                Vercel-connected storage
               </p>
               <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
                 <motion.div
@@ -4792,9 +4727,9 @@ export default function AdminTripsPage() {
                         Storage
                       </h3>
                       <p className="mt-3 text-stone-600">
-                        Content is read from and written to Supabase when the
-                        production environment variables are present, with local
-                        JSON files kept as the development fallback.
+                        Content, bookings, and messages are saved in Neon Postgres,
+                        connected through Vercel Storage. Local JSON files are
+                        used for development and the first content import.
                       </p>
                       <div className="mt-6 grid gap-3 text-sm">
                         <p className="rounded-2xl bg-green-50 px-4 py-3 font-semibold text-green-800">
@@ -4846,10 +4781,9 @@ export default function AdminTripsPage() {
                         Production note
                       </h3>
                       <p className="mt-3 text-stone-600">
-                        Admin image uploads now use Supabase Storage and store
-                        the public image path on each content record. Set the
-                        Supabase URL, service role key, and storage bucket
-                        before deploying.
+                        Connect Neon Postgres and a public Vercel Blob store
+                        from the Storage tab in Vercel, then redeploy.
+                        New image uploads are stored in Vercel Blob.
                       </p>
                     </div>
                   </section>
@@ -5944,6 +5878,13 @@ function SystemStatusCard({ status }: { status: SystemStatusResponse | null }) {
           {status ? `${configuredCount}/${totalCount} set` : "Loading"}
         </span>
       </div>
+
+      {status?.database && (
+        <div className={`mt-5 rounded-2xl p-4 text-sm ${status.database.connected ? "bg-green-50 text-green-800" : "bg-amber-50 text-amber-900"}`}>
+          <p className="font-semibold">{status.database.connected ? "Database connected" : "Database setup needed"}</p>
+          <p className="mt-1">{status.database.message}</p>
+        </div>
+      )}
 
       <div className="mt-5 grid gap-3">
         {status ? (

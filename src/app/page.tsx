@@ -6,7 +6,7 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { CTASection } from "@/components/home/CTASection"
 import { getPublishedDestinations } from "@/lib/destinations-db"
 
-// Read live content at request time so builds do not depend on Supabase availability.
+// Read live content at request time so builds do not depend on database availability.
 export const dynamic = "force-dynamic"
 
 export default async function Home() {

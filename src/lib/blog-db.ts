@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises"
 import path from "path"
 import { isPublished, type BlogPost } from "@/lib/data"
-import { deleteCloudRecord, getCloudRecord, getCloudRecords, replaceCloudRecords, upsertCloudRecord } from "@/lib/cloud-db"
+import { assertLocalWritesAllowed, deleteCloudRecord, getCloudRecord, getCloudRecords, replaceCloudRecords, upsertCloudRecord } from "@/lib/cloud-db"
 
 const blogPostsDatabasePath = path.join(process.cwd(), "data", "blog-posts.json")
 const recordType = "blog_posts"
@@ -12,6 +12,7 @@ async function readBlogPostsDatabase(): Promise<BlogPost[]> {
 }
 
 async function writeBlogPostsDatabase(posts: BlogPost[]) {
+  assertLocalWritesAllowed()
   await writeFile(blogPostsDatabasePath, `${JSON.stringify(posts, null, 2)}\n`, "utf8")
 }
 

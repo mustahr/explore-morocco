@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "fs/promises"
 import path from "path"
-import { deleteCloudRecord, getCloudRecord, getCloudRecords, replaceCloudRecords, upsertCloudRecord } from "@/lib/cloud-db"
+import { assertLocalWritesAllowed, deleteCloudRecord, getCloudRecord, getCloudRecords, replaceCloudRecords, upsertCloudRecord } from "@/lib/cloud-db"
 
 export interface Testimonial {
   id: string
@@ -68,6 +68,7 @@ async function readJsonDatabase<T>(filePath: string): Promise<T> {
 }
 
 async function writeJsonDatabase<T>(filePath: string, data: T) {
+  assertLocalWritesAllowed()
   await writeFile(filePath, `${JSON.stringify(data, null, 2)}\n`, "utf8")
 }
 

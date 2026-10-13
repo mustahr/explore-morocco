@@ -1,153 +1,72 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js"
-
-type CloudRecord<T> = {
-  record_key: string
-  data: T
-}
-
-let cachedClient: SupabaseClient | null = null
+import { getDatabase, getDatabaseUrl, initializeDatabase, replacementQueries } from "@/lib/postgres"
 
 export function isCloudDatabaseConfigured() {
-  return Boolean(getSupabaseUrl() && getSupabaseServiceKey())
+  return Boolean(getDatabaseUrl())
 }
 
-function getSupabaseUrl() {
-  return process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-}
-
-function getSupabaseServiceKey() {
-  return process.env.SUPABASE_SERVICE_ROLE_KEY || ""
-}
-
-function getSupabaseClient() {
-  if (!isCloudDatabaseConfigured()) return null
-
-  if (!cachedClient) {
-    cachedClient = createClient(getSupabaseUrl(), getSupabaseServiceKey(), {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-    })
-  }
-
-  return cachedClient
-}
-
-async function notifyAdminRecordChange(
-  supabase: SupabaseClient,
-  recordType: string,
-  operation: "upsert" | "replace" | "delete",
-  recordKey?: string,
-) {
-  const { error } = await supabase.from("admin_events").insert({
-    record_type: recordType,
-    operation,
-    record_key: recordKey,
-  })
-
-  if (error) {
-    console.error("Could not publish admin realtime event", error.message)
+export function assertLocalWritesAllowed() {
+  if (process.env.VERCEL) {
+    throw new Error("Connect Neon Postgres in Vercel Storage and redeploy before saving data. DATABASE_URL is required.")
   }
 }
 
-export async function getCloudRecords<T>(recordType: string) {
-  const supabase = getSupabaseClient()
-  if (!supabase) return undefined
-
-  const { data, error } = await supabase
-    .from("content_records")
-    .select("record_key,data")
-    .eq("record_type", recordType)
-    .order("position", { ascending: true })
-
-  if (error) throw new Error(error.message)
-
-  return (data as CloudRecord<T>[]).map((record) => record.data)
+async function database() {
+  const sql = getDatabase()
+  if (!sql) return null
+  await initializeDatabase()
+  return sql
 }
 
-export async function getCloudRecord<T>(recordType: string, recordKey: string) {
-  const supabase = getSupabaseClient()
-  if (!supabase) return undefined
+export async function getCloudRecords<T>(recordType: string): Promise<T[] | undefined> {
+  const sql = await database()
+  if (!sql) {
+    // Never display the repository's sample customers on a deployed admin dashboard.
+    if (process.env.VERCEL && ["bookings", "leads", "admin_push_subscriptions"].includes(recordType)) return []
+    return undefined
+  }
+  const rows = await sql`SELECT data FROM content_records WHERE record_type = ${recordType} ORDER BY position, record_key`
+  return rows.map((row) => row.data as T)
+}
 
-  const { data, error } = await supabase
-    .from("content_records")
-    .select("data")
-    .eq("record_type", recordType)
-    .eq("record_key", recordKey)
-    .maybeSingle()
-
-  if (error) throw new Error(error.message)
-
-  return data ? (data.data as T) : null
+export async function getCloudRecord<T>(recordType: string, recordKey: string): Promise<T | null | undefined> {
+  const sql = await database()
+  if (!sql) return undefined
+  const rows = await sql`SELECT data FROM content_records WHERE record_type = ${recordType} AND record_key = ${recordKey}`
+  return rows.length ? rows[0].data as T : null
 }
 
 export async function upsertCloudRecord<T>(recordType: string, recordKey: string, data: T, position = 0) {
-  const supabase = getSupabaseClient()
-  if (!supabase) return undefined
-
-  const { error } = await supabase.from("content_records").upsert(
-    {
-      record_type: recordType,
-      record_key: recordKey,
-      data,
-      position,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "record_type,record_key" }
-  )
-
-  if (error) throw new Error(error.message)
-
-  await notifyAdminRecordChange(supabase, recordType, "upsert", recordKey)
-
+  const sql = await database()
+  if (!sql) {
+    assertLocalWritesAllowed()
+    return undefined
+  }
+  await sql`INSERT INTO content_records (record_type, record_key, data, position)
+    VALUES (${recordType}, ${recordKey}, ${JSON.stringify(data)}::jsonb, ${position})
+    ON CONFLICT (record_type, record_key) DO UPDATE SET data = EXCLUDED.data,
+      position = EXCLUDED.position, updated_at = now()`
   return data
 }
 
 export async function replaceCloudRecords<T extends Record<string, unknown>>(
   recordType: string,
-  rows: Array<{ key: string; data: T }>
+  rows: Array<{ key: string; data: T }>,
 ) {
-  const supabase = getSupabaseClient()
-  if (!supabase) return undefined
-
-  const { error: deleteError } = await supabase.from("content_records").delete().eq("record_type", recordType)
-  if (deleteError) throw new Error(deleteError.message)
-
-  if (rows.length === 0) {
-    await notifyAdminRecordChange(supabase, recordType, "replace")
-    return []
+  const sql = await database()
+  if (!sql) {
+    assertLocalWritesAllowed()
+    return undefined
   }
-
-  const { error } = await supabase.from("content_records").insert(
-    rows.map((row, index) => ({
-      record_type: recordType,
-      record_key: row.key,
-      data: row.data,
-      position: index,
-    }))
-  )
-
-  if (error) throw new Error(error.message)
-
-  await notifyAdminRecordChange(supabase, recordType, "replace")
-
+  await sql.transaction(replacementQueries(recordType, rows).map((query) => sql.query(query.text, query.values)))
   return rows.map((row) => row.data)
 }
 
 export async function deleteCloudRecord(recordType: string, recordKey: string) {
-  const supabase = getSupabaseClient()
-  if (!supabase) return undefined
-
-  const { error } = await supabase
-    .from("content_records")
-    .delete()
-    .eq("record_type", recordType)
-    .eq("record_key", recordKey)
-
-  if (error) throw new Error(error.message)
-
-  await notifyAdminRecordChange(supabase, recordType, "delete", recordKey)
-
+  const sql = await database()
+  if (!sql) {
+    assertLocalWritesAllowed()
+    return undefined
+  }
+  await sql`DELETE FROM content_records WHERE record_type = ${recordType} AND record_key = ${recordKey}`
   return true
 }

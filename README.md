@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dunexplore Morocco
+
+Next.js travel site with an admin dashboard, bookings, inquiries, and a blog.
+
+## Database and images
+
+Use Neon Postgres and Vercel Blob from the Vercel Storage tab. See [VERCEL_STORAGE.md](VERCEL_STORAGE.md) for connection, initialization, and migration instructions.
 
 ## Getting Started
 
