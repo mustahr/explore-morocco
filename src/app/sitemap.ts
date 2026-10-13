@@ -5,6 +5,9 @@ import { getPublishedExperiences } from "@/lib/experiences-db"
 import { getPublishedTrips } from "@/lib/trips-db"
 import { absoluteUrl } from "@/lib/site"
 
+// Generate the sitemap from live content without querying Supabase during deployment.
+export const dynamic = "force-dynamic"
+
 const staticRoutes = [
   "",
   "/about",

@@ -1,15 +1,10 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getPublishedExperienceById, getPublishedExperiences, getRelatedExperiences } from "@/lib/experiences-db"
+import { getPublishedExperienceById, getRelatedExperiences } from "@/lib/experiences-db"
 import ExperienceDetailClient from "./ExperienceDetailClient"
 import { cleanImageList, experienceJsonLd } from "@/lib/seo"
 
 export const dynamic = "force-dynamic"
-
-export async function generateStaticParams() {
-  const experiences = await getPublishedExperiences()
-  return experiences.map((experience) => ({ id: experience.id }))
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params

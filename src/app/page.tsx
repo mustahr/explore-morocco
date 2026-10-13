@@ -6,7 +6,8 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { CTASection } from "@/components/home/CTASection"
 import { getPublishedDestinations } from "@/lib/destinations-db"
 
-export const revalidate = 300
+// Read live content at request time so builds do not depend on Supabase availability.
+export const dynamic = "force-dynamic"
 
 export default async function Home() {
   const destinations = await getPublishedDestinations()
