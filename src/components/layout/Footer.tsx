@@ -54,15 +54,14 @@ export function Footer() {
       <div className="mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
-            <Link href="/" className="mb-4 block w-56" aria-label="Dunexplore Morocco home">
+            <Link href="/" className="my-2 mb-6 mr-4 block w-56" aria-label="Dunexplore Morocco home">
               <ImageWithFallback
-                src="/dunexplore-logo.png"
+                src="/dunexplore-logo-v2.png"
                 alt="Dunexplore Morocco"
-                width={1024}
-                height={400}
-                parallaxOffset={4}
-                parallaxStrength={0.4}
-                className="h-auto w-full bg-transparent"
+                width={1134}
+                height={450}
+                parallax={false}
+                className="h-auto w-full rounded-lg bg-white"
               />
             </Link>
             <p className="text-stone-400 text-sm leading-relaxed mb-6">

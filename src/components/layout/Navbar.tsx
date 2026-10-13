@@ -50,16 +50,15 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between lg:h-24">
-          <Link href="/" className="flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
+          <Link href="/" className="my-1 mr-4 flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
             <ImageWithFallback
-              src="/dunexplore-logo.png"
+              src="/dunexplore-logo-v2.png"
               alt="Dunexplore Morocco"
-              width={1024}
-              height={400}
+              width={1134}
+              height={450}
               preload
-              parallaxOffset={4}
-              parallaxStrength={0.4}
-              className="h-auto w-44 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-56 lg:w-64"
+              parallax={false}
+              className="h-auto w-40 rounded-lg bg-white drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 lg:w-52"
             />
           </Link>
 
