@@ -56,12 +56,12 @@ export function Footer() {
           <div>
             <Link href="/" className="my-2 mb-6 mr-4 block w-56" aria-label="Dunexplore Morocco home">
               <ImageWithFallback
-                src="/dunexplore-logo-v2.png"
+                src="/dunexplore-logo-transparent.png"
                 alt="Dunexplore Morocco"
                 width={1134}
                 height={450}
                 parallax={false}
-                className="h-auto w-full rounded-lg bg-white"
+                className="h-auto w-full bg-transparent"
               />
             </Link>
             <p className="text-stone-400 text-sm leading-relaxed mb-6">

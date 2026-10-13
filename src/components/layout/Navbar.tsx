@@ -52,13 +52,13 @@ export function Navbar() {
         <div className="flex h-20 items-center justify-between lg:h-24">
           <Link href="/" className="my-1 mr-4 flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
             <ImageWithFallback
-              src="/dunexplore-logo-v2.png"
+              src="/dunexplore-logo-transparent.png"
               alt="Dunexplore Morocco"
               width={1134}
               height={450}
               preload
               parallax={false}
-              className="h-auto w-40 rounded-lg bg-white drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 lg:w-52"
+              className="h-auto w-40 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 lg:w-52"
             />
           </Link>
 
