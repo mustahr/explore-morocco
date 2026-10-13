@@ -1,13 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Heart, Globe, ChevronDown } from "lucide-react"
+import { Globe, ChevronDown } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations, type LanguageCode, type CurrencyCode, currencies } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
+
+import { MobileNavigation, MenuGlyph } from "./MobileNavigation"
 
 const navLinks = [
   { href: "/", key: "home" },
@@ -20,8 +22,10 @@ const navLinks = [
 ] as const
 
 export function Navbar() {
+  const reduceMotion = useReducedMotion()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), [])
   const [langOpen, setLangOpen] = useState(false)
   const [curOpen, setCurOpen] = useState(false)
   const { language, setLanguage, currency, setCurrency } = useApp()
@@ -37,9 +41,9 @@ export function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
+      initial={reduceMotion ? false : { y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: reduceMotion ? 0 : 0.5 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isHomePage
           ? isScrolled
@@ -49,7 +53,7 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between lg:h-24">
+        <div className="flex h-20 min-w-0 items-center justify-between gap-3 xl:h-24">
           <Link href="/" className="my-1 mr-4 flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
             <ImageWithFallback
               src="/dunexplore-logo-transparent.png"
@@ -58,11 +62,11 @@ export function Navbar() {
               height={450}
               preload
               parallax={false}
-              className="h-auto w-40 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 lg:w-52"
+              className="h-auto w-36 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 xl:w-52"
             />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -82,19 +86,12 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden shrink-0 items-center gap-3 xl:flex">
             <Link
               href="/trip-generator"
-              className="hidden sm:flex btn-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold"
+              className="hidden 2xl:flex btn-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold"
             >
               {t.nav.generateTrip}
-            </Link>
-
-            <Link
-              href="/trip-generator"
-              className="sm:hidden btn-primary text-white p-2 rounded-full"
-            >
-              <Heart size={20} />
             </Link>
 
             <div className="relative">
@@ -173,48 +170,30 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-white lg:hidden"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
           </div>
+
+          <motion.button
+            type="button"
+            aria-label={language === "ar" ? "فتح قائمة التنقل" : language === "fr" ? "Ouvrir le menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+            aria-haspopup="dialog"
+            onClick={() => setMobileMenuOpen(true)}
+            whileTap={reduceMotion ? undefined : { scale: 0.95 }}
+            className="flex h-12 shrink-0 items-center gap-3 rounded-full border border-[#e9ce83]/40 bg-gradient-to-br from-[#efdca0] to-[#d4af37] px-4 text-sm font-semibold text-stone-950 shadow-lg shadow-black/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 xl:hidden"
+          >
+            <span>{language === "ar" ? "القائمة" : "Menu"}</span>
+            <MenuGlyph open={mobileMenuOpen} />
+          </motion.button>
         </div>
       </div>
 
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-stone-100"
-          >
-            <div className="px-4 py-4 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                    pathname === link.href
-                      ? "bg-primary/10 text-primary"
-                      : "text-stone-600 hover:bg-stone-50"
-                  }`}
-                >
-                  {t.nav[link.key]}
-                </Link>
-              ))}
-              <Link
-                href="/trip-generator"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block btn-primary text-white px-4 py-3 rounded-xl text-sm font-semibold text-center mt-3"
-              >
-                {t.nav.generateTrip}
-              </Link>
-            </div>
-          </motion.div>
+          <MobileNavigation
+            links={navLinks.map((link) => ({ href: link.href, label: t.nav[link.key] }))}
+            onClose={closeMobileMenu}
+          />
         )}
       </AnimatePresence>
     </motion.nav>

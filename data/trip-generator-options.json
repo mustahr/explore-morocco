@@ -3,37 +3,37 @@
     {
       "id": "luxury",
       "label": "Luxury",
-      "icon": "??",
+      "icon": "crown",
       "description": "Premium riads, private tours, exclusive experiences"
     },
     {
       "id": "backpacking",
       "label": "Backpacking",
-      "icon": "??",
+      "icon": "backpack",
       "description": "Budget-friendly, hostels, local transport"
     },
     {
       "id": "romantic",
       "label": "Romantic",
-      "icon": "??",
+      "icon": "heart",
       "description": "Couples retreat, sunset dinners, spa"
     },
     {
       "id": "family",
       "label": "Family",
-      "icon": "???????????",
+      "icon": "users",
       "description": "Kid-friendly activities, safe, relaxed pace"
     },
     {
       "id": "adventure",
       "label": "Adventure",
-      "icon": "???",
+      "icon": "mountain",
       "description": "Hiking, desert camping, extreme sports"
     },
     {
       "id": "cultural",
       "label": "Cultural",
-      "icon": "???",
+      "icon": "landmark",
       "description": "Historical sites, local traditions, authentic"
     }
   ],

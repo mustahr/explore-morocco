@@ -5,10 +5,29 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import {
   Sparkles, ArrowRight, Clock, MapPin, DollarSign, Users,
-  Heart, Share2, Download, ChevronDown, ChevronUp, Check, Plus, Calendar, Mail, Phone, User
+  Heart, Share2, Download, ChevronDown, ChevronUp, Check, Plus, Calendar, Mail, Phone, User,
+  Crown, Backpack, Mountain, Landmark, Compass, type LucideIcon
 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { type TripGeneratorOptions } from "@/lib/content-db"
+
+const travelStyleIcons: Record<string, LucideIcon> = {
+  luxury: Crown, crown: Crown,
+  backpacking: Backpack, backpack: Backpack,
+  romantic: Heart, heart: Heart,
+  family: Users, users: Users,
+  adventure: Mountain, mountain: Mountain,
+  cultural: Landmark, landmark: Landmark,
+}
+
+function TravelStyleIcon({ id, icon, selected }: { id: string; icon: string; selected: boolean }) {
+  const Icon = travelStyleIcons[id] || travelStyleIcons[icon] || Compass
+  return (
+    <span className={`inline-flex h-11 w-11 items-center justify-center rounded-xl ${selected ? "bg-primary/15 text-primary" : "bg-stone-100 text-stone-600"}`}>
+      <Icon size={24} strokeWidth={1.7} aria-hidden="true" />
+    </span>
+  )
+}
 
 type TripGeneratorPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -402,6 +421,8 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                       {travelStyles.map((s) => (
                         <button
                           key={s.id}
+                          type="button"
+                          aria-pressed={style === s.id}
                           onClick={() => setStyle(s.id)}
                           className={`p-4 rounded-xl border-2 text-left transition-all ${
                             style === s.id
@@ -409,7 +430,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                               : "border-stone-100 hover:border-stone-200"
                           }`}
                         >
-                          <span className="text-2xl">{s.icon}</span>
+                          <TravelStyleIcon id={s.id} icon={s.icon} selected={style === s.id} />
                           <h3 className={`font-bold mt-2 ${style === s.id ? "text-primary" : "text-stone-900"}`}>
                             {s.label}
                           </h3>
