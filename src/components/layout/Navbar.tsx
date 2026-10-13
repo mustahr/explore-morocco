@@ -53,7 +53,7 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 min-w-0 items-center justify-between gap-3 xl:h-24">
+        <div className="flex h-20 min-w-0 items-center justify-between gap-3 lg:h-24">
           <Link href="/" className="my-1 mr-4 flex shrink-0 items-center" aria-label="Dunexplore Morocco home">
             <ImageWithFallback
               src="/dunexplore-logo-transparent.png"
@@ -62,16 +62,16 @@ export function Navbar() {
               height={450}
               preload
               parallax={false}
-              className="h-auto w-36 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 xl:w-52"
+              className="h-auto w-36 bg-transparent drop-shadow-[0_10px_18px_rgba(0,0,0,0.45)] sm:w-44 lg:w-40 xl:w-52"
             />
           </Link>
 
-          <div className="hidden xl:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0 xl:gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
+                className={`px-2 xl:px-3 py-2 rounded-full text-sm font-medium transition-colors ${
                   pathname === link.href
                     ? "text-primary-light"
                     : isHomePage
@@ -86,7 +86,7 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden shrink-0 items-center gap-3 xl:flex">
+          <div className="hidden shrink-0 items-center gap-2 xl:gap-3 lg:flex">
             <Link
               href="/trip-generator"
               className="hidden 2xl:flex btn-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold"
@@ -180,7 +180,7 @@ export function Navbar() {
             aria-haspopup="dialog"
             onClick={() => setMobileMenuOpen(true)}
             whileTap={reduceMotion ? undefined : { scale: 0.95 }}
-            className="flex h-12 shrink-0 items-center gap-3 rounded-full border border-[#e9ce83]/40 bg-gradient-to-br from-[#efdca0] to-[#d4af37] px-4 text-sm font-semibold text-stone-950 shadow-lg shadow-black/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 xl:hidden"
+            className="flex h-12 shrink-0 items-center gap-3 rounded-full border border-[#e9ce83]/40 bg-gradient-to-br from-[#efdca0] to-[#d4af37] px-4 text-sm font-semibold text-stone-950 shadow-lg shadow-black/15 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 lg:hidden"
           >
             <span>{language === "ar" ? "القائمة" : "Menu"}</span>
             <MenuGlyph open={mobileMenuOpen} />

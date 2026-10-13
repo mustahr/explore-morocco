@@ -54,7 +54,7 @@ export function MobileNavigation({ links, onClose }: {
     dialog?.showModal()
     closeRef.current?.focus()
     document.body.style.overflow = "hidden"
-    const desktop = window.matchMedia("(min-width: 1280px)")
+    const desktop = window.matchMedia("(min-width: 1024px)")
     const handleResize = () => { if (desktop.matches) onClose() }
     desktop.addEventListener("change", handleResize)
     window.addEventListener("popstate", onClose)
