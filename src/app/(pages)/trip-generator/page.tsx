@@ -1,5 +1,6 @@
 "use client"
 
+import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 import { use, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
@@ -192,6 +193,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
     const startDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     return toDateInputValue(startDate)
   })
+  const [bookingReference, setBookingReference] = useState("")
   const [bookingStatus, setBookingStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [bookingMessage, setBookingMessage] = useState("")
   const [itinerary, setItinerary] = useState<null | {
@@ -268,6 +270,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
         `Travelers: ${travelers}`,
         `Budget per person: ${formatPrice(budget)}`,
         `Route: ${selectedDests.length > 0 ? selectedDests.join(", ") : "Custom route"}`,
+        ...itinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}. Stay: ${day.accommodation}`),
         bookingPhone ? `Phone: ${bookingPhone}` : "",
         prompt.trim() ? `Original prompt: ${prompt.trim()}` : "",
       ].filter(Boolean).join("\n")
@@ -294,6 +297,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
         throw new Error(data.error || "We could not send this booking request.")
       }
 
+      setBookingReference(data.booking.id)
       setBookingStatus("success")
       setBookingMessage(`Booking request sent. Reference ${data.booking.id}. Our team will contact you shortly.`)
     } catch (error) {
@@ -655,6 +659,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                             <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Phone size={16} /> Phone</span>
                             <input
                               type="tel"
+                              required
                               value={bookingPhone}
                               onChange={(event) => setBookingPhone(event.target.value)}
                               className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -677,6 +682,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         {bookingMessage && (
                           <div className={`mt-4 rounded-xl px-4 py-3 text-sm ${bookingStatus === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
                             <p>{bookingMessage}</p>
+                            {bookingStatus === "success" && itinerary && <BookingWhatsAppCopy reference={bookingReference} title={itinerary.title} name={bookingName} email={bookingEmail} phone={bookingPhone} date={bookingStartDate} travelers={travelers} notes={itinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}`).join("\n")} />}
                             {bookingStatus === "success" && (
                               <Link href="/trips" className="mt-3 inline-flex font-semibold text-emerald-800 underline-offset-4 hover:underline">
                                 Back to trips

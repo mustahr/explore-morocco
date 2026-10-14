@@ -27,7 +27,7 @@ export function EmailNotificationTest() {
         <p>{result.message}</p>
         {result.id && <p className="mt-2 break-all">Resend email ID: {result.id}</p>}
       </div>}
-      <p className="mt-4 text-sm text-stone-500">WhatsApp buttons let visitors send a message themselves. Automatic WhatsApp alerts require a separate WhatsApp Business API integration.</p>
+      <p className="mt-4 text-sm text-stone-500">WhatsApp copies let visitors send their saved booking themselves. Automatic alerts require the WhatsApp Business settings listed in System status.</p>
     </div>
   )
 }

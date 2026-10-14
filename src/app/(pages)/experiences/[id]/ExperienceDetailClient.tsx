@@ -1,5 +1,6 @@
 "use client"
 
+import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 import { useMemo, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -95,21 +96,28 @@ export default function ExperienceDetailClient({
   const detail = useMemo(() => getExperienceDetail(experience), [experience])
   const [travelers, setTravelers] = useState(2)
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState("")
+  const [reference, setReference] = useState("")
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     date: "",
     notes: "",
   })
 
   const total = experience.price * travelers
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    setSubmitted(true)
-    setFormData({ name: "", email: "", date: "", notes: "" })
-    setTravelers(2)
-    setTimeout(() => setSubmitted(false), 3500)
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault(); setSending(true); setError(""); setSubmitted(false)
+    try {
+      const response = await fetch("/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ experienceId: experience.id, customerName: formData.name, customerEmail: formData.email, customerPhone: formData.phone, startDate: formData.date, travelers, notes: formData.notes }) })
+      const data = await response.json()
+      if (!response.ok || !data.booking?.id) throw new Error(data.error || "Could not save the booking request.")
+      setReference(data.booking.id); setSubmitted(true)
+    } catch (error) { setError(error instanceof Error ? error.message : "Could not send your request.") }
+    finally { setSending(false) }
   }
 
   return (
@@ -329,12 +337,9 @@ export default function ExperienceDetailClient({
                   </span>
                 </div>
 
-                {submitted && (
-                  <div className="mt-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-medium text-green-800">
-                    Request received. We{"'"}ll confirm availability and details shortly.
-                  </div>
-                )}
 
+                {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">{error}</p>}
+                {submitted && <div role="status" className="mt-4 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900"><p>Request saved. Reference: {reference}</p><BookingWhatsAppCopy reference={reference} title={experience.title} name={formData.name} email={formData.email} phone={formData.phone} date={formData.date} travelers={travelers} notes={formData.notes} /></div>}
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                   <div>
                     <label htmlFor="experience-date" className="mb-2 block text-sm font-semibold text-stone-700">Preferred date</label>
@@ -384,7 +389,8 @@ export default function ExperienceDetailClient({
                       placeholder="Email address"
                       className="w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-700 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     />
-                    <textarea
+                    <label className="grid gap-1 text-sm">Phone / WhatsApp<input type="tel" autoComplete="tel" required value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} className="admin-input" /></label>
+                  <textarea
                       value={formData.notes}
                       onChange={(event) => setFormData({ ...formData, notes: event.target.value })}
                       placeholder="Pickup address, private group, dietary needs..."
@@ -398,9 +404,9 @@ export default function ExperienceDetailClient({
                     <span className="text-xl font-bold text-stone-900">{formatPrice(total, currency)}</span>
                   </div>
 
-                  <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-xl btn-primary py-4 font-semibold text-white">
+                  <button type="submit" disabled={sending} className="disabled:opacity-60 flex w-full items-center justify-center gap-2 rounded-xl btn-primary py-4 font-semibold text-white">
                     <Send size={18} />
-                    Request Booking
+                    {sending ? "Sending…" : "Request Booking"}
                   </button>
                 </form>
 

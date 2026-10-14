@@ -5,7 +5,7 @@ import { getDatabase, getDatabaseUrl, initializeDatabase } from "@/lib/postgres"
 export const dynamic = "force-dynamic"
 
 const requiredVariables = ["ADMIN_PASSWORD", "ADMIN_SESSION_SECRET", "NEXT_PUBLIC_SITE_URL", "DATABASE_URL"] as const
-const optionalVariables = ["BLOB_READ_WRITE_TOKEN", "OPERATIONS_WEBHOOK_URL", "CONTACT_WEBHOOK_URL", "RESEND_API_KEY", "NOTIFICATION_EMAIL_TO", "NOTIFICATION_EMAIL_FROM"] as const
+const optionalVariables = ["BLOB_READ_WRITE_TOKEN", "OPERATIONS_WEBHOOK_URL", "CONTACT_WEBHOOK_URL", "RESEND_API_KEY", "NOTIFICATION_EMAIL_TO", "NOTIFICATION_EMAIL_FROM", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_PHONE_NUMBER_ID", "WHATSAPP_BOOKING_TEMPLATE", "WHATSAPP_API_VERSION", "WHATSAPP_TEMPLATE_LANGUAGE", "WHATSAPP_NOTIFICATION_TO"] as const
 
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) return unauthorizedResponse()

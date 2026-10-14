@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { contactWhatsAppHref } from "@/lib/contact"
+import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 
 import { useMemo, useState, useEffect, useRef, type FormEvent } from "react"
 import Link from "next/link"
@@ -116,7 +116,6 @@ export default function TripDetailClient({
   const savings = originalPrice - trip.price
   const totalPrice = trip.price * travelers
   const galleryImages = [trip.image, ...trip.images]
-  const contactMessage = (`Hi, I want to reserve ${trip.title}. Can you help me?`)
 
   const handleBookingSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -500,6 +499,7 @@ export default function TripDetailClient({
                   />
                   <input
                     type="tel"
+                    required
                     value={customerPhone}
                     onChange={(event) => setCustomerPhone(event.target.value)}
                     placeholder="Phone or WhatsApp"
@@ -527,6 +527,7 @@ export default function TripDetailClient({
                   <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
                     <p className="font-semibold">Booking request received.</p>
                     <p className="mt-1">Reference {bookingReference}. Our team will contact you shortly.</p>
+                    <BookingWhatsAppCopy reference={bookingReference} title={trip.title} name={customerName} email={customerEmail} phone={customerPhone} date={selectedStartDate} travelers={travelers} notes={bookingNotes} />
                     <Link href="/trips" className="mt-3 inline-flex text-sm font-semibold text-emerald-800 underline-offset-4 hover:underline">
                       Back to trips
                     </Link>
@@ -550,16 +551,9 @@ export default function TripDetailClient({
                 </button>
               </form>
 
-              <a
-                href={contactWhatsAppHref(contactMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-analytics-event="booking_whatsapp_click"
-                data-analytics-label={trip.id}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-3xl border border-stone-300 bg-white px-6 py-4 text-sm font-semibold text-stone-700 transition duration-300 ease-out hover:border-primary hover:text-primary mt-3"
-              >
-                <MessageCircle size={18} /> Reserve with WhatsApp
-              </a>
+              <button type="button" onClick={() => { document.getElementById("booking-name")?.focus({ preventScroll: true }); document.getElementById("booking")?.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" }) }} className="w-full inline-flex items-center justify-center gap-2 rounded-3xl border border-stone-300 bg-white px-6 py-4 text-sm font-semibold text-stone-700 hover:border-primary hover:text-primary mt-3">
+                <MessageCircle size={18} /> Fill details to reserve via WhatsApp
+              </button>
 
               <div className="mt-6 rounded-3xl bg-amber-50 border border-amber-100 p-4 text-sm text-stone-700">
                 <p className="font-semibold">Limited availability for selected dates.</p>

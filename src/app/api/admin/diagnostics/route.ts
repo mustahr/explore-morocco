@@ -1,3 +1,4 @@
+import { sendBookingWhatsApp } from "@/lib/whatsapp-notifications"
 import { del } from "@vercel/blob"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
 import { getDatabase, initializeDatabase } from "@/lib/postgres"
@@ -19,10 +20,14 @@ export async function POST(request: Request) {
   if (!isAdminRequest(request)) return unauthorizedResponse()
   const body = await request.json().catch(() => null) as { action?: string } | null
   const action = body?.action
-  if (!["database", "catalog", "booking", "message", "storage", "webhook", "push", "cleanup"].includes(action || "")) {
+  if (!["database", "catalog", "booking", "message", "storage", "webhook", "push", "whatsapp", "cleanup"].includes(action || "")) {
     return Response.json({ status: "failed", message: "Unknown test." }, { status: 400 })
   }
   try {
+    if (action === "whatsapp") {
+      const result = await sendBookingWhatsApp({ id: `TEST-${crypto.randomUUID()}`, tripId: "diagnostic", tripTitle: "TEST — not a real reservation", customerName: testName, customerEmail: CONTACT_EMAIL, startDate: new Date().toISOString().slice(0, 10), travelers: 1 })
+      return result.status === "sent" ? ok(result.message) : blocked(result.message)
+    }
     if (action === "push") {
       const result = await sendAdminPushNotification({ title: "Dunexplore Morocco — test notification", body: "Your website's background notification test.", tag: `test-${crypto.randomUUID()}`, url: "/admin?section=settings" })
       if (!result.configured) return blocked("Push keys are missing or invalid. Configure VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY, then redeploy.")

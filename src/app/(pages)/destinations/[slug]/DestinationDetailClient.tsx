@@ -1,6 +1,6 @@
 "use client"
 
-import { contactWhatsAppHref } from "@/lib/contact"
+import { BookingRequestButton } from "@/components/booking/BookingRequestButton"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -14,7 +14,6 @@ export default function DestinationDetailClient({ destination }: { destination: 
   const [expandedExp, setExpandedExp] = useState<number | null>(null)
 
   const dest = destination
-  const contactMessage = (`Hi, I want to plan a trip to ${dest.name}. Can you help me?`)
   const detail: DestinationDetails = dest.details ?? {
     intro: dest.description,
     bestFor: ["Culture", "Local experiences", "Scenic stays", "Guided trips"],
@@ -255,9 +254,9 @@ export default function DestinationDetailClient({ destination }: { destination: 
                               </div>
                             ))}
                           </div>
-                          <Link href="/trip-generator" className="mt-6 btn-primary text-white px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2">
-                            Customize This Trip <ArrowRight size={16} />
-                          </Link>
+                          <BookingRequestButton destinationSlug={dest.slug} itineraryIndex={i} title={`${dest.name} — ${it.title}`} className="mt-6 btn-primary px-6 py-3 rounded-xl font-semibold inline-flex items-center gap-2">
+                            Book This Itinerary <ArrowRight size={16} />
+                          </BookingRequestButton>
                         </motion.div>
                       )}
                     </motion.div>
@@ -294,22 +293,12 @@ export default function DestinationDetailClient({ destination }: { destination: 
                 Generate Itinerary
                 <ArrowRight size={18} />
               </Link>
-              <Link
-                href={`/contact?destination=${dest.slug}`}
-                className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-primary bg-white px-4 py-3 font-semibold text-primary transition hover:bg-primary hover:text-white"
-              >
-                <Send size={17} />
-                Book a {dest.name} Trip
-              </Link>
-              <a
-                href={contactWhatsAppHref(contactMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-3 font-semibold text-white transition hover:bg-green-600"
-              >
-                <MessageCircle size={17} />
-                WhatsApp Us
-              </a>
+              <BookingRequestButton destinationSlug={dest.slug} title={`${dest.name} trip`} className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-primary bg-white px-4 py-3 font-semibold text-primary hover:bg-primary hover:text-white">
+                <Send size={17} /> Book a {dest.name} Trip
+              </BookingRequestButton>
+              <BookingRequestButton destinationSlug={dest.slug} title={`${dest.name} trip`} className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 px-4 py-3 font-semibold text-white hover:bg-green-700">
+                <MessageCircle size={17} /> Request via WhatsApp
+              </BookingRequestButton>
               <div className="space-y-3">
                 <div className="flex items-start gap-3 rounded-xl bg-stone-50 p-3 text-sm">
                   <Hotel size={17} className="mt-0.5 flex-shrink-0 text-primary" />

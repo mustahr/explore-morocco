@@ -11,6 +11,7 @@ const checks = [
   { id: "booking", title: "Booking submission", detail: "Creates a marked TEST reservation through the real booking endpoint and attempts email/push notifications." },
   { id: "message", title: "Contact submission", detail: "Creates a marked TEST message through the real contact endpoint and attempts email/push notifications." },
   { id: "storage", title: "Image uploads", detail: "Uploads a tiny image, checks public access, then deletes it." },
+  { id: "whatsapp", title: "Automatic WhatsApp alert", detail: "Sends a marked test through your configured WhatsApp Business sender and approved booking template." },
   { id: "push", title: "Browser notifications", detail: "Sends a test to subscribed admin devices. Enable notifications in the header first." },
   { id: "webhook", title: "Operations webhook", detail: "Sends a marked test to the optional connected automation." },
   { id: "cleanup", title: "Remove test records", detail: "Deletes only reservations and messages created by these test buttons." },

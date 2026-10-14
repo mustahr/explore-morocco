@@ -1182,6 +1182,7 @@ export default function AdminTripsPage() {
         return [
           booking.id,
           booking.customerName,
+          booking.tripTitle,
           booking.customerEmail,
           booking.customerPhone,
           booking.tripId,
@@ -4548,7 +4549,7 @@ export default function AdminTripsPage() {
                                 </p>
                               )}
                               <p className="mt-2 text-sm text-stone-700">
-                                {trip?.title ?? booking.tripId}
+                                {trip?.title ?? booking.tripTitle ?? booking.tripId}
                               </p>
                               {booking.notes && (
                                 <p className="mt-2 text-xs text-stone-500">

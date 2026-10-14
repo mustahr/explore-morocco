@@ -15,6 +15,9 @@ export interface AdminPushSubscription {
 }
 
 export interface Booking {
+  tripTitle?: string
+  destinationSlug?: string
+  experienceId?: string
   id: string
   tripId: string
   customerName: string
