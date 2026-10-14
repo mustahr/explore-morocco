@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { EmailNotificationTest } from "@/components/admin/EmailNotificationTest";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
 import {
@@ -4792,6 +4793,7 @@ export default function AdminTripsPage() {
                 {activeSection === "settings" && (
                   <section className="mt-8 grid gap-6 lg:grid-cols-2">
                     <SystemStatusCard status={systemStatus} />
+                    <EmailNotificationTest />
                     <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg">
                       <h3 className="text-xl font-bold text-stone-900">
                         Site controls

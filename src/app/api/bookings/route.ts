@@ -79,7 +79,7 @@ export async function POST(request: Request) {
 
   await notifyOperations({
     type: "booking",
-    title: "New Saharavanta booking request",
+    title: "New Dunexplore Morocco booking request",
     fields: {
       reference: booking.id,
       trip: bookingTripTitle,

@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const notificationResults = await Promise.allSettled([
       notifyOperations({
         type: "lead",
-        title: "New MoroccoAI lead",
+        title: "New Dunexplore Morocco enquiry",
         fields: {
           name: lead.name,
           email: lead.email,
