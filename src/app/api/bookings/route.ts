@@ -98,7 +98,7 @@ export async function POST(request: Request) {
     body: `${bookingTripTitle} - ${booking.travelers} travelers - ${booking.startDate}`,
     url: "/admin",
     tag: booking.id,
-  })
+  }).catch(() => { console.error("Booking push notification failed") })
 
   return Response.json({ booking }, { status: 201 })
 }
