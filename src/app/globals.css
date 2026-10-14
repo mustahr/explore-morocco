@@ -1,5 +1,60 @@
 @import "tailwindcss";
 
+/* Shared interaction feedback for the public site and admin dashboard. */
+@layer base {
+  :where(a[href], button, summary, select, [role="button"], [role="link"],
+    [role="tab"], [role="menuitem"], input[type="button"], input[type="submit"],
+    input[type="reset"], input[type="checkbox"], input[type="radio"],
+    input[type="range"], input[type="file"], label[for],
+    label:has(input[type="checkbox"], input[type="radio"], input[type="file"])) {
+    cursor: pointer;
+    transition: filter 160ms ease, outline-color 160ms ease;
+  }
+
+  :where(button, select, input, [role="button"], [role="tab"], [role="menuitem"]):is(:disabled, [aria-disabled="true"]),
+  :where(a[href], [role="link"])[aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  :where(a[href], button, summary, select, [role="button"], [role="link"],
+    [role="tab"], [role="menuitem"], input[type="button"], input[type="submit"],
+    input[type="reset"], input[type="checkbox"], input[type="radio"],
+    input[type="range"], input[type="file"]):focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    :where(a[href], button, summary, select, [role="button"], [role="link"],
+      [role="tab"], [role="menuitem"], input[type="button"], input[type="submit"],
+      input[type="reset"], input[type="checkbox"], input[type="radio"],
+      input[type="range"], input[type="file"], label[for],
+      label:has(input[type="checkbox"], input[type="radio"], input[type="file"])):not(:disabled):not([aria-disabled="true"]):hover {
+      filter: brightness(1.12);
+    }
+
+    :where(button, summary, select, [role="button"], [role="tab"], [role="menuitem"],
+      input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):hover:not(:focus-visible) {
+      outline: 1px solid rgb(212 175 55 / 0.45);
+      outline-offset: 2px;
+    }
+
+    :where(a[href]):not([aria-disabled="true"]):hover {
+      text-decoration-color: var(--primary);
+      text-decoration-line: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(a[href], button, summary, select, [role="button"], [role="link"],
+      [role="tab"], [role="menuitem"], input, label) {
+      transition-duration: 0ms;
+    }
+  }
+}
+
+
 :root {
   --background: #F8F2E7;
   --foreground: #0D0D0D;
