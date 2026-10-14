@@ -25,7 +25,7 @@ export default function AboutPage() {
   }, [])
 
   return (
-    <div className="pt-10">
+    <div className="pt-20 lg:pt-24">
       <section className="relative py-24 lg:py-32 overflow-hidden">
         <div className="absolute inset-0">
           <ImageWithFallback

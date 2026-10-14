@@ -1,5 +1,6 @@
 "use client"
 
+import { PageHero } from "@/components/layout/PageHero"
 import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 import { use, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -308,22 +309,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen">
-      <section className="py-16 lg:py-24 gradient-warm">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full mb-6">
-              <Sparkles size={16} className="text-primary" />
-              <span className="text-primary font-medium text-sm">AI-Powered</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-stone-900">
-              Trip Generator
-            </h1>
-            <p className="text-stone-500 mt-4 text-lg">
-              Tell us your preferences, and our AI will create your perfect Morocco itinerary
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero image="/images/content/sahara-dunes.webp" imageAlt="Camel caravan crossing the golden Sahara dunes" eyebrow="Plan your journey" title="Trip Generator" description="Tell us your preferences, and our AI will create your perfect Morocco itinerary." />
 
       <section className="py-12 lg:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">

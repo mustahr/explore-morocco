@@ -34,7 +34,7 @@ export default function BlogPage() {
     : blogPosts.filter(post => post.category === selectedCategory)
 
   return (
-    <div className="pt-15 lg:pt-20">
+    <div className="pt-20 lg:pt-24">
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="absolute inset-0">
           <ImageWithFallback

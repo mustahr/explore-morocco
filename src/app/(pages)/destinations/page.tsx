@@ -25,12 +25,12 @@ export default function DestinationsPage() {
   }, [])
 
   return (
-    <div className="pt-16 lg:pt-14">
+    <div className="pt-20 lg:pt-24">
       <section className="relative overflow-hidden py-20 lg:py-28">
         <div className="absolute inset-0">
           <ImageWithFallback
-            src="https://images.unsplash.com/photo-1548018560-c7196548e84d?auto=format&fit=crop&w=2000&q=80"
-            alt="Moroccan desert and kasbah landscape"
+            src="/images/content/chefchaouen-blue.webp"
+            alt="Blue buildings of Chefchaouen beneath the Rif Mountains"
             fill
             preload
             sizes="100vw"
@@ -46,7 +46,7 @@ export default function DestinationsPage() {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_28rem] lg:items-end">
+          <div className="grid gap-12 lg:grid-cols-[1fr_28rem] lg:items-center">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
