@@ -1,6 +1,6 @@
 "use client"
 
-import { contactEmailHref } from "@/lib/contact"
+import { contactWhatsAppHref } from "@/lib/contact"
 
 import Link from "next/link"
 import { useState } from "react"
@@ -12,7 +12,7 @@ import {
   ChevronRight,
   Clock,
   MapPin,
-  Mail,
+  MessageCircle,
   Send,
   Share2,
   Sparkles,
@@ -185,11 +185,13 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
                   Generate itinerary
                 </Link>
                 <a
-                  href={contactEmailHref(contactMessage)}
+                  href={contactWhatsAppHref(contactMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-500 hover:text-white"
                 >
-                  <Mail size={16} />
-                  Ask by email
+                  <MessageCircle size={16} />
+                  Ask on WhatsApp
                 </a>
               </div>
             </div>

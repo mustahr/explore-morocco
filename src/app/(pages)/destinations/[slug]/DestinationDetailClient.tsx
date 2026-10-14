@@ -1,11 +1,11 @@
 "use client"
 
-import { contactEmailHref } from "@/lib/contact"
+import { contactWhatsAppHref } from "@/lib/contact"
 
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, Mail, Send, ChevronDown } from "lucide-react"
+import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, MessageCircle, Mail, Send, ChevronDown } from "lucide-react"
 import { type Destination, type DestinationDetails } from "@/lib/data"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
@@ -301,11 +301,13 @@ export default function DestinationDetailClient({ destination }: { destination: 
                 Book a {dest.name} Trip
               </Link>
               <a
-                href={contactEmailHref(contactMessage)}
+                href={contactWhatsAppHref(contactMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-3 font-semibold text-white transition hover:bg-green-600"
               >
-                <Mail size={17} />
-                Email Us
+                <MessageCircle size={17} />
+                WhatsApp Us
               </a>
               <div className="space-y-3">
                 <div className="flex items-start gap-3 rounded-xl bg-stone-50 p-3 text-sm">

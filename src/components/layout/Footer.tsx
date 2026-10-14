@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { CONTACT_EMAIL, CONTACT_LOCATION, contactEmailHref } from "@/lib/contact"
-import { Mail, MapPin, Send } from "lucide-react"
+import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref } from "@/lib/contact"
+import { Mail, Phone, MapPin, Send } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
 import { useState } from "react"
@@ -100,6 +100,10 @@ export function Footer() {
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <Mail size={16} className="text-primary" />
                 <a href={contactEmailHref()} className="min-w-0 break-all hover:text-white transition-colors">{CONTACT_EMAIL}</a>
+              </li>
+              <li className="flex items-center gap-3 text-stone-400 text-sm">
+                <Phone size={16} className="text-primary" />
+                <a href={CONTACT_PHONE_HREF} className="hover:text-white transition-colors">{CONTACT_PHONE}</a>
               </li>
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <MapPin size={16} className="text-primary" />

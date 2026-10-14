@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { CONTACT_EMAIL, CONTACT_LOCATION, contactEmailHref } from "@/lib/contact"
-import { Mail, MapPin, MessageCircle, Send, Clock, Compass, Route, Headphones, Landmark, ArrowRight } from "lucide-react"
+import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref, contactWhatsAppHref } from "@/lib/contact"
+import { Mail, Phone, MapPin, MessageCircle, Send, Clock, Compass, Route, Headphones, Landmark, ArrowRight } from "lucide-react"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function ContactPage() {
@@ -104,11 +104,13 @@ export default function ContactPage() {
                   <ArrowRight size={16} />
                 </a>
                 <a
-                  href={contactEmailHref()}
+                  href={contactWhatsAppHref()}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/24 bg-white/12 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
                 >
-                  <Mail size={16} />
-                  Email us
+                  <MessageCircle size={16} />
+                  WhatsApp us
                 </a>
               </div>
               <div className="mt-7 flex flex-wrap gap-3 text-sm font-semibold text-white/90">
@@ -138,6 +140,7 @@ export default function ContactPage() {
               <div className="space-y-3 py-5">
                 {[
                   { icon: Mail, label: "Email", value: CONTACT_EMAIL, href: contactEmailHref() },
+                  { icon: Phone, label: "Phone", value: CONTACT_PHONE, href: CONTACT_PHONE_HREF },
                   { icon: MapPin, label: "Office", value: CONTACT_LOCATION, href: undefined },
                 ].map((item) => (
                   <div key={item.label} className="flex items-center gap-3 rounded-xl bg-white/10 p-3">
@@ -297,6 +300,13 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
+                    <Phone size={20} className="text-primary mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium text-stone-700">Phone</p>
+                      <a href={CONTACT_PHONE_HREF} className="text-stone-500 text-sm hover:text-primary">{CONTACT_PHONE}</a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
                     <MapPin size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium text-stone-700">Address</p>
@@ -320,20 +330,22 @@ export default function ContactPage() {
                 className="bg-[#0F3D2E] rounded-2xl p-6 text-white"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <Mail size={24} />
-                  <h3 className="font-bold text-lg">Email our travel team</h3>
+                  <MessageCircle size={24} />
+                  <h3 className="font-bold text-lg">WhatsApp our travel team</h3>
                 </div>
                 <p className="text-white/80 text-sm mb-4">
-                  Send us your dates, destination, and questions. Our team will help you plan your Morocco trip.
+                  Chat with us about your dates, destination, and questions. Our team will help you plan your Morocco trip.
                 </p>
                 <a
-                  href={contactEmailHref()}
-                  data-analytics-event="contact_email_click"
+                  href={contactWhatsAppHref()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics-event="whatsapp_click"
                   data-analytics-label="Contact page"
                   className="w-full bg-white text-[#0F3D2E] py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
                 >
-                  <Mail size={18} />
-                  Email us
+                  <MessageCircle size={18} />
+                  Chat on WhatsApp
                 </a>
               </motion.div>
 

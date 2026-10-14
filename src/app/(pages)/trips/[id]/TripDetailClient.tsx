@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import { contactEmailHref } from "@/lib/contact"
+import { contactWhatsAppHref } from "@/lib/contact"
 
 import { useMemo, useState, useEffect, useRef, type FormEvent } from "react"
 import Link from "next/link"
@@ -14,7 +14,7 @@ import {
   ChevronDown,
   ChevronUp,
   ArrowLeft,
-  Mail,
+  MessageCircle,
   ShieldCheck,
   Globe,
   Sparkles,
@@ -537,12 +537,14 @@ export default function TripDetailClient({
               </form>
 
               <a
-                href={contactEmailHref(contactMessage)}
-                data-analytics-event="booking_email_click"
+                href={contactWhatsAppHref(contactMessage)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics-event="booking_whatsapp_click"
                 data-analytics-label={trip.id}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-3xl border border-stone-300 bg-white px-6 py-4 text-sm font-semibold text-stone-700 transition duration-300 ease-out hover:border-primary hover:text-primary mt-3"
               >
-                <Mail size={18} /> Enquire by email
+                <MessageCircle size={18} /> Reserve with WhatsApp
               </a>
 
               <div className="mt-6 rounded-3xl bg-amber-50 border border-amber-100 p-4 text-sm text-stone-700">
