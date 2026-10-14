@@ -1,5 +1,7 @@
 "use client"
 
+import { contactEmailHref } from "@/lib/contact"
+
 import Link from "next/link"
 import { useState } from "react"
 import { motion } from "framer-motion"
@@ -10,7 +12,7 @@ import {
   ChevronRight,
   Clock,
   MapPin,
-  MessageCircle,
+  Mail,
   Send,
   Share2,
   Sparkles,
@@ -20,7 +22,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost; relatedPosts: BlogPost[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const whatsappMessage = encodeURIComponent(`Hi, I read "${post.title}" and want help planning a Morocco trip.`)
+  const contactMessage = (`Hi, I read "${post.title}" and want help planning a Morocco trip.`)
 
   function scrollToSection(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
@@ -183,13 +185,11 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
                   Generate itinerary
                 </Link>
                 <a
-                  href={`https://wa.me/212XXXXXXXXX?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={contactEmailHref(contactMessage)}
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-500 hover:text-white"
                 >
-                  <MessageCircle size={16} />
-                  Ask on WhatsApp
+                  <Mail size={16} />
+                  Ask by email
                 </a>
               </div>
             </div>

@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { CONTACT_EMAIL, CONTACT_LOCATION, contactEmailHref } from "@/lib/contact"
+import { Mail, MapPin, Send } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
 import { useState } from "react"
@@ -98,15 +99,11 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <Mail size={16} className="text-primary" />
-                <span>hello@moroccoai.com</span>
-              </li>
-              <li className="flex items-center gap-3 text-stone-400 text-sm">
-                <Phone size={16} className="text-primary" />
-                <span>+212 5XX-XXXXXX</span>
+                <a href={contactEmailHref()} className="min-w-0 break-all hover:text-white transition-colors">{CONTACT_EMAIL}</a>
               </li>
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <MapPin size={16} className="text-primary" />
-                <span>Marrakech, Morocco</span>
+                <span>{CONTACT_LOCATION}</span>
               </li>
             </ul>
           </div>
@@ -133,7 +130,7 @@ export function Footer() {
 
         <div className="border-t border-stone-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-stone-500 text-sm">
-            &copy; 2026 MoroccoAI. {t.footer.rights}
+            &copy; 2026 Dunexplore Morocco. {t.footer.rights}
           </p>
           <div className="flex gap-6">
             <Link href="#" className="text-stone-500 hover:text-white text-sm transition-colors">Privacy Policy</Link>

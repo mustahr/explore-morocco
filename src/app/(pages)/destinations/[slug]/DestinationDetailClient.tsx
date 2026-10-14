@@ -1,9 +1,11 @@
 "use client"
 
+import { contactEmailHref } from "@/lib/contact"
+
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, MessageCircle, Mail, Send, ChevronDown } from "lucide-react"
+import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, Mail, Send, ChevronDown } from "lucide-react"
 import { type Destination, type DestinationDetails } from "@/lib/data"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
@@ -12,7 +14,7 @@ export default function DestinationDetailClient({ destination }: { destination: 
   const [expandedExp, setExpandedExp] = useState<number | null>(null)
 
   const dest = destination
-  const whatsappMessage = encodeURIComponent(`Hi, I want to plan a trip to ${dest.name}. Can you help me?`)
+  const contactMessage = (`Hi, I want to plan a trip to ${dest.name}. Can you help me?`)
   const detail: DestinationDetails = dest.details ?? {
     intro: dest.description,
     bestFor: ["Culture", "Local experiences", "Scenic stays", "Guided trips"],
@@ -299,13 +301,11 @@ export default function DestinationDetailClient({ destination }: { destination: 
                 Book a {dest.name} Trip
               </Link>
               <a
-                href={`https://wa.me/212XXXXXXXXX?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={contactEmailHref(contactMessage)}
                 className="mb-5 flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-4 py-3 font-semibold text-white transition hover:bg-green-600"
               >
-                <MessageCircle size={17} />
-                WhatsApp Us
+                <Mail size={17} />
+                Email Us
               </a>
               <div className="space-y-3">
                 <div className="flex items-start gap-3 rounded-xl bg-stone-50 p-3 text-sm">

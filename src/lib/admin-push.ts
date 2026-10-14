@@ -40,7 +40,7 @@ function configureWebPush() {
   if (!publicKey || !privateKey || !isValidVapidPublicKey(publicKey)) return false
 
   webPush.setVapidDetails(
-    process.env.VAPID_SUBJECT || "mailto:hello@moroccoai.com",
+    process.env.VAPID_SUBJECT || "mailto:contact@dunexplore-morocco.com",
     publicKey,
     privateKey,
   )
