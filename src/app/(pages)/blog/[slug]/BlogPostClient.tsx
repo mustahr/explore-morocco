@@ -1,9 +1,10 @@
 "use client"
 
+import { buildBlogNavigation } from "@/lib/blog-navigation"
 import { contactWhatsAppHref } from "@/lib/contact"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import {
   ArrowLeft,
@@ -24,9 +25,7 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const contactMessage = (`Hi, I read "${post.title}" and want help planning a Morocco trip.`)
 
-  function scrollToSection(id: string) {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
-  }
+  const article = useMemo(() => buildBlogNavigation(post.content, post.tableOfContents), [post.content, post.tableOfContents])
 
   return (
     <article className="bg-stone-50 pt-15 lg:pt-20">
@@ -103,7 +102,7 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
               </button>
             </div>
 
-            {post.tableOfContents.length > 0 && (
+            {article.tableOfContents.length > 0 && (
               <div className="mb-10 rounded-3xl border border-stone-200 bg-stone-50 p-5">
                 <div className="mb-4 flex items-center justify-between gap-4">
                   <div>
@@ -112,16 +111,16 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
                   </div>
                   <Sparkles size={20} className="text-primary" />
                 </div>
-                <nav className="grid gap-2 sm:grid-cols-2">
-                  {post.tableOfContents.map((item) => (
-                    <button
+                <nav aria-label="Table of contents" className="grid gap-2 sm:grid-cols-2">
+                  {article.tableOfContents.map((item) => (
+                    <a
                       key={item.id}
-                      onClick={() => scrollToSection(item.id)}
+                      href={`#${encodeURIComponent(item.id)}`}
                       className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left text-sm font-semibold text-stone-600 transition hover:border-primary hover:bg-primary/5 hover:text-primary"
                     >
                       <ChevronRight size={15} />
                       {item.label}
-                    </button>
+                    </a>
                   ))}
                 </nav>
               </div>
@@ -129,7 +128,7 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
 
             <div
               className="blog-content"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: article.content }}
             />
 
             {relatedPosts.length > 0 && (

@@ -248,7 +248,7 @@ select.admin-input:focus,
   color: var(--stone-900);
   letter-spacing: 0;
   line-height: 1.2;
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 8rem;
 }
 
 .blog-content h2 {
@@ -493,4 +493,8 @@ select.admin-input:focus,
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body { scroll-behavior: auto; }
 }
