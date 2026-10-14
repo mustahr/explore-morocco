@@ -36,8 +36,8 @@ export default function DestinationDetailClient({ destination }: { destination: 
   ]
 
   return (
-    <div className="pt-15 lg:pt-20">
-      <div className="relative h-[50vh] lg:h-[60vh]">
+    <div className="min-w-0 overflow-x-clip pt-20 lg:pt-24">
+      <div className="relative isolate h-[50svh] min-h-[26rem] overflow-hidden bg-stone-900 sm:min-h-[30rem] lg:h-[60vh] lg:min-h-[32rem]">
         <ImageWithFallback
           src={dest.images[0] || dest.image}
           alt={dest.name}
@@ -62,20 +62,21 @@ export default function DestinationDetailClient({ destination }: { destination: 
               <span className="font-semibold">{dest.rating}</span>
               <span className="text-white/60">({dest.reviews.toLocaleString()} reviews)</span>
             </span>
-            <span className="flex items-center gap-1">
-              <Calendar size={16} />
-              Best: {dest.bestTime}
+            <span className="flex min-w-0 items-start gap-2">
+              <Calendar size={16} className="mt-1 shrink-0" />
+              <span>Best: {dest.bestTime}</span>
             </span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="relative min-w-0 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          <div className="lg:col-span-2">
-            <div className="flex gap-1 mb-8 border-b border-stone-200 overflow-x-auto">
+          <div className="min-w-0 lg:col-span-2">
+            <div aria-label="Destination sections" className="grid grid-cols-2 gap-1 mb-8 border-b border-stone-200 sm:flex sm:flex-wrap">
               {tabs.map((tab) => (
-                <button key={tab.key} onClick={() => setActiveTab(tab.key)} className={`px-4 py-3 font-medium text-sm whitespace-nowrap transition-colors relative ${activeTab === tab.key ? "text-primary" : "text-stone-500 hover:text-stone-700"}`}>
+                <button type="button" aria-pressed={activeTab === tab.key} key={tab.key} onClick={() => setActiveTab(tab.key)} className={`px-4 py-3 font-medium text-sm whitespace-nowrap transition-colors relative ${activeTab === tab.key ? "text-primary" : "text-stone-500 hover:text-stone-700"}`}>
                   {tab.label}
                   {activeTab === tab.key && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />}
                 </button>
@@ -362,6 +363,7 @@ export default function DestinationDetailClient({ destination }: { destination: 
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )
