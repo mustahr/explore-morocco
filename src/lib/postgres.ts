@@ -1,3 +1,4 @@
+import imageRepairs from "../../data/content-image-repairs.json"
 import { neon } from "@neondatabase/serverless"
 import trips from "../../data/trips.json"
 import destinations from "../../data/destinations.json"
@@ -45,6 +46,21 @@ export function seedRecords(): SeedRecord[] {
   return records
 }
 
+// Repair only exact known-broken URLs; keep custom content, uploads and deletions intact.
+export function contentImageRepairQueries(): DatabaseQuery[] {
+  return [
+    ...Object.entries(imageRepairs).map(([before, after]) => ({
+      text: `UPDATE content_records
+        SET data = replace(data::text, $1, $2)::jsonb, updated_at = now()
+        WHERE record_type IN ('trips', 'destinations', 'experiences', 'blog_posts', 'guides', 'testimonials')
+          AND strpos(data::text, $1) > 0
+          AND NOT EXISTS (SELECT 1 FROM app_metadata WHERE key = 'content_image_repair_20261014')`,
+      values: [JSON.stringify(before), JSON.stringify(after)],
+    })),
+    { text: "INSERT INTO app_metadata (key, value) VALUES ('content_image_repair_20261014', 'true'::jsonb) ON CONFLICT (key) DO NOTHING", values: [] },
+  ]
+}
+
 export function initializationQueries(): DatabaseQuery[] {
   return [
     { text: "SELECT pg_advisory_xact_lock(7136421)", values: [] },
@@ -60,6 +76,7 @@ export function initializationQueries(): DatabaseQuery[] {
       WHERE NOT EXISTS (SELECT 1 FROM app_metadata WHERE key = 'initial_content_v1')
       ON CONFLICT (record_type, record_key) DO NOTHING`, values: [JSON.stringify(seedRecords())] },
     { text: "INSERT INTO app_metadata (key, value) VALUES ('initial_content_v1', 'true'::jsonb) ON CONFLICT (key) DO NOTHING", values: [] },
+    ...contentImageRepairQueries(),
   ]
 }
 

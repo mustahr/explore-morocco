@@ -3,12 +3,12 @@
     "slug": "ultimate-morocco-itinerary",
     "title": "The Ultimate 10-Day Morocco Itinerary",
     "excerpt": "From the Sahara to the Atlantic, this complete itinerary covers everything you need to see in Morocco.",
-    "image": "https://images.unsplash.com/photo-1509023465459-a9b73850b759?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/sahara-camp.webp",
     "category": "Itineraries",
     "date": "2025-03-15",
     "readTime": "12 min",
     "author": "Amina El Fassi",
-    "authorAvatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=150&q=80",
+    "authorAvatar": "/images/content/author-amina.svg",
     "content": "\n      <h2 id=\"why-this-itinerary\">Why This 10-Day Itinerary Works</h2>\n      <p>Morocco is a country of incredible diversity, from the snow-capped Atlas Mountains to the golden sands of the Sahara Desert. This carefully crafted 10-day itinerary balances cultural immersion, adventure, and relaxation while covering Morocco's most iconic destinations.</p>\n\n      <h2 id=\"marrakech\">Days 1-2: Marrakech - The Red City</h2>\n      <p>Begin your Moroccan adventure in Marrakech, the vibrant heart of the country. Spend your first day exploring the Jemaa el-Fnaa square, watching street performers and sampling local street food. Visit the Bahia Palace and the Saadian Tombs to witness Morocco's rich architectural heritage.</p>\n\n      <h2 id=\"atlas-mountains\">Days 3-4: Atlas Mountains - Berber Villages</h2>\n      <p>Travel to the Atlas Mountains for a cultural immersion experience. Stay in a traditional Berber village, hike through terraced fields, and learn about local customs. Visit the UNESCO-listed Ksar of Ait-Ben-Haddou, a stunning example of earthen clay architecture.</p>\n\n      <h2 id=\"sahara-desert\">Days 5-6: Sahara Desert - Desert Adventure</h2>\n      <p>Embark on a desert adventure to the Erg Chebbi dunes. Ride camels at sunset, spend the night in a luxury desert camp under the stars, and experience the silence and beauty of the Sahara. This is truly a once-in-a-lifetime experience.</p>\n\n      <h2 id=\"fes\">Days 7-8: Fes - The Imperial City</h2>\n      <p>Head north to Fes, Morocco's oldest imperial city and a UNESCO World Heritage site. Explore the labyrinthine medina, visit the world's oldest university, and experience traditional Moroccan crafts. Don't miss the tanneries and the Royal Palace.</p>\n\n      <h2 id=\"chefchaouen-return\">Days 9-10: Chefchaouen & Return to Marrakech</h2>\n      <p>Visit the Blue City of Chefchaouen, nestled in the Rif Mountains. Wander through the blue-washed streets, hike to nearby waterfalls, and enjoy the cooler mountain air. Return to Marrakech for last-minute shopping and relaxation before your departure.</p>\n\n      <h2 id=\"essential-tips\">Essential Tips for Your Trip</h2>\n      <ul>\n        <li>Book desert camps and mountain accommodations in advance</li>\n        <li>Carry cash for rural areas where cards aren't accepted</li>\n        <li>Respect local customs and dress modestly</li>\n        <li>Stay hydrated and use sunscreen in desert areas</li>\n        <li>Learn basic Arabic phrases for better interactions</li>\n      </ul>\n    ",
     "tableOfContents": [
       {
@@ -44,7 +44,7 @@
     "seo": {
       "title": "The Ultimate 10-Day Morocco Itinerary",
       "description": "From the Sahara to the Atlantic, this complete itinerary covers everything you need to see in Morocco.",
-      "image": "https://images.unsplash.com/photo-1509023465459-a9b73850b759?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/sahara-camp.webp"
     }
   },
   {
@@ -91,12 +91,12 @@
     "slug": "morocco-travel-tips",
     "title": "Essential Morocco Travel Tips for First-Timers",
     "excerpt": "Everything you need to know before visiting Morocco: culture, safety, transport, and more.",
-    "image": "https://images.unsplash.com/photo-1545071677-7a1dfc4c5d26?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/moroccan-riad.webp",
     "category": "Tips",
     "date": "2025-03-05",
     "readTime": "10 min",
     "author": "Amina El Fassi",
-    "authorAvatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=150&q=80",
+    "authorAvatar": "/images/content/author-amina.svg",
     "content": "\n      <h2>Understanding Moroccan Culture</h2>\n      <p>Morocco is a predominantly Muslim country with a rich cultural heritage. Understanding local customs will enhance your travel experience and show respect for your hosts.</p>\n\n      <h2>Best Time to Visit</h2>\n      <p>The shoulder seasons (March-May and September-November) offer pleasant weather and fewer crowds. Summer can be extremely hot, while winter brings rain to northern areas.</p>\n\n      <h2>Money & Currency</h2>\n      <p>The Moroccan Dirham (MAD) is the local currency. ATMs are widely available in cities, but carry cash for rural areas. Credit cards are accepted in most hotels and restaurants, but smaller establishments prefer cash.</p>\n\n      <h2>Safety & Health</h2>\n      <p>Morocco is generally safe for tourists, but take standard precautions. Stay aware in crowded areas, use registered taxis, and keep valuables secure. Medical facilities are good in major cities.</p>\n\n      <h2>Transportation</h2>\n      <p>Fly into Marrakech or Casablanca. Domestic flights connect major cities. Trains are reliable between major destinations. Buses are cheap but can be crowded. Renting a car gives flexibility but requires careful driving.</p>\n\n      <h2>Food & Dining</h2>\n      <p>Moroccan cuisine is diverse and delicious. Try tagine, couscous, and pastilla. Street food is generally safe but start with cooked foods. Always wash fruits and vegetables.</p>\n\n      <h2>Communication</h2>\n      <p>Arabic and French are official languages, but English is spoken in tourist areas. Learning basic Arabic phrases shows respect and can enhance your experience.</p>\n    ",
     "tableOfContents": [
       {
@@ -132,14 +132,14 @@
     "seo": {
       "title": "Essential Morocco Travel Tips for First-Timers",
       "description": "Everything you need to know before visiting Morocco: culture, safety, transport, and more.",
-      "image": "https://images.unsplash.com/photo-1545071677-7a1dfc4c5d26?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/moroccan-riad.webp"
     }
   },
   {
     "slug": "chefchaouen-photo-guide",
     "title": "Chefchaouen: The Complete Photography Guide",
     "excerpt": "Best spots, times, and techniques for capturing the Blue City's magic.",
-    "image": "https://images.unsplash.com/photo-1553264941-928f4e0c9946?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/chefchaouen-streets.webp",
     "category": "Destinations",
     "date": "2025-02-28",
     "readTime": "7 min",
@@ -168,14 +168,14 @@
     "seo": {
       "title": "Chefchaouen: The Complete Photography Guide",
       "description": "Best spots, times, and techniques for capturing the Blue City's magic.",
-      "image": "https://images.unsplash.com/photo-1553264941-928f4e0c9946?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/chefchaouen-streets.webp"
     }
   },
   {
     "slug": "moroccan-food-guide",
     "title": "A Foodie's Guide to Moroccan Cuisine",
     "excerpt": "From tagine to msemen, discover the flavors that make Moroccan food world-famous.",
-    "image": "https://images.unsplash.com/photo-1569407228235-9a74cc843afa?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/moroccan-cuisine.webp",
     "category": "Culture",
     "date": "2025-02-20",
     "readTime": "9 min",
@@ -208,7 +208,7 @@
     "seo": {
       "title": "A Foodie's Guide to Moroccan Cuisine",
       "description": "From tagine to msemen, discover the flavors that make Moroccan food world-famous.",
-      "image": "https://images.unsplash.com/photo-1569407228235-9a74cc843afa?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/moroccan-cuisine.webp"
     }
   },
   {
@@ -260,7 +260,7 @@
     "date": "2025-02-10",
     "readTime": "11 min",
     "author": "Amina El Fassi",
-    "authorAvatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=150&q=80",
+    "authorAvatar": "/images/content/author-amina.svg",
     "content": "\n      <h2 id=\"why-visit-sahara\">Why Visit the Sahara?</h2>\n      <p>The Sahara Desert offers an otherworldly experience of vast sand dunes, star-filled skies, and traditional nomadic culture. It's a place that changes you forever.</p>\n\n      <h2 id=\"best-time-visit\">Best Time to Visit</h2>\n      <p>October to April offers comfortable temperatures. Summer months (June-August) can reach 50°C (122°F) during the day, making travel challenging.</p>\n\n      <h2 id=\"how-to-get-there\">How to Get There</h2>\n      <p>Most visitors fly into Marrakech or Fes, then take a 4WD vehicle or bus to Merzouga (8-10 hours). Domestic flights to Errachidia shorten the journey.</p>\n\n      <h2 id=\"accommodation-options\">Accommodation Options</h2>\n      <h3>Luxury Desert Camps</h3>\n      <p>Glamping tents with private bathrooms, beds, and gourmet meals. Some include pools and spa services.</p>\n\n      <h3>Traditional Berber Camps</h3>\n      <p>Authentic nomad tents with shared facilities. Experience traditional Berber hospitality and cuisine.</p>\n\n      <h3>Budget Options</h3>\n      <p>Basic guesthouses in Merzouga for those on a tight budget.</p>\n\n      <h2 id=\"essential-activities\">Essential Activities</h2>\n      <h3>Camel Trekking</h3>\n      <p>Ride camels across the dunes at sunset or sunrise. A quintessential desert experience.</p>\n\n      <h3>Sandboarding</h3>\n      <p>Slide down the massive Erg Chebbi dunes on a snowboard. Adrenaline rush guaranteed!</p>\n\n      <h3>Stargazing</h3>\n      <p>The clear desert skies offer incredible views of the Milky Way and shooting stars.</p>\n\n      <h2 id=\"cultural-experiences\">Cultural Experiences</h2>\n      <ul>\n        <li>Visit Berber villages and learn about nomadic life</li>\n        <li>Experience traditional music and dance around campfires</li>\n        <li>Learn about desert survival techniques</li>\n        <li>Try authentic Berber cuisine</li>\n      </ul>\n\n      <h2 id=\"environmental-responsibility\">Environmental Responsibility</h2>\n      <p>The desert ecosystem is fragile. Choose eco-friendly operators, minimize waste, and respect local customs.</p>\n    ",
     "tableOfContents": [
       {
@@ -303,7 +303,7 @@
     "slug": "7-days-morocco",
     "title": "7 Days in Morocco: The Perfect Itinerary",
     "excerpt": "Make the most of your week in Morocco with this optimized itinerary covering the country's highlights.",
-    "image": "https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/marrakech-medina.webp",
     "category": "Itineraries",
     "date": "2025-02-05",
     "readTime": "10 min",
@@ -356,7 +356,7 @@
     "seo": {
       "title": "7 Days in Morocco: The Perfect Itinerary",
       "description": "Make the most of your week in Morocco with this optimized itinerary covering the country's highlights.",
-      "image": "https://images.unsplash.com/photo-1539650116574-75c0c6d0b7ef?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/marrakech-medina.webp"
     }
   },
   {
@@ -459,12 +459,12 @@
     "slug": "hidden-gems-morocco",
     "title": "Hidden Gems: Undiscovered Morocco",
     "excerpt": "Beyond the tourist trail: authentic experiences and off-the-beaten-path destinations.",
-    "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=800&q=80",
+    "image": "/images/content/sahara-dunes.webp",
     "category": "Destinations",
     "date": "2025-01-20",
     "readTime": "10 min",
     "author": "Amina El Fassi",
-    "authorAvatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?auto=format&fit=crop&w=800&q=80",
+    "authorAvatar": "/images/content/author-amina.svg",
     "content": "\n      <h2>Why Seek Hidden Gems?</h2>\n      <p>While Morocco's popular destinations are incredible, the real magic happens off the beaten path. Hidden gems offer authentic experiences and fewer crowds.</p>\n\n      <h2>Southern Morocco Secrets</h2>\n      <h3>Tata Region</h3>\n      <p>A remote desert region with dramatic landscapes, ancient kasbahs, and authentic Berber culture. Visit the Tata Gorge and stay in traditional villages.</p>\n\n      <h3>Anti-Atlas Mountains</h3>\n      <p>Less visited than the High Atlas, offering stunning hikes, hot springs, and traditional Berber villages. Perfect for nature lovers seeking solitude.</p>\n\n      <h2>Northern Hidden Treasures</h2>\n      <h3>Talassemtane National Park</h3>\n      <p>One of Morocco's most beautiful national parks, with cedar forests, waterfalls, and Barbary macaques. Excellent for hiking and wildlife viewing.</p>\n\n      <h3>Al Hoceima Region</h3>\n      <p>Mediterranean coastline with pristine beaches, Spanish colonial architecture, and fresh seafood. Much more relaxed than the south.</p>\n\n      <h2>Coastal Gems</h2>\n      <h3>Sidi Ifni</h3>\n      <p>A former Spanish colony with stunning Art Deco architecture and beautiful beaches. The medina is a UNESCO site with unique blue-washed buildings.</p>\n\n      <h3>Mirleft</h3>\n      <p>A surfer's paradise with consistent waves, beautiful beaches, and a laid-back atmosphere. Great for water sports and relaxation.</p>\n\n      <h2>Cultural Experiences</h2>\n      <h3>Berber Villages in the M'Goun</h3>\n      <p>Authentic mountain villages where time stands still. Experience traditional Berber life, try local cuisine, and learn about ancient customs.</p>\n\n      <h3>Guelmim Oasis</h3>\n      <p>A lush desert oasis with date palms, traditional mud-brick architecture, and welcoming locals. Perfect for a peaceful desert retreat.</p>\n\n      <h2>Practical Tips for Hidden Gems</h2>\n      <ul>\n        <li>Rent a 4x4 vehicle for remote areas</li>\n        <li>Learn basic Tashelhit (Berber language) phrases</li>\n        <li>Carry plenty of water and snacks</li>\n        <li>Respect local customs and ask permission before photographing</li>\n        <li>Support local businesses and artisans</li>\n        <li>Be prepared for basic accommodations</li>\n      </ul>\n\n      <h2>Responsible Tourism</h2>\n      <p>When visiting hidden gems, your impact is greater. Choose eco-friendly options, minimize waste, and contribute positively to local communities.</p>\n    ",
     "tableOfContents": [
       {
@@ -500,7 +500,7 @@
     "seo": {
       "title": "Hidden Gems: Undiscovered Morocco",
       "description": "Beyond the tourist trail: authentic experiences and off-the-beaten-path destinations.",
-      "image": "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=800&q=80"
+      "image": "/images/content/sahara-dunes.webp"
     }
   },
   {

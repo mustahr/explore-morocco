@@ -1,7 +1,7 @@
 import assert from "node:assert/strict"
 import { test } from "node:test"
 import { PGlite } from "@electric-sql/pglite"
-import { initializationQueries, replacementQueries, type DatabaseQuery } from "../src/lib/postgres"
+import { initializationQueries, contentImageRepairQueries, replacementQueries, type DatabaseQuery } from "../src/lib/postgres"
 import { assertLocalWritesAllowed, getCloudRecords, upsertCloudRecord } from "../src/lib/cloud-db"
 
 async function run(db: PGlite, queries: DatabaseQuery[]) {
@@ -58,4 +58,23 @@ test("Vercel without a database never writes to local files or exposes demo cust
       else process.env[key] = value
     }
   }
+})
+
+test("image repair migrates existing records once and preserves custom content and deleted records", async () => {
+  const db = new PGlite()
+  try {
+    await run(db, initializationQueries())
+    await db.query("DELETE FROM app_metadata WHERE key = 'content_image_repair_20261014'")
+    const broken = "https://images.unsplash.com/photo-1509023465459-a9b73850b759?auto=format&fit=crop&w=800&q=80"
+    const original = { title: "My edited trip", images: [broken, "/my-upload.webp"], notes: "Keep this text", authorImage: broken }
+    await db.query("UPDATE content_records SET data = $1::jsonb WHERE record_type = 'trips' AND record_key = 'desert-3day'", [JSON.stringify(original)])
+    await db.query("DELETE FROM content_records WHERE record_type = 'guides'")
+    await run(db, contentImageRepairQueries())
+    const result = await db.query<{data: typeof original}>("SELECT data FROM content_records WHERE record_type = 'trips' AND record_key = 'desert-3day'")
+    assert.deepEqual(result.rows[0].data, { ...original, images: ["/images/content/sahara-camp.webp", "/my-upload.webp"], authorImage: "/images/content/sahara-camp.webp" })
+    assert.equal((await db.query("SELECT * FROM content_records WHERE record_type = 'guides'")).rows.length, 0)
+    await db.query("UPDATE content_records SET data = $1::jsonb WHERE record_type = 'trips' AND record_key = 'desert-3day'", [JSON.stringify(original)])
+    await run(db, contentImageRepairQueries())
+    assert.deepEqual((await db.query<{data: typeof original}>("SELECT data FROM content_records WHERE record_type = 'trips' AND record_key = 'desert-3day'")).rows[0].data, original)
+  } finally { await db.close() }
 })
