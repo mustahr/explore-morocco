@@ -4,7 +4,7 @@ import { contactWhatsAppHref } from "@/lib/contact"
 
 import { useMemo, useState, useEffect, useRef, type FormEvent } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion, useReducedMotion } from "framer-motion"
 import {
   Star,
   Clock,
@@ -59,6 +59,20 @@ export default function TripDetailClient({
   relatedTrips: Trip[]
   detailContent: TripDetailContent
 }) {
+  const reduceMotion = useReducedMotion()
+  const bookingCardRef = useRef<HTMLDivElement>(null)
+  const [bookingFormVisible, setBookingFormVisible] = useState(true)
+
+  useEffect(() => {
+    const card = bookingCardRef.current
+    if (!card) return
+    const observer = new IntersectionObserver(([entry]) => {
+      setBookingFormVisible(entry.isIntersecting)
+    }, { rootMargin: "-112px 0px -24px 0px", threshold: 0 })
+    observer.observe(card)
+    return () => observer.disconnect()
+  }, [trip.id])
+
   const faqItems = detailContent.faqs
   const reviewCards = detailContent.reviews
   const [selectedImage, setSelectedImage] = useState(0)
@@ -283,8 +297,8 @@ export default function TripDetailClient({
             </div>
           </section>
 
-          <aside id="booking">
-            <div className="lg:sticky lg:top-28 rounded-3xl border border-stone-200/80 bg-white/95 backdrop-blur-xl shadow-2xl p-6 lg:p-8">
+          <aside id="booking" className="scroll-mt-28">
+            <div ref={bookingCardRef} className="lg:sticky lg:top-28 rounded-3xl border border-stone-200/80 bg-white/95 backdrop-blur-xl shadow-2xl p-6 lg:p-8">
               <div className="mb-6">
                 <div className="flex items-baseline gap-3">
                   <span className="text-4xl font-bold text-stone-900">{formatPrice(trip.price, currency)}</span>
@@ -940,7 +954,15 @@ export default function TripDetailClient({
         </section>
       </div>
 
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur-xl px-4 py-4 shadow-2xl">
+      <motion.div
+        initial={false}
+        animate={{ y: bookingFormVisible ? "110%" : 0, opacity: bookingFormVisible ? 0 : 1 }}
+        transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
+        aria-hidden={bookingFormVisible}
+        inert={bookingFormVisible}
+        style={{ pointerEvents: bookingFormVisible ? "none" : "auto" }}
+        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur-xl px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl"
+      >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-stone-500">Starting from</p>
@@ -948,13 +970,13 @@ export default function TripDetailClient({
           </div>
           <button
             type="button"
-            onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+            onClick={() => document.getElementById("booking")?.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" })}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-3xl bg-gradient-to-r from-primary to-primary-light px-5 py-3 text-sm font-semibold text-white shadow-2xl transition duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
           >
             Book Now
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
