@@ -55,7 +55,7 @@ export default function TripsPage() {
   })
 
   return (
-    <div>
+    <div className="pt-20 lg:pt-24">
       <section className="relative min-h-[520px] lg:min-h-[600px] overflow-hidden bg-stone-950 flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <ImageWithFallback
