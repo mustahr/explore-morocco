@@ -1,3 +1,4 @@
+import { withRecordTimestamps } from "@/lib/record-timestamps"
 import { getDatabase, getDatabaseUrl, initializeDatabase, replacementQueries } from "@/lib/postgres"
 
 export function isCloudDatabaseConfigured() {
@@ -24,15 +25,15 @@ export async function getCloudRecords<T>(recordType: string): Promise<T[] | unde
     if (process.env.VERCEL && ["bookings", "leads", "admin_push_subscriptions"].includes(recordType)) return []
     return undefined
   }
-  const rows = await sql`SELECT data FROM content_records WHERE record_type = ${recordType} ORDER BY position, record_key`
-  return rows.map((row) => row.data as T)
+  const rows = await sql`SELECT data, created_at, updated_at FROM content_records WHERE record_type = ${recordType} ORDER BY position, record_key`
+  return rows.map((row) => withRecordTimestamps({ data: row.data as T, created_at: row.created_at, updated_at: row.updated_at }))
 }
 
 export async function getCloudRecord<T>(recordType: string, recordKey: string): Promise<T | null | undefined> {
   const sql = await database()
   if (!sql) return undefined
-  const rows = await sql`SELECT data FROM content_records WHERE record_type = ${recordType} AND record_key = ${recordKey}`
-  return rows.length ? rows[0].data as T : null
+  const rows = await sql`SELECT data, created_at, updated_at FROM content_records WHERE record_type = ${recordType} AND record_key = ${recordKey}`
+  return rows.length ? withRecordTimestamps({ data: rows[0].data as T, created_at: rows[0].created_at, updated_at: rows[0].updated_at }) : null
 }
 
 export async function upsertCloudRecord<T>(recordType: string, recordKey: string, data: T, position = 0) {

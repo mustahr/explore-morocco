@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
+import { RecordDates } from "@/components/admin/RecordDates";
+import { formatMoroccoDateTime } from "@/lib/record-timestamps";
 import { ProjectDiagnostics } from "@/components/admin/ProjectDiagnostics";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
@@ -3276,6 +3278,7 @@ export default function AdminTripsPage() {
                                 </span>
                                 <span className="mt-2 block text-xs font-semibold uppercase tracking-wide text-stone-400">
                                   {formatAdminNotificationTime(notification.createdAt, currentTime)}
+                                  {notification.createdAt && <time dateTime={notification.createdAt} className="mt-1 block normal-case tracking-normal">{formatMoroccoDateTime(notification.createdAt)} · Morocco</time>}
                                 </span>
                                 <span className="mt-3 inline-flex text-xs font-bold uppercase tracking-wider text-primary group-hover:underline">
                                   Open {notification.section}
@@ -3408,7 +3411,8 @@ export default function AdminTripsPage() {
                               <span className="text-sm font-bold text-primary">
                                 MAD {trip.price.toLocaleString()}
                               </span>
-                            </button>
+                            <RecordDates record={trip} />
+                          </button>
                           ))}
                         </div>
                       </section>
@@ -3714,6 +3718,7 @@ export default function AdminTripsPage() {
                             <p className="mt-1 text-xs text-stone-500">
                               {post.category} - {post.date}
                             </p>
+                          <RecordDates record={post} />
                           </button>
                         ))}
                       </div>
@@ -4065,6 +4070,7 @@ export default function AdminTripsPage() {
                               {testimonial.location} - {testimonial.rating}{" "}
                               stars
                             </p>
+                          <RecordDates record={testimonial} />
                           </button>
                         ))}
                       </div>
@@ -4242,6 +4248,7 @@ export default function AdminTripsPage() {
                                 </p>
                               </div>
                             </div>
+                          <RecordDates record={guide} />
                           </button>
                         ))}
                       </div>
@@ -4528,6 +4535,7 @@ export default function AdminTripsPage() {
                               <p className="mb-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-600">
                                 {booking.id}
                               </p>
+                              <RecordDates record={booking} />
                               <p className="font-bold text-stone-900">
                                 {booking.customerName}
                               </p>
@@ -4549,6 +4557,7 @@ export default function AdminTripsPage() {
                               )}
                             </div>
                             <div className="text-sm">
+                              <p className="text-xs text-stone-500">Trip start date</p>
                               <p className="font-semibold text-stone-900">
                                 {booking.startDate}
                               </p>
@@ -4661,9 +4670,7 @@ export default function AdminTripsPage() {
                               <p className="mt-1 text-sm text-stone-500">
                                 {lead.email}
                               </p>
-                              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-stone-400">
-                                {new Date(lead.createdAt).toLocaleString()}
-                              </p>
+                              <RecordDates record={lead} />
                             </div>
                             <span className="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold capitalize text-amber-800">
                               {lead.source}
@@ -4896,6 +4903,7 @@ export default function AdminTripsPage() {
                                 </p>
                               </div>
                             </div>
+                          <RecordDates record={destination} />
                           </button>
                         ))}
                       </div>
@@ -5316,6 +5324,7 @@ export default function AdminTripsPage() {
                                 </p>
                               </div>
                             </div>
+                          <RecordDates record={experience} />
                           </button>
                         ))}
                       </div>
@@ -5585,6 +5594,7 @@ export default function AdminTripsPage() {
                                 </p>
                               </div>
                             </div>
+                          <RecordDates record={trip} />
                           </button>
                         ))}
                       </div>

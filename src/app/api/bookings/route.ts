@@ -1,3 +1,4 @@
+import { formatMoroccoDateTime } from "@/lib/record-timestamps"
 import { isCloudDatabaseConfigured } from "@/lib/cloud-db"
 import { createBooking, getBookings } from "@/lib/admin-db"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
@@ -82,6 +83,7 @@ export async function POST(request: Request) {
     title: "New Dunexplore Morocco booking request",
     fields: {
       reference: booking.id,
+      createdAt: `${formatMoroccoDateTime(booking.createdAt)} (Morocco)`,
       trip: bookingTripTitle,
       name: booking.customerName,
       email: booking.customerEmail,

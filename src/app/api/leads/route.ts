@@ -1,3 +1,4 @@
+import { formatMoroccoDateTime } from "@/lib/record-timestamps"
 import { isCloudDatabaseConfigured } from "@/lib/cloud-db"
 import { createLead, getLeads } from "@/lib/admin-db"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
         title: "New Dunexplore Morocco enquiry",
         fields: {
           name: lead.name,
+          createdAt: `${formatMoroccoDateTime(lead.createdAt)} (Morocco)`,
           email: lead.email,
           interest: lead.interest,
           message: lead.message,
