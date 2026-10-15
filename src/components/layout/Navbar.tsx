@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Globe, ChevronDown } from "lucide-react"
@@ -26,8 +26,26 @@ export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), [])
-  const [langOpen, setLangOpen] = useState(false)
-  const [curOpen, setCurOpen] = useState(false)
+  const [openSelector, setOpenSelector] = useState<"language" | "currency" | null>(null)
+  const selectorRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!openSelector) return
+    const closeOutside = (event: PointerEvent) => {
+      if (!selectorRef.current?.contains(event.target as Node)) setOpenSelector(null)
+    }
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return
+      selectorRef.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]')?.focus()
+      setOpenSelector(null)
+    }
+    document.addEventListener("pointerdown", closeOutside)
+    document.addEventListener("keydown", closeOnEscape)
+    return () => {
+      document.removeEventListener("pointerdown", closeOutside)
+      document.removeEventListener("keydown", closeOnEscape)
+    }
+  }, [openSelector])
   const { language, setLanguage, currency, setCurrency } = useApp()
   const pathname = usePathname()
   const t = translations[language]
@@ -86,7 +104,11 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden shrink-0 items-center gap-2 xl:gap-3 lg:flex">
+          <div ref={selectorRef} className="hidden shrink-0 items-center gap-2 xl:gap-3 lg:flex"
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpenSelector(null)
+            }}
+          >
             <Link
               href="/trip-generator"
               className="hidden 2xl:flex btn-primary text-white px-5 py-2.5 rounded-full text-sm font-semibold"
@@ -96,7 +118,11 @@ export function Navbar() {
 
             <div className="relative">
               <button
-                onClick={() => setLangOpen(!langOpen)}
+                type="button"
+                aria-label="Select language"
+                aria-expanded={openSelector === "language"}
+                aria-controls="navbar-language-options"
+                onClick={() => setOpenSelector(openSelector === "language" ? null : "language")}
                 className={`flex items-center gap-1 p-2 rounded-full transition-colors ${
                   isHomePage
                     ? isScrolled
@@ -109,17 +135,18 @@ export function Navbar() {
                 <ChevronDown size={14} />
               </button>
               <AnimatePresence>
-                {langOpen && (
+                {openSelector === "language" && (
                   <motion.div
+                    id="navbar-language-options"
                     initial={{ opacity: 0, y: 10, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                    className="absolute right-0 top-full mt-3 w-44 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0]/95 p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
+                    exit={{ opacity: 0, transition: { duration: 0 } }}
+                    className="absolute right-0 top-full mt-3 w-44 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0] p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
                   >
                     {(["en", "fr", "ar"] as LanguageCode[]).map((lang) => (
                       <button
                         key={lang}
-                        onClick={() => { setLanguage(lang); setLangOpen(false) }}
+                        onClick={() => { setLanguage(lang); setOpenSelector(null) }}
                         className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
                           language === lang ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
@@ -134,7 +161,11 @@ export function Navbar() {
 
             <div className="relative">
               <button
-                onClick={() => setCurOpen(!curOpen)}
+                type="button"
+                aria-label="Select currency"
+                aria-expanded={openSelector === "currency"}
+                aria-controls="navbar-currency-options"
+                onClick={() => setOpenSelector(openSelector === "currency" ? null : "currency")}
                 className={`flex items-center gap-1 p-2 rounded-full text-sm font-medium transition-colors ${
                   isHomePage
                     ? isScrolled
@@ -147,22 +178,23 @@ export function Navbar() {
                 <ChevronDown size={14} />
               </button>
               <AnimatePresence>
-                {curOpen && (
+                {openSelector === "currency" && (
                   <motion.div
+                    id="navbar-currency-options"
                     initial={{ opacity: 0, y: 10, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                    className="absolute right-0 top-full mt-3 w-40 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0]/95 p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
+                    exit={{ opacity: 0, transition: { duration: 0 } }}
+                    className="absolute right-0 top-full mt-3 w-40 overflow-hidden rounded-2xl border border-amber-200/70 bg-[#fffaf0] p-1.5 shadow-2xl shadow-stone-950/20 backdrop-blur-xl"
                   >
                     {(Object.keys(currencies) as CurrencyCode[]).map((cur) => (
                       <button
                         key={cur}
-                        onClick={() => { setCurrency(cur); setCurOpen(false) }}
+                        onClick={() => { setCurrency(cur); setOpenSelector(null) }}
                         className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
                           currency === cur ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
                       >
-                        {currencies[cur].symbol} {cur}
+                        {currencies[cur].symbol === cur ? cur : `${currencies[cur].symbol} ${cur}`}
                       </button>
                     ))}
                   </motion.div>
