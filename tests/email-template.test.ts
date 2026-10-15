@@ -19,8 +19,8 @@ test("branded email includes email-compatible assets, real links and escaped con
   assert.ok(html.includes('https://example.com/unsubscribe?token=signed'))
   const defaults = renderCampaignEmail("Morocco awaits", "Hello", "https://example.com", "https://example.com/unsubscribe")
   assert.ok(defaults.includes('src="https://example.com/images/email/sahara.jpg"'))
-  assert.ok(!defaults.includes('instagram.png'))
-  assert.ok(!defaults.includes('facebook.png'))
+  assert.ok(defaults.includes('href="#" aria-label="Instagram"'))
+  assert.ok(defaults.includes('href="#" aria-label="Facebook"'))
   assert.ok(defaults.includes('@media only screen'))
 })
 

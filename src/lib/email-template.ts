@@ -30,8 +30,8 @@ export function renderCampaignEmail(subject: string, message: string, siteUrl: s
   const button = design.buttonUrl || `${site}/trips`
   const label = design.buttonLabel || "Explore Morocco"
   const socials = [
-    ...(design.instagramUrl ? [{ name: "Instagram", url: design.instagramUrl, icon: "instagram" }] : []),
-    ...(design.facebookUrl ? [{ name: "Facebook", url: design.facebookUrl, icon: "facebook" }] : []),
+    { name: "Instagram", url: "#", icon: "instagram" },
+    { name: "Facebook", url: "#", icon: "facebook" },
     { name: "WhatsApp", url: contactWhatsAppHref(), icon: "whatsapp" },
     { name: "Email", url: `mailto:${CONTACT_EMAIL}`, icon: "email" },
   ]
