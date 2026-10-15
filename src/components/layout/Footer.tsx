@@ -3,7 +3,7 @@
 import { useTranslations } from "@/context/useTranslations"
 
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type RefObject } from "react"
 import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref, contactWhatsAppHref } from "@/lib/contact"
 import { Mail, Phone, MapPin, MessageCircle } from "lucide-react"
 import { useApp } from "@/context/AppContext"
@@ -11,7 +11,7 @@ import { translations } from "@/lib/utils"
 import { NewsletterForm } from "./NewsletterForm"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
-export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height: number) => void }) {
+export function Footer({ contentRef, onRevealHeightChange }: { contentRef: RefObject<HTMLElement | null>; onRevealHeightChange: (height: number) => void }) {
   const { tr } = useTranslations()
   const footerRef = useRef<HTMLElement>(null)
   const [reveal, setReveal] = useState(false)
@@ -21,28 +21,66 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
   useEffect(() => {
     const footer = footerRef.current
     if (!footer) return
+    const desktop = window.matchMedia("(min-width: 768px)")
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
+    let frame = 0
+    let enabled = false
+    let height = 0
+    const position = () => {
+      frame = 0
+      if (!enabled) return
+      const headerHeight = window.innerWidth >= 1024 ? 96 : 80
+      const mainBottom = contentRef.current?.getBoundingClientRect().bottom ?? headerHeight
+      // Hold the footer behind the page, then let overflowing content scroll above
+      // the viewport. Even a footer taller than the screen remains fully reachable.
+      footer.style.top = `${Math.max(headerHeight, window.innerHeight - height)}px`
+      footer.style.transform = `translateY(${Math.min(0, mainBottom - headerHeight)}px)`
+    }
+    const requestPosition = () => {
+      if (!frame) frame = window.requestAnimationFrame(position)
+    }
     const update = () => {
-      const height = Math.ceil(footer.getBoundingClientRect().height)
-      // Keep every link reachable when columns stack, text grows, or the viewport is short.
-      const canReveal = window.matchMedia("(min-width: 1024px)").matches && height > 0 && height <= window.innerHeight - 120
-      setReveal(canReveal)
-      onRevealHeightChange(canReveal ? height : 0)
+      height = Math.ceil(footer.getBoundingClientRect().height)
+      enabled = desktop.matches && !reducedMotion.matches && height > 0
+      setReveal(enabled)
+      onRevealHeightChange(enabled ? height : 0)
+      if (enabled) position()
+      else { footer.style.top = ""; footer.style.transform = "" }
     }
     const observer = new ResizeObserver(update)
     observer.observe(footer)
+    if (contentRef.current) observer.observe(contentRef.current)
     window.addEventListener("resize", update)
+    window.addEventListener("scroll", requestPosition, { passive: true })
+    desktop.addEventListener("change", update)
+    reducedMotion.addEventListener("change", update)
     update()
     return () => {
       observer.disconnect()
+      if (frame) window.cancelAnimationFrame(frame)
       window.removeEventListener("resize", update)
+      window.removeEventListener("scroll", requestPosition)
+      desktop.removeEventListener("change", update)
+      reducedMotion.removeEventListener("change", update)
       onRevealHeightChange(0)
     }
-  }, [onRevealHeightChange])
+  }, [contentRef, onRevealHeightChange])
 
   return (
-    <footer ref={footerRef} onFocusCapture={() => {
-      if (reveal) window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" })
-    }} className={`isolate overflow-hidden bg-[#0D0D0D] text-white ${reveal ? "fixed inset-x-0 bottom-0 z-0" : "relative"}`}>
+    <footer ref={footerRef} onFocusCapture={(event) => {
+      if (!reveal) return
+      const headerHeight = window.innerWidth >= 1024 ? 96 : 80
+      const mainBottom = contentRef.current?.getBoundingClientRect().bottom ?? 0
+      if (event.target.getBoundingClientRect().top < mainBottom) {
+        window.scrollBy({ top: Math.max(0, mainBottom - headerHeight), behavior: "instant" })
+      }
+      // Wait for the scroll positioning before checking the focused control.
+      window.requestAnimationFrame(() => {
+        const rect = event.target.getBoundingClientRect()
+        if (rect.bottom > window.innerHeight - 16) window.scrollBy({ top: rect.bottom - window.innerHeight + 16, behavior: "instant" })
+        else if (rect.top < headerHeight) window.scrollBy({ top: rect.top - headerHeight - 16, behavior: "instant" })
+      })
+    }} className={`isolate overflow-hidden bg-[#0D0D0D] text-white ${reveal ? "fixed inset-x-0 z-0" : "relative"}`}>
       <div className="absolute inset-0 -z-20 overflow-hidden" aria-hidden="true">
         <ImageWithFallback
           src="https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2000&q=80"
@@ -50,6 +88,7 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
           fill
           sizes="100vw"
           quality={80}
+          parallax
           parallaxOffset={76}
           className="object-cover"
           fallbackClassName="h-full w-full"
