@@ -2,13 +2,13 @@ import { createHash, createHmac, timingSafeEqual, randomUUID } from "node:crypto
 import { readFile, writeFile, mkdir } from "node:fs/promises"
 import path from "node:path"
 import { getBookings, getLeads } from "./admin-db"
-import { getCloudRecords, upsertCloudRecord, assertLocalWritesAllowed } from "./cloud-db"
+import { getCloudRecords, upsertCloudRecord, deleteCloudRecord, assertLocalWritesAllowed } from "./cloud-db"
 import { CONTACT_EMAIL } from "./contact"
 import { getSiteUrl } from "./site"
 import { renderCampaignEmail, type CampaignDesign } from "./email-template"
 
 export interface EmailContact { id: string; email: string; name: string; sources: string[]; firstSeen: string; lastSeen: string; subscribed: boolean; unsubscribed: boolean }
-export interface Campaign { design?: CampaignDesign; id: string; subject: string; message: string; audience: "subscribers" | "all" | "single"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
+export interface Campaign { draftEditedAt?: string; updatedAt?: string; design?: CampaignDesign; id: string; subject: string; message: string; audience: "subscribers" | "all" | "single"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
 interface Preference { id: string; email: string; subscribed: boolean; unsubscribed: boolean; updatedAt: string }
 export const emailValid = (email: string) => email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 export const contactId = (email: string) => createHash("sha256").update(email.trim().toLowerCase()).digest("hex")
@@ -28,6 +28,12 @@ export async function saveMarketingRecord<T extends { id: string }>(type: string
   const filtered = records.filter((item) => item.id !== record.id)
   await mkdir(path.join(process.cwd(), "data"), { recursive: true })
   await writeFile(path.join(process.cwd(), "data", `${type}.json`), JSON.stringify([record, ...filtered], null, 2))
+}
+
+export async function deleteMarketingRecord(type: string, id: string) {
+  if (await deleteCloudRecord(type, id) !== undefined) return
+  const records = await marketingRecords<{ id: string }>(type)
+  await writeFile(path.join(process.cwd(), "data", `${type}.json`), JSON.stringify(records.filter((item) => item.id !== id), null, 2))
 }
 
 export async function emailAudience(): Promise<EmailContact[]> {
@@ -93,7 +99,9 @@ export async function sendCampaignBatch(campaign: Campaign, index: number) {
   const apiKey = process.env.RESEND_API_KEY?.trim()
   if (!apiKey) throw new Error("RESEND_API_KEY is missing. Add it to Vercel Production and redeploy.")
   if (campaign.batches[String(index)]) return campaign
-  if (Date.now() - Date.parse(campaign.createdAt) > 23 * 60 * 60 * 1000) throw new Error("This campaign is over 23 hours old. Create a new campaign to continue safely.")
+  if (Date.now() - Date.parse(campaign.draftEditedAt || campaign.createdAt) > 23 * 60 * 60 * 1000) throw new Error("This campaign is over 23 hours old. Create a new campaign to continue safely.")
+  campaign.status = "sending"
+  await saveMarketingRecord("email_campaigns", campaign)
   const [preferences] = await Promise.all([marketingRecords<Preference>("email_preferences")])
   const suppressed = new Set(preferences.filter((item) => item.unsubscribed).map((item) => item.email))
   const recipients = campaign.recipients.slice(index * 100, (index + 1) * 100).filter((email) => !suppressed.has(email))

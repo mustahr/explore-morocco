@@ -1,7 +1,7 @@
 import { normalizeCampaignDesign, renderCampaignEmail } from "@/lib/email-template"
 import { getSiteUrl } from "@/lib/site"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
-import { campaignPayload, emailAudience, emailValid, marketingRecords, newCampaign, saveMarketingRecord, sendCampaignBatch, setEmailPreference, contactId, type EmailContact, type Campaign } from "@/lib/email-marketing"
+import { campaignPayload, emailAudience, emailValid, marketingRecords, newCampaign, saveMarketingRecord, sendCampaignBatch, setEmailPreference, contactId, deleteMarketingRecord, type EmailContact, type Campaign } from "@/lib/email-marketing"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -18,13 +18,20 @@ export async function POST(request: Request) {
   try {
     const body = await request.json()
     if (!body || typeof body.action !== "string") return Response.json({ error: "Invalid action." }, { status: 400 })
+    if (body.action === "delete") {
+      const campaign = (await marketingRecords<Campaign>("email_campaigns")).find((item) => item.id === body.id)
+      if (!campaign) return Response.json({ error: "History entry not found." }, { status: 404 })
+      if (campaign.status === "sending" && !campaign.lastError) return Response.json({ error: "This campaign is sending. Wait until it finishes before deleting its history." }, { status: 409 })
+      await deleteMarketingRecord("email_campaigns", campaign.id)
+      return Response.json({ deleted: true })
+    }
     if (body.action === "suppress") {
       const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
       if (!emailValid(email)) return Response.json({ error: "Invalid email." }, { status: 400 })
       await setEmailPreference(email, false, true)
       return Response.json({ saved: true })
     }
-    if (body.action === "create" || body.action === "test" || body.action === "preview") {
+    if (body.action === "create" || body.action === "update" || body.action === "test" || body.action === "preview") {
       const subject = typeof body.subject === "string" ? body.subject.trim() : ""
       const message = typeof body.message === "string" ? body.message.trim() : ""
       if (!subject || subject.length > 180 || /[\r\n]/.test(subject) || !message || message.length > 20000) return Response.json({ error: "Add a subject (up to 180 characters) and message (up to 20,000 characters)." }, { status: 400 })
@@ -41,6 +48,12 @@ export async function POST(request: Request) {
         return Response.json({ message: "Resend accepted the test email. Check inbox/spam; acceptance does not guarantee delivery." })
       }
       if (!["subscribers", "all", "single"].includes(body.audience) || (body.audience === "all" && body.permissionConfirmed !== true)) return Response.json({ error: "Choose an audience and confirm permission for all-contact campaigns." }, { status: 400 })
+      let existing: Campaign | undefined
+      if (body.action === "update") {
+        existing = (await marketingRecords<Campaign>("email_campaigns")).find((item) => item.id === body.id)
+        if (!existing) return Response.json({ error: "Draft not found." }, { status: 404 })
+        if (existing.status !== "draft" || Object.keys(existing.batches).length || existing.lastError) return Response.json({ error: "Sending has already been attempted. Use Edit as new to create a separate draft." }, { status: 409 })
+      }
       const contacts = await emailAudience()
       let recipients: string[]
       if (body.audience === "single") {
@@ -61,7 +74,8 @@ export async function POST(request: Request) {
         recipients = contacts.filter((contact) => !contact.unsubscribed && (body.audience === "all" || contact.subscribed)).map((contact) => contact.email).sort()
       }
       if (!recipients.length) return Response.json({ error: "No eligible contacts in this audience." }, { status: 400 })
-      const campaign = newCampaign(subject, message, body.audience, recipients, design)
+      const draft = newCampaign(subject, message, body.audience, recipients, design)
+      const campaign: Campaign = existing ? { ...draft, id: existing.id, createdAt: existing.createdAt, updatedAt: new Date().toISOString(), draftEditedAt: new Date().toISOString() } : draft
       await saveMarketingRecord("email_campaigns", campaign)
       return Response.json({ campaign })
     }

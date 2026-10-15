@@ -83,6 +83,22 @@ test("audience combines and retains contacts; campaigns protect addresses, opt-o
       return Response.json({ data: [{ id: "private-provider-id" }] })
     }
     assert.equal((await route.POST(req({ action: "send", id: individual.id }))).status, 200)
+    const newDraftResponse = await route.POST(req({ action: "create", subject: "Draft to edit", message: "Original", audience: "single", email: "private@example.com" }))
+    const draftToEdit = (await newDraftResponse.json()).campaign
+    const editedResponse = await route.POST(req({ action: "update", id: draftToEdit.id, subject: "Edited draft", message: "Updated content", audience: "single", email: "private@example.com" }))
+    assert.equal(editedResponse.status, 200)
+    const edited = (await editedResponse.json()).campaign
+    assert.equal(edited.id, draftToEdit.id)
+    assert.equal(edited.createdAt, draftToEdit.createdAt)
+    assert.equal(edited.subject, "Edited draft")
+    assert.equal(edited.message, "Updated content")
+    assert.ok(edited.updatedAt)
+    assert.equal((await route.POST(req({ action: "update", id: individual.id, subject: "Cannot change sent mail", message: "Other", audience: "single", email: "private@example.com" }))).status, 409)
+    assert.equal((await route.POST(req({ action: "delete", id: draftToEdit.id }))).status, 200)
+    assert.ok(!(await m.marketingRecords<{ id: string }>("email_campaigns")).some((item) => item.id === draftToEdit.id))
+    assert.ok((await m.emailAudience()).some((item) => item.email === "private@example.com"))
+    assert.equal((await route.POST(req({ action: "delete", id: individual.id }))).status, 200)
+    assert.equal((await route.POST(req({ action: "send", id: individual.id }))).status, 404)
     globalThis.fetch = async () => Response.json({ message: "rate limited" }, { status: 429 })
     assert.equal((await route.POST(req({ action: "send", id: next.id }))).status, 502)
     const records = JSON.parse(await readFile(path.join(temporary, "data/email_campaigns.json"), "utf8"))
