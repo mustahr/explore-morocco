@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { PageHero } from "@/components/layout/PageHero"
 import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 import { use, useEffect, useState } from "react"
@@ -174,6 +176,7 @@ function buildItineraryDays(days: number, budget: number, selectedLocations: str
 }
 
 export default function TripGeneratorPage({ searchParams }: TripGeneratorPageProps) {
+  const { tr, language } = useTranslations()
   const resolvedSearchParams = use(searchParams)
   const initialPrompt = (getSingleSearchParam(resolvedSearchParams.prompt)?.trim() ?? "").slice(0, 600)
   const initialBasics = inferTripBasicsFromPrompt(initialPrompt)
@@ -199,10 +202,18 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
   const [bookingMessage, setBookingMessage] = useState("")
   const [itinerary, setItinerary] = useState<null | {
     title: string
+    styleLabel: string
+    locations: string[]
+    request: string
     overview: string
     days: { day: number; title: string; location: string; activities: string[]; accommodation: string; cost: number }[]
     totalCost: number
   }>(null)
+  const localizedItinerary = itinerary ? {
+    ...itinerary,
+    title: tr("{days}-Day {style} Morocco Adventure", { days: itinerary.days.length, style: tr(itinerary.styleLabel) }),
+    overview: tr("A carefully crafted {days}-day journey through Morocco, visiting {places}. This itinerary balances iconic landmarks with hidden gems, giving you an authentic Moroccan experience tailored to your preferences.", { days: itinerary.days.length, places: itinerary.locations.map((place) => tr(place)).join(language === "ar" ? "، " : ", ") }) + (itinerary.request ? " " + tr("Built around your request: {request}", { request: itinerary.request }) : ""),
+  } : null
   const [expandedDay, setExpandedDay] = useState<number | null>(0)
   const travelStyles = options.travelStyles
   const destinations = options.destinations
@@ -245,6 +256,9 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
       const titleStyle = selectedStyleLabel ?? "Personalized"
       setItinerary({
         title: `${days}-Day ${titleStyle} Morocco Adventure`,
+        styleLabel: titleStyle,
+        locations: selectedLocations,
+        request: requestSummary,
         overview: `A carefully crafted ${days}-day journey through Morocco${selectedLocations.length > 0 ? `, visiting ${selectedLocations.join(", ")}` : ""}. This itinerary balances iconic landmarks with hidden gems, giving you an authentic Moroccan experience tailored to your preferences.${requestSummary ? ` Built around your request: "${requestSummary}".` : ""}`,
         days: buildItineraryDays(days, budget, selectedLocations),
         totalCost: budget,
@@ -259,19 +273,19 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
   const handleGeneratedTripBooking = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!itinerary) return
+    if (!localizedItinerary) return
 
     setBookingStatus("submitting")
     setBookingMessage("")
 
     try {
       const bookingSummary = [
-        `Generated trip: ${itinerary.title}`,
+        `Generated trip: ${localizedItinerary.title}`,
         `Start date: ${bookingStartDate}`,
         `Travelers: ${travelers}`,
         `Budget per person: ${formatPrice(budget)}`,
-        `Route: ${selectedDests.length > 0 ? selectedDests.join(", ") : "Custom route"}`,
-        ...itinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}. Stay: ${day.accommodation}`),
+        `Route: ${selectedDests.length > 0 ? selectedDests.map((place) => tr(place)).join(language === "ar" ? "، " : ", ") : tr("Custom route")}`,
+        ...localizedItinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}. Stay: ${day.accommodation}`),
         bookingPhone ? `Phone: ${bookingPhone}` : "",
         prompt.trim() ? `Original prompt: ${prompt.trim()}` : "",
       ].filter(Boolean).join("\n")
@@ -281,8 +295,8 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          tripId: `custom-ai-trip-${Date.now()}`,
-          customTripTitle: itinerary.title,
+          tripId: `custom-ai-trip-${crypto.randomUUID()}`,
+          customTripTitle: localizedItinerary.title,
           customerName: bookingName,
           customerEmail: bookingEmail,
           customerPhone: bookingPhone,
@@ -300,16 +314,16 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
       setBookingReference(data.booking.id)
       setBookingStatus("success")
-      setBookingMessage(`Booking request sent. Reference ${data.booking.id}. Our team will contact you shortly.`)
+      setBookingMessage("Booking request sent.")
     } catch (error) {
       setBookingStatus("error")
-      setBookingMessage(error instanceof Error ? error.message : "We could not send this booking request.")
+      setBookingMessage(error instanceof Error ? error.message : tr("We could not send this booking request."))
     }
   }
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen">
-      <PageHero image="/images/content/sahara-dunes.webp" imageAlt="Camel caravan crossing the golden Sahara dunes" eyebrow="Plan your journey" title="Trip Generator" description="Tell us your preferences and create your personalized Morocco itinerary." />
+      <PageHero image="/images/content/sahara-dunes.webp" imageAlt={tr("Camel caravan crossing the golden Sahara dunes")} eyebrow={tr("Plan your journey")} title={tr("Trip Generator")} description={tr("Tell us your preferences and create your personalized Morocco itinerary.")} />
 
       <section className="py-12 lg:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -323,8 +337,8 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
               >
                 <div className="space-y-8">
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">What{"'"}s your budget?</h2>
-                    <p className="text-stone-500 mb-6">Per person, including accommodation, activities, and transport</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("What’s your budget?")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("Per person, including accommodation, activities, and transport")}</p>
                     <div className="text-center mb-6">
                       <span className="text-4xl font-bold text-primary">{formatPrice(budget)}</span>
                     </div>
@@ -344,8 +358,8 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                   </div>
 
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">How many days?</h2>
-                    <p className="text-stone-500 mb-6">Total trip duration</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("How many days?")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("Total trip duration")}</p>
                     <div className="flex items-center justify-center gap-6">
                       <button
                         onClick={() => setDays(Math.max(1, days - 1))}
@@ -361,12 +375,12 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         +
                       </button>
                     </div>
-                    <p className="text-center text-stone-400 mt-2">days</p>
+                    <p className="text-center text-stone-400 mt-2">{tr("days")}</p>
                   </div>
 
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">How many travelers?</h2>
-                    <p className="text-stone-500 mb-6">Including yourself</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("How many travelers?")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("Including yourself")}</p>
                     <div className="flex items-center justify-center gap-6">
                       <button
                         onClick={() => setTravelers(Math.max(1, travelers - 1))}
@@ -382,15 +396,13 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         +
                       </button>
                     </div>
-                    <p className="text-center text-stone-400 mt-2">travelers</p>
+                    <p className="text-center text-stone-400 mt-2">{tr("travelers")}</p>
                   </div>
 
                   <button
                     onClick={() => setStep(2)}
                     className="w-full btn-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 text-lg"
-                  >
-                    Continue
-                    <ArrowRight size={20} />
+                  >{tr("Continue")}<ArrowRight size={20} />
                   </button>
                 </div>
               </motion.div>
@@ -405,8 +417,8 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
               >
                 <div className="space-y-8">
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">Travel style</h2>
-                    <p className="text-stone-500 mb-6">What kind of experience are you looking for?</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("Travel style")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("What kind of experience are you looking for?")}</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {travelStyles.map((s) => (
                         <button
@@ -414,7 +426,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                           type="button"
                           aria-pressed={style === s.id}
                           onClick={() => setStyle(s.id)}
-                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                          className={`p-4 rounded-xl border-2 text-start transition-all ${
                             style === s.id
                               ? "border-primary bg-primary/5"
                               : "border-stone-100 hover:border-stone-200"
@@ -422,17 +434,17 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         >
                           <TravelStyleIcon id={s.id} icon={s.icon} selected={style === s.id} />
                           <h3 className={`font-bold mt-2 ${style === s.id ? "text-primary" : "text-stone-900"}`}>
-                            {s.label}
+                            {tr(s.label)}
                           </h3>
-                          <p className="text-sm text-stone-500">{s.description}</p>
+                          <p className="text-sm text-stone-500">{tr(s.description)}</p>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">Where do you want to go?</h2>
-                    <p className="text-stone-500 mb-6">Select one or more destinations (optional)</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("Where do you want to go?")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("Select one or more destinations (optional)")}</p>
                     <div className="flex flex-wrap gap-2">
                       {destinations.map((dest) => (
                         <button
@@ -445,19 +457,19 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                           }`}
                         >
                           {selectedDests.includes(dest) && <Check size={14} />}
-                          {dest}
+                          {tr(dest)}
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div className="bg-white rounded-2xl p-6 lg:p-8 border border-stone-100 shadow-sm">
-                    <h2 className="text-xl font-bold text-stone-900 mb-2">Anything else?</h2>
-                    <p className="text-stone-500 mb-6">Describe your dream trip in your own words</p>
+                    <h2 className="text-xl font-bold text-stone-900 mb-2">{tr("Anything else?")}</h2>
+                    <p className="text-stone-500 mb-6">{tr("Describe your dream trip in your own words")}</p>
                     <textarea
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
-                      placeholder="I want to see the desert, try authentic Moroccan food, and stay in beautiful riads..."
+                      placeholder={tr("I want to see the desert, try authentic Moroccan food, and stay in beautiful riads...")}
                       className="w-full h-32 px-4 py-3 border border-stone-200 rounded-xl text-stone-700 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
                     />
                   </div>
@@ -466,9 +478,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                     <button
                       onClick={() => setStep(1)}
                       className="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-700 py-4 rounded-xl font-semibold transition-colors"
-                    >
-                      Back
-                    </button>
+                    >{tr("Back")}</button>
                     <button
                       onClick={generateItinerary}
                       disabled={!style && !prompt.trim()}
@@ -476,14 +486,10 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                     >
                       {generating ? (
                         <>
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Generating...
-                        </>
+                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />{tr("Generating...")}</>
                       ) : (
                         <>
-                          <Sparkles size={20} />
-                          Generate My Trip
-                        </>
+                          <Sparkles size={20} />{tr("Generate My Trip")}</>
                       )}
                     </button>
                   </div>
@@ -491,7 +497,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
               </motion.div>
             )}
 
-            {step === 3 && itinerary && (
+            {step === 3 && localizedItinerary && (
               <motion.div
                 key="step3"
                 initial={{ opacity: 0, y: 20 }}
@@ -499,49 +505,49 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
               >
                 <div className="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden mb-8">
                   <div className="bg-gradient-to-r from-primary to-accent p-6 lg:p-8 text-white">
-                    <h2 className="text-2xl lg:text-3xl font-bold mb-2">{itinerary.title}</h2>
-                    <p className="text-white/80">{itinerary.overview}</p>
+                    <h2 className="text-2xl lg:text-3xl font-bold mb-2">{tr(localizedItinerary.title)}</h2>
+                    <p className="text-white/80">{localizedItinerary.overview}</p>
                   </div>
 
                   <div className="p-6 lg:p-8">
                     <div className="flex flex-wrap gap-4 mb-8">
                       <div className="flex items-center gap-2 text-stone-600">
                         <Clock size={18} className="text-primary" />
-                        <span>{days} days</span>
+                        <span>{days} {tr("days")}</span>
                       </div>
                       <div className="flex items-center gap-2 text-stone-600">
                         <Users size={18} className="text-primary" />
-                        <span>{travelers} travelers</span>
+                        <span>{travelers} {tr("travelers")}</span>
                       </div>
                       <div className="flex items-center gap-2 text-stone-600">
                         <DollarSign size={18} className="text-primary" />
-                        <span>{formatPrice(budget)} /person</span>
+                        <span>{formatPrice(budget)} {tr("/person")}</span>
                       </div>
                       <div className="flex items-center gap-2 text-stone-600">
                         <MapPin size={18} className="text-primary" />
-                        <span>{selectedDests.length > 0 ? selectedDests.join(", ") : "Custom route"}</span>
+                        <span>{selectedDests.length > 0 ? selectedDests.map((place) => tr(place)).join(language === "ar" ? "، " : ", ") : tr("Custom route")}</span>
                       </div>
                     </div>
 
                     <div className="space-y-4 mb-8">
-                      {itinerary.days.map((day, index) => (
+                      {localizedItinerary.days.map((day, index) => (
                         <div
                           key={day.day}
                           className="border border-stone-100 rounded-xl overflow-hidden"
                         >
                           <button
                             onClick={() => setExpandedDay(expandedDay === index ? null : index)}
-                            className="w-full flex items-center justify-between p-4 text-left"
+                            className="w-full flex items-center justify-between p-4 text-start"
                           >
                             <div className="flex items-center gap-4">
                               <span className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
                                 {day.day}
                               </span>
                               <div>
-                                <h3 className="font-bold text-stone-900">{day.title}</h3>
+                                <h3 className="font-bold text-stone-900">{tr(day.title)}</h3>
                                 <p className="text-sm text-stone-400 flex items-center gap-1">
                                   <MapPin size={12} />
-                                  {day.location}
+                                  {tr(day.location)}
                                 </p>
                               </div>
                             </div>
@@ -560,12 +566,12 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                                 {day.activities.map((activity, i) => (
                                   <li key={i} className="flex items-start gap-2 text-stone-600">
                                     <Check size={16} className="text-riad-green flex-shrink-0 mt-0.5" />
-                                    <span>{activity}</span>
+                                    <span>{tr(activity)}</span>
                                   </li>
                                 ))}
                               </ul>
                               <p className="text-sm text-stone-500">
-                                <span className="font-medium">Accommodation:</span> {day.accommodation}
+                                <span className="font-medium">{tr("Accommodation:")}</span> {tr(day.accommodation)}
                               </p>
                             </motion.div>
                           )}
@@ -575,13 +581,10 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
                     <div className="bg-stone-50 rounded-xl p-6 mb-8">
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-bold text-stone-900">Estimated Total Cost</h3>
-                        <span className="text-2xl font-bold text-primary">{formatPrice(itinerary.totalCost)}</span>
+                        <h3 className="text-lg font-bold text-stone-900">{tr("Estimated Total Cost")}</h3>
+                        <span className="text-2xl font-bold text-primary">{formatPrice(localizedItinerary.totalCost)}</span>
                       </div>
-                      <p className="text-sm text-stone-500">
-                        Per person. Includes accommodation, activities, transport, and some meals.
-                        Prices may vary based on season and availability.
-                      </p>
+                      <p className="text-sm text-stone-500">{tr("Per person. Includes accommodation, activities, transport, and some meals. Prices may vary based on season and availability.")}</p>
                     </div>
 
                     <div className="flex flex-wrap gap-3">
@@ -589,22 +592,14 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         type="button"
                         onClick={() => setBookingFormOpen((open) => !open)}
                         className="btn-primary text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2"
-                      >
-                        Book This Trip
-                        <ArrowRight size={18} />
+                      >{tr("Book This Trip")}<ArrowRight size={18} />
                       </button>
                       <button className="px-6 py-3 rounded-xl border border-stone-200 text-stone-600 hover:border-primary hover:text-primary font-medium text-sm transition-colors flex items-center gap-2">
-                        <Heart size={16} />
-                        Save
-                      </button>
+                        <Heart size={16} />{tr("Save")}</button>
                       <button className="px-6 py-3 rounded-xl border border-stone-200 text-stone-600 hover:border-primary hover:text-primary font-medium text-sm transition-colors flex items-center gap-2">
-                        <Share2 size={16} />
-                        Share
-                      </button>
+                        <Share2 size={16} />{tr("Share")}</button>
                       <button className="px-6 py-3 rounded-xl border border-stone-200 text-stone-600 hover:border-primary hover:text-primary font-medium text-sm transition-colors flex items-center gap-2">
-                        <Download size={16} />
-                        Export
-                      </button>
+                        <Download size={16} />{tr("Export")}</button>
                     </div>
 
                     {bookingFormOpen && (
@@ -615,26 +610,26 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                         className="mt-6 rounded-xl border border-stone-100 bg-stone-50 p-5"
                       >
                         <div className="mb-5">
-                          <h3 className="text-lg font-bold text-stone-900">Request this custom trip</h3>
-                          <p className="mt-1 text-sm text-stone-500">Send your generated itinerary to our team so we can confirm availability, pricing, and local details.</p>
+                          <h3 className="text-lg font-bold text-stone-900">{tr("Request this custom trip")}</h3>
+                          <p className="mt-1 text-sm text-stone-500">{tr("Send your generated itinerary to our team so we can confirm availability, pricing, and local details.")}</p>
                         </div>
 
                         <div className="grid gap-4 sm:grid-cols-2">
                           <label className="block">
-                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><User size={16} /> Name</span>
+                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><User size={16} /> {tr("Name")}</span>
                             <input
                               required
                               value={bookingName}
                               onChange={(event) => setBookingName(event.target.value)}
                               className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-                              placeholder="Your name"
+                              placeholder={tr("Your name")}
                             />
                           </label>
                           <label className="block">
-                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Mail size={16} /> Email</span>
+                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Mail size={16} /> {tr("Email")}</span>
                             <input
                               required
-                              type="email"
+                              type="email" dir="ltr"
                               value={bookingEmail}
                               onChange={(event) => setBookingEmail(event.target.value)}
                               className="w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -642,9 +637,9 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                             />
                           </label>
                           <label className="block">
-                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Phone size={16} /> Phone</span>
+                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Phone size={16} /> {tr("Phone")}</span>
                             <input
-                              type="tel"
+                              type="tel" dir="ltr"
                               required
                               value={bookingPhone}
                               onChange={(event) => setBookingPhone(event.target.value)}
@@ -653,7 +648,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                             />
                           </label>
                           <label className="block">
-                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Calendar size={16} /> Start date</span>
+                            <span className="mb-2 flex items-center gap-2 text-sm font-semibold text-stone-700"><Calendar size={16} /> {tr("Start date")}</span>
                             <input
                               required
                               type="date"
@@ -667,12 +662,10 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
                         {bookingMessage && (
                           <div className={`mt-4 rounded-xl px-4 py-3 text-sm ${bookingStatus === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>
-                            <p>{bookingMessage}</p>
-                            {bookingStatus === "success" && itinerary && <BookingWhatsAppCopy reference={bookingReference} title={itinerary.title} name={bookingName} email={bookingEmail} phone={bookingPhone} date={bookingStartDate} travelers={travelers} notes={itinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}`).join("\n")} />}
+                            <p>{bookingStatus === "success" ? tr("Booking request sent. Reference {reference}. Our team will contact you shortly.", { reference: bookingReference }) : tr(bookingMessage)}</p>
+                            {bookingStatus === "success" && localizedItinerary && <BookingWhatsAppCopy reference={bookingReference} title={localizedItinerary.title} name={bookingName} email={bookingEmail} phone={bookingPhone} date={bookingStartDate} travelers={travelers} notes={localizedItinerary.days.map((day, index) => `Day ${index + 1}: ${day.title} — ${day.location}. ${day.activities.join("; ")}`).join("\n")} />}
                             {bookingStatus === "success" && (
-                              <Link href="/trips" className="mt-3 inline-flex font-semibold text-emerald-800 underline-offset-4 hover:underline">
-                                Back to trips
-                              </Link>
+                              <Link href="/trips" className="mt-3 inline-flex font-semibold text-emerald-800 underline-offset-4 hover:underline">{tr("Back to trips")}</Link>
                             )}
                           </div>
                         )}
@@ -682,7 +675,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                           disabled={bookingStatus === "submitting"}
                           className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-stone-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                          {bookingStatus === "submitting" ? "Sending request..." : "Send Booking Request"}
+                          {bookingStatus === "submitting" ? tr("Sending request...") : tr("Send Booking Request")}
                           <ArrowRight size={16} />
                         </button>
                       </motion.form>
@@ -694,9 +687,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
                   onClick={() => { setStep(2); setItinerary(null) }}
                   className="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 py-4 rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
                 >
-                  <Plus size={18} />
-                  Edit Preferences
-                </button>
+                  <Plus size={18} />{tr("Edit Preferences")}</button>
               </motion.div>
             )}
           </AnimatePresence>

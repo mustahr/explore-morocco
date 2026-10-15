@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -8,6 +10,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 import { type Guide } from "@/lib/content-db"
 
 export default function AboutPage() {
+  const { tr } = useTranslations()
   const [guides, setGuides] = useState<Guide[]>([])
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export default function AboutPage() {
         <div className="absolute inset-0">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1675782357250-8329a7677819"
-            alt="Morocco riad"
+            alt={tr("Morocco riad")}
             fill
             preload
             sizes="100vw"
@@ -43,12 +46,8 @@ export default function AboutPage() {
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Born in Morocco,<br />Built for the World
-            </h1>
-            <p className="text-xl text-white/80 max-w-2xl mx-auto">
-              We{"'"}re a team of Moroccan travel experts and tech innovators on a mission to share the magic of our homeland with the world.
-            </p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">{tr("Born in Morocco,")}<br />{tr("Built for the World")}</h1>
+            <p className="text-xl text-white/80 max-w-2xl mx-auto">{tr("We’re a team of Moroccan travel experts and tech innovators on a mission to share the magic of our homeland with the world.")}</p>
           </motion.div>
         </div>
       </section>
@@ -82,24 +81,11 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <span className="text-primary font-semibold text-sm uppercase tracking-wider">Our Story</span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3 mb-6">
-                From Local Guides to Global Platform
-              </h2>
-              <p className="text-stone-600 text-lg leading-relaxed mb-6">
-                Dunexplore Morocco started as a simple idea: what if travelers could plan their perfect Morocco trip with the
-                guidance of local experts and the freedom to tailor every detail?
-              </p>
-              <p className="text-stone-600 text-lg leading-relaxed mb-6">
-                Founded in Marrakech by a team of travel enthusiasts, software engineers, and hospitality professionals,
-                we combine deep local knowledge with cutting-edge technology to create travel experiences that are both
-                authentic and seamless.
-              </p>
-              <p className="text-stone-600 text-lg leading-relaxed">
-                Every itinerary we generate is informed by years of experience hosting thousands of travelers across
-                Morocco. We know the hidden riads, the best times to visit the Sahara, and the secret spots in
-                Chefchaouen that most tourists never find.
-              </p>
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Our Story")}</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3 mb-6">{tr("From Local Guides to Global Platform")}</h2>
+              <p className="text-stone-600 text-lg leading-relaxed mb-6">{tr("Dunexplore Morocco started as a simple idea: what if travelers could plan their perfect Morocco trip with the guidance of local experts and the freedom to tailor every detail?")}</p>
+              <p className="text-stone-600 text-lg leading-relaxed mb-6">{tr("Founded in Marrakech by a team of travel enthusiasts, software engineers, and hospitality professionals, we combine deep local knowledge with cutting-edge technology to create travel experiences that are both authentic and seamless.")}</p>
+              <p className="text-stone-600 text-lg leading-relaxed">{tr("Every itinerary we generate is informed by years of experience hosting thousands of travelers across Morocco. We know the hidden riads, the best times to visit the Sahara, and the secret spots in Chefchaouen that most tourists never find.")}</p>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 30 }}
@@ -111,7 +97,7 @@ export default function AboutPage() {
                 <div className="relative h-full w-full">
                   <ImageWithFallback
                   src="https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800&h=600&fit=crop"
-                  alt="Marrakech"
+                  alt={tr("Marrakech")}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
@@ -123,10 +109,8 @@ export default function AboutPage() {
           </div>
 
           <div className="text-center mb-16">
-            <span className="text-primary font-semibold text-sm uppercase tracking-wider">Why Choose Us</span>
-            <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3">
-              What Makes Us Different
-            </h2>
+            <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Why Choose Us")}</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3">{tr("What Makes Us Different")}</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
@@ -147,8 +131,8 @@ export default function AboutPage() {
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <item.icon size={28} className="text-primary" />
                 </div>
-                <h3 className="text-lg font-bold text-stone-900 mb-2">{item.title}</h3>
-                <p className="text-stone-500">{item.description}</p>
+                <h3 className="text-lg font-bold text-stone-900 mb-2">{tr(item.title)}</h3>
+                <p className="text-stone-500">{tr(item.description)}</p>
               </motion.div>
             ))}
           </div>
@@ -156,14 +140,10 @@ export default function AboutPage() {
           <div className="mb-20">
             <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <span className="text-primary font-semibold text-sm uppercase tracking-wider">Meet Your Local Team</span>
-                <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-stone-900">
-                  Guides who make the details feel effortless
-                </h2>
+                <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Meet Your Local Team")}</span>
+                <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-stone-900">{tr("Guides who make the details feel effortless")}</h2>
               </div>
-              <p className="max-w-2xl text-stone-600">
-                Each itinerary is supported by people who know when to slow down, when to skip a crowded stop, and how to make a trip feel personal.
-              </p>
+              <p className="max-w-2xl text-stone-600">{tr("Each itinerary is supported by people who know when to slow down, when to skip a crowded stop, and how to make a trip feel personal.")}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {guides.map((guide, index) => (
@@ -187,10 +167,10 @@ export default function AboutPage() {
                     />
                   </div>
                   <div className="relative z-10 flex-1 bg-white p-5">
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{guide.role}</p>
-                    <h3 className="mt-2 text-xl font-bold text-stone-900">{guide.name}</h3>
-                    <p className="mt-1 text-sm font-semibold text-stone-500">{guide.location} - {guide.yearsExperience} years</p>
-                    <p className="mt-3 text-sm leading-6 text-stone-600">{guide.bio}</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{tr(guide.role)}</p>
+                    <h3 className="mt-2 text-xl font-bold text-stone-900">{tr(guide.name)}</h3>
+                    <p className="mt-1 text-sm font-semibold text-stone-500">{tr(guide.location)} - {guide.yearsExperience} {tr("years")}</p>
+                    <p className="mt-3 text-sm leading-6 text-stone-600">{tr(guide.bio)}</p>
                   </div>
                 </motion.article>
               ))}
@@ -213,7 +193,7 @@ export default function AboutPage() {
                 className="text-center"
               >
                 <p className="text-3xl lg:text-4xl font-bold text-primary">{stat.number}</p>
-                <p className="text-stone-500 mt-1">{stat.label}</p>
+                <p className="text-stone-500 mt-1">{tr(stat.label)}</p>
               </motion.div>
             ))}
           </div>
@@ -229,7 +209,7 @@ export default function AboutPage() {
                 <div className="relative h-full w-full">
                   <ImageWithFallback
                   src="https://images.unsplash.com/photo-1535191198992-fe460a2d0af1"
-                  alt="Sahara Desert"
+                  alt={tr("Sahara Desert")}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
@@ -244,25 +224,14 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="order-1 lg:order-2"
             >
-              <span className="text-primary font-semibold text-sm uppercase tracking-wider">Our Mission</span>
-              <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3 mb-6">
-                Making Morocco Accessible to Everyone
-              </h2>
-              <p className="text-stone-600 text-lg leading-relaxed mb-6">
-                We believe that traveling to Morocco should be easy, authentic, and transformative. That{"'"}s why we{"'"}ve
-                built a platform that combines the warmth of Moroccan hospitality with the convenience of modern technology.
-              </p>
-              <p className="text-stone-600 text-lg leading-relaxed mb-8">
-                Whether you{"'"}re a first-time visitor or a seasoned traveler, we{"'"}ll help you discover the Morocco
-                that guidebooks miss - the hidden courtyards, the family-run restaurants, the sunrise viewpoints known
-                only to locals.
-              </p>
+              <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Our Mission")}</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-3 mb-6">{tr("Making Morocco Accessible to Everyone")}</h2>
+              <p className="text-stone-600 text-lg leading-relaxed mb-6">{tr("We believe that traveling to Morocco should be easy, authentic, and transformative. That’s why we’ve built a platform that combines the warmth of Moroccan hospitality with the convenience of modern technology.")}</p>
+              <p className="text-stone-600 text-lg leading-relaxed mb-8">{tr("Whether you’re a first-time visitor or a seasoned traveler, we’ll help you discover the Morocco that guidebooks miss - the hidden courtyards, the family-run restaurants, the sunrise viewpoints known only to locals.")}</p>
               <Link
                 href="/trip-generator"
                 className="btn-primary text-white px-8 py-4 rounded-full font-semibold inline-flex items-center gap-2"
-              >
-                Start Planning
-                <ArrowRight size={18} />
+              >{tr("Start Planning")}<ArrowRight size={18} />
               </Link>
             </motion.div>
           </div>

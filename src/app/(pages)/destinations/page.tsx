@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -8,6 +10,7 @@ import { type Destination } from "@/lib/data"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function DestinationsPage() {
+  const { tr } = useTranslations()
   const [destinations, setDestinations] = useState<Destination[]>([])
 
   useEffect(() => {
@@ -30,7 +33,7 @@ export default function DestinationsPage() {
         <div className="absolute inset-0">
           <ImageWithFallback
             src="/images/content/chefchaouen-blue.webp"
-            alt="Blue buildings of Chefchaouen beneath the Rif Mountains"
+            alt={tr("Blue buildings of Chefchaouen beneath the Rif Mountains")}
             fill
             preload
             sizes="100vw"
@@ -52,27 +55,21 @@ export default function DestinationsPage() {
               animate={{ opacity: 1, y: 0 }}
               className="max-w-3xl"
             >
-              <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-amber-200 ring-1 ring-white/15 backdrop-blur-md">
-                Explore Morocco
-              </span>
-              <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white">
-                Destinations
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
-                From ancient medinas to vast desert landscapes, discover the many faces of Morocco.
-              </p>
+              <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-amber-200 ring-1 ring-white/15 backdrop-blur-md">{tr("Explore Morocco")}</span>
+              <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white">{tr("Destinations")}</h1>
+              <p className="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">{tr("From ancient medinas to vast desert landscapes, discover the many faces of Morocco.")}</p>
               <div className="mt-8 grid max-w-xl grid-cols-3 gap-3">
                 <div className="rounded-2xl bg-white/10 p-4 text-white ring-1 ring-white/15 backdrop-blur-md">
                   <p className="text-2xl font-bold">{destinations.length}</p>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">Places</p>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">{tr("Places")}</p>
                 </div>
                 <div className="rounded-2xl bg-white/10 p-4 text-white ring-1 ring-white/15 backdrop-blur-md">
                   <p className="text-2xl font-bold">4.8</p>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">Avg rating</p>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">{tr("Avg rating")}</p>
                 </div>
                 <div className="rounded-2xl bg-white/10 p-4 text-white ring-1 ring-white/15 backdrop-blur-md">
                   <p className="text-2xl font-bold">5</p>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">Regions</p>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-white/65">{tr("Regions")}</p>
                 </div>
               </div>
             </motion.div>
@@ -101,7 +98,7 @@ export default function DestinationsPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/10 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <p className="font-bold text-white">{destination.name}</p>
+                    <p className="font-bold text-white">{tr(destination.name)}</p>
                     <p className="mt-1 flex items-center gap-1 text-sm text-white/75">
                       <Star size={13} className="fill-accent text-accent" />
                       {destination.rating}
@@ -143,25 +140,25 @@ export default function DestinationsPage() {
                 </div>
 
                 <div className={index % 2 === 1 ? "lg:order-1" : ""}>
-                  <span className="text-primary font-semibold text-sm uppercase tracking-wider">Destination</span>
+                  <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Destination")}</span>
                   <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 mt-2 mb-4">
-                    {dest.name}
+                    {tr(dest.name)}
                   </h2>
                   <div className="flex items-center gap-4 mb-4">
                     <span className="flex items-center gap-1 text-stone-600">
                       <Star size={16} className="fill-accent text-accent" />
                       <span className="font-semibold">{dest.rating}</span>
-                      <span className="text-stone-400">({dest.reviews.toLocaleString()} reviews)</span>
+                      <span className="text-stone-400">({dest.reviews.toLocaleString()} {tr("reviews)")}</span>
                     </span>
                     <span className="flex items-center gap-1 text-stone-400">
                       <Calendar size={16} />
-                      {dest.bestTime}
+                      {tr(dest.bestTime)}
                     </span>
                   </div>
-                  <p className="text-stone-600 text-lg leading-relaxed mb-6">{dest.description}</p>
+                  <p className="text-stone-600 text-lg leading-relaxed mb-6">{tr(dest.description)}</p>
 
                   <div className="mb-6">
-                    <h3 className="font-semibold text-stone-900 mb-3">Highlights</h3>
+                    <h3 className="font-semibold text-stone-900 mb-3">{tr("Highlights")}</h3>
                     <div className="flex flex-wrap gap-2">
                       {dest.highlights.slice(0, 5).map((h) => (
                         <span
@@ -176,12 +173,12 @@ export default function DestinationsPage() {
                   </div>
 
                   <div className="mb-6">
-                    <h3 className="font-semibold text-stone-900 mb-3">Suggested Itineraries</h3>
+                    <h3 className="font-semibold text-stone-900 mb-3">{tr("Suggested Itineraries")}</h3>
                     <div className="space-y-2">
                       {dest.itineraries.map((it) => (
                         <div key={it.title} className="flex items-center justify-between py-2 border-b border-stone-100">
-                          <span className="text-stone-600">{it.days}-day {it.title}</span>
-                          <span className="text-primary font-semibold">from {it.price.toLocaleString()} MAD</span>
+                          <span className="text-stone-600">{it.days}{tr("-day")} {tr(it.title)}</span>
+                          <span className="text-primary font-semibold">{tr("from")} {it.price.toLocaleString()} MAD</span>
                         </div>
                       ))}
                     </div>
@@ -190,8 +187,7 @@ export default function DestinationsPage() {
                   <Link
                     href={`/destinations/${dest.slug}`}
                     className="inline-flex items-center gap-2 btn-primary text-white px-6 py-3 rounded-full font-semibold"
-                  >
-                    Explore {dest.name}
+                  >{tr("Explore")}{tr(dest.name)}
                     <ArrowRight size={18} />
                   </Link>
                 </div>

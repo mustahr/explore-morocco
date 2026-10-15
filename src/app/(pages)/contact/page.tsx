@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -8,6 +10,7 @@ import { Mail, Phone, MapPin, MessageCircle, Send, Clock, Compass, Route, Headph
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function ContactPage() {
+  const { tr } = useTranslations()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -51,7 +54,7 @@ export default function ContactPage() {
       setTimeout(() => setSubmitted(false), 12000)
       setFormData({ name: "", email: "", subject: "", message: "" })
     } catch (submissionError) {
-      setError(submissionError instanceof Error ? submissionError.message : "Could not send your message.")
+      setError(submissionError instanceof Error ? submissionError.message : tr("Could not send your message."))
     } finally {
       setIsSubmitting(false)
     }
@@ -63,7 +66,7 @@ export default function ContactPage() {
         <div className="absolute inset-0">
           <ImageWithFallback
             src="/contact-morocco-desk.png"
-            alt="Moroccan travel contact desk with map, message phone, lantern, and mint tea"
+            alt={tr("Moroccan travel contact desk with map, message phone, lantern, and mint tea")}
             fill
             preload
             sizes="100vw"
@@ -87,21 +90,14 @@ export default function ContactPage() {
           >
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-wider text-primary-light backdrop-blur-sm">
-                <Headphones size={16} /> Morocco travel desk
-              </span>
-              <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">
-                Contact Us in Morocco
-              </h1>
-              <p className="mt-5 max-w-2xl text-lg text-white/82">
-                Tell us where you want to go. Our Marrakech-based team will reply with route ideas, local advice, and next steps within 24 hours.
-              </p>
+                <Headphones size={16} />{tr("Morocco travel desk")}</span>
+              <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-white md:text-5xl lg:text-6xl">{tr("Contact Us in Morocco")}</h1>
+              <p className="mt-5 max-w-2xl text-lg text-white/82">{tr("Tell us where you want to go. Our Marrakech-based team will reply with route ideas, local advice, and next steps within 24 hours.")}</p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#contact-form"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-stone-950 transition hover:bg-primary-light"
-                >
-                  Send a message
-                  <ArrowRight size={16} />
+                >{tr("Send a message")}<ArrowRight size={16} />
                 </a>
                 <a
                   href={contactWhatsAppHref()}
@@ -109,9 +105,7 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-white/24 bg-white/12 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
                 >
-                  <MessageCircle size={16} />
-                  WhatsApp us
-                </a>
+                  <MessageCircle size={16} />{tr("WhatsApp us")}</a>
               </div>
               <div className="mt-7 flex flex-wrap gap-3 text-sm font-semibold text-white/90">
                 {[
@@ -119,9 +113,9 @@ export default function ContactPage() {
                   { icon: Route, label: "Custom tour routes" },
                   { icon: Compass, label: "Local trip advice" },
                 ].map((item) => (
-                  <span key={item.label} className="inline-flex items-center gap-2 rounded-full border border-white/18 bg-white/12 px-4 py-2 backdrop-blur-sm">
+                  <span key={tr(item.label)} className="inline-flex items-center gap-2 rounded-full border border-white/18 bg-white/12 px-4 py-2 backdrop-blur-sm">
                     <item.icon size={16} className="text-primary-light" />
-                    {item.label}
+                    {tr(item.label)}
                   </span>
                 ))}
               </div>
@@ -133,8 +127,8 @@ export default function ContactPage() {
                   <MessageCircle size={22} />
                 </div>
                 <div>
-                  <p className="text-sm text-white/64">Quick help</p>
-                  <p className="font-semibold">Choose how to reach us</p>
+                  <p className="text-sm text-white/64">{tr("Quick help")}</p>
+                  <p className="font-semibold">{tr("Choose how to reach us")}</p>
                 </div>
               </div>
               <div className="space-y-3 py-5">
@@ -143,18 +137,18 @@ export default function ContactPage() {
                   { icon: Phone, label: "Phone", value: CONTACT_PHONE, href: CONTACT_PHONE_HREF },
                   { icon: MapPin, label: "Office", value: CONTACT_LOCATION, href: undefined },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-3 rounded-xl bg-white/10 p-3">
+                  <div key={tr(item.label)} className="flex items-center gap-3 rounded-xl bg-white/10 p-3">
                     <item.icon size={18} className="text-primary-light" />
                     <div className="min-w-0">
-                      <p className="text-xs text-white/58">{item.label}</p>
-                      {item.href ? <a href={item.href} className="break-all text-sm font-semibold hover:underline">{item.value}</a> : <p className="text-sm font-semibold">{item.value}</p>}
+                      <p className="text-xs text-white/58">{tr(item.label)}</p>
+                      {item.href ? <a href={item.href} className="break-all text-sm font-semibold hover:underline">{tr(item.value)}</a> : <p className="text-sm font-semibold">{tr(item.value)}</p>}
                     </div>
                   </div>
                 ))}
               </div>
               <div className="rounded-xl bg-stone-950/42 p-4">
-                <p className="text-sm text-white/72">Typical reply time</p>
-                <p className="mt-1 text-2xl font-bold">Within 24h</p>
+                <p className="text-sm text-white/72">{tr("Typical reply time")}</p>
+                <p className="mt-1 text-2xl font-bold">{tr("Within 24h")}</p>
               </div>
             </div>
           </motion.div>
@@ -178,42 +172,40 @@ export default function ContactPage() {
                 className="bg-white rounded-2xl border border-stone-100 shadow-xl shadow-stone-950/10 p-6 lg:p-8"
               >
                 <div className="mb-6">
-                  <p className="text-sm font-semibold uppercase tracking-wider text-primary-dark">Start planning</p>
-                  <h2 className="mt-2 text-2xl font-bold text-stone-900">Send us a message</h2>
-                  <p className="mt-2 text-sm text-stone-500">Share your dates, destinations, or questions and we will help you shape the next step.</p>
+                  <p className="text-sm font-semibold uppercase tracking-wider text-primary-dark">{tr("Start planning")}</p>
+                  <h2 className="mt-2 text-2xl font-bold text-stone-900">{tr("Send us a message")}</h2>
+                  <p className="mt-2 text-sm text-stone-500">{tr("Share your dates, destinations, or questions and we will help you shape the next step.")}</p>
                 </div>
 
                 {submitted && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700">
-                    <p>Thank you! We{"'"}ll get back to you within 24 hours.</p>
-                    <Link href="/" className="mt-3 inline-flex text-sm font-semibold text-green-800 underline-offset-4 hover:underline">
-                      Back to home
-                    </Link>
+                    <p>{tr("Thank you! We’ll get back to you within 24 hours.")}</p>
+                    <Link href="/" className="mt-3 inline-flex text-sm font-semibold text-green-800 underline-offset-4 hover:underline">{tr("Back to home")}</Link>
                   </div>
                 )}
                 {error && (
                   <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
-                    {error}
+                    {tr(error)}
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 mb-2">Name</label>
+                      <label className="block text-sm font-medium text-stone-700 mb-2">{tr("Name")}</label>
                       <input
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
                         className="w-full px-4 py-3 border border-stone-200 rounded-xl text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                        placeholder="Your name"
+                        placeholder={tr("Your name")}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-stone-700 mb-2">Email</label>
+                      <label className="block text-sm font-medium text-stone-700 mb-2">{tr("Email")}</label>
                       <input
-                        type="email"
+                        type="email" dir="ltr"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
@@ -223,25 +215,25 @@ export default function ContactPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-2">Subject</label>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">{tr("Subject")}</label>
                     <input
                       type="text"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       required
                       className="w-full px-4 py-3 border border-stone-200 rounded-xl text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                      placeholder="How can we help?"
+                      placeholder={tr("How can we help?")}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-stone-700 mb-2">Message</label>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">{tr("Message")}</label>
                     <textarea
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
                       rows={5}
                       className="w-full px-4 py-3 border border-stone-200 rounded-xl text-stone-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
-                      placeholder="Tell us more about your inquiry..."
+                      placeholder={tr("Tell us more about your inquiry...")}
                     />
                   </div>
                   <button
@@ -252,7 +244,7 @@ export default function ContactPage() {
                     className="w-full btn-primary text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2"
                   >
                     <Send size={18} />
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                    {isSubmitting ? tr("Sending...") : tr("Send Message")}
                   </button>
                 </form>
               </motion.div>
@@ -268,7 +260,7 @@ export default function ContactPage() {
                 <div className="relative h-56 overflow-hidden">
                   <ImageWithFallback
                     src="/contact-morocco-desk.png"
-                    alt="Moroccan travel contact desk with map, message phone, lantern, and mint tea"
+                    alt={tr("Moroccan travel contact desk with map, message phone, lantern, and mint tea")}
                     fill
                     sizes="(max-width: 1024px) 100vw, 24rem"
                     quality={85}
@@ -278,8 +270,8 @@ export default function ContactPage() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/72 via-stone-950/12 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary-light">Moroccan contact desk</p>
-                    <p className="mt-1 text-sm text-white/86">Message us about routes, riads, desert nights, and private tours.</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary-light">{tr("Moroccan contact desk")}</p>
+                    <p className="mt-1 text-sm text-white/86">{tr("Message us about routes, riads, desert nights, and private tours.")}</p>
                   </div>
                 </div>
               </motion.div>
@@ -290,34 +282,34 @@ export default function ContactPage() {
                 transition={{ delay: 0.1 }}
                 className="bg-white rounded-2xl border border-stone-100 shadow-sm p-6"
               >
-                <h3 className="font-bold text-stone-900 mb-4">Contact Information</h3>
+                <h3 className="font-bold text-stone-900 mb-4">{tr("Contact Information")}</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <Mail size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-stone-700">Email</p>
+                      <p className="font-medium text-stone-700">{tr("Email")}</p>
                       <a href={contactEmailHref()} className="break-all text-stone-500 text-sm hover:text-primary">{CONTACT_EMAIL}</a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Phone size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-stone-700">Phone</p>
-                      <a href={CONTACT_PHONE_HREF} className="text-stone-500 text-sm hover:text-primary">{CONTACT_PHONE}</a>
+                      <p className="font-medium text-stone-700">{tr("Phone")}</p>
+                      <a dir="ltr" href={CONTACT_PHONE_HREF} className="text-stone-500 text-sm hover:text-primary">{CONTACT_PHONE}</a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-stone-700">Address</p>
-                      <p className="text-stone-500 text-sm">{CONTACT_LOCATION}</p>
+                      <p className="font-medium text-stone-700">{tr("Address")}</p>
+                      <p className="text-stone-500 text-sm">{tr(CONTACT_LOCATION)}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock size={20} className="text-primary mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-stone-700">Working Hours</p>
-                      <p className="text-stone-500 text-sm">Mon-Sat: 9AM - 7PM (GMT+1)</p>
+                      <p className="font-medium text-stone-700">{tr("Working Hours")}</p>
+                      <p className="text-stone-500 text-sm">{tr("Mon-Sat: 9AM - 7PM (GMT+1)")}</p>
                     </div>
                   </div>
                 </div>
@@ -331,11 +323,9 @@ export default function ContactPage() {
               >
                 <div className="flex items-center gap-3 mb-3">
                   <MessageCircle size={24} />
-                  <h3 className="font-bold text-lg">WhatsApp our travel team</h3>
+                  <h3 className="font-bold text-lg">{tr("WhatsApp our travel team")}</h3>
                 </div>
-                <p className="text-white/80 text-sm mb-4">
-                  Chat with us about your dates, destination, and questions. Our team will help you plan your Morocco trip.
-                </p>
+                <p className="text-white/80 text-sm mb-4">{tr("Chat with us about your dates, destination, and questions. Our team will help you plan your Morocco trip.")}</p>
                 <a
                   href={contactWhatsAppHref()}
                   target="_blank"
@@ -344,9 +334,7 @@ export default function ContactPage() {
                   data-analytics-label="Contact page"
                   className="w-full bg-white text-[#0F3D2E] py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-white/90 transition-colors"
                 >
-                  <MessageCircle size={18} />
-                  Chat on WhatsApp
-                </a>
+                  <MessageCircle size={18} />{tr("Chat on WhatsApp")}</a>
               </motion.div>
 
               <motion.div
@@ -355,16 +343,12 @@ export default function ContactPage() {
                 transition={{ delay: 0.3 }}
                 className="bg-stone-50 rounded-2xl p-6"
               >
-                <h3 className="font-bold text-stone-900 mb-3">Need a Custom Trip?</h3>
-                <p className="text-stone-500 text-sm mb-4">
-                  Let us create a personalized itinerary just for you.
-                </p>
+                <h3 className="font-bold text-stone-900 mb-3">{tr("Need a Custom Trip?")}</h3>
+                <p className="text-stone-500 text-sm mb-4">{tr("Let us create a personalized itinerary just for you.")}</p>
                 <a
                   href="/trip-generator"
                   className="w-full btn-primary text-white py-3 rounded-xl font-semibold text-center block"
-                >
-                  Generate Your Trip
-                </a>
+                >{tr("Generate Your Trip")}</a>
               </motion.div>
             </div>
           </div>

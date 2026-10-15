@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -10,6 +12,7 @@ import { translations, formatPrice } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function FeaturedTrips() {
+  const { tr } = useTranslations()
   const [trips, setTrips] = useState<Trip[]>([])
   const { language, currency, toggleWishlist, isWishlisted } = useApp()
   const t = translations[language]
@@ -43,12 +46,8 @@ export function FeaturedTrips() {
           className="text-center mb-16"
         >
           <span className="text-primary font-semibold text-sm uppercase tracking-wider">{t.common.popular}</span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">
-            Curated Trips & Tours
-          </h2>
-          <p className="text-stone-500 mt-4 max-w-2xl mx-auto text-lg">
-            Handpicked experiences designed by local experts
-          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">{tr("Curated Trips & Tours")}</h2>
+          <p className="text-stone-500 mt-4 max-w-2xl mx-auto text-lg">{tr("Handpicked experiences designed by local experts")}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -83,30 +82,29 @@ export function FeaturedTrips() {
                     />
                   </button>
                   <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold uppercase">
-                    {trip.category}
+                    {tr(trip.category)}
                   </div>
                 </div>
                 <div className="p-6">
                   <h3 className="text-lg font-bold text-stone-900 mb-2 group-hover:text-primary transition-colors">
-                    {trip.title}
+                    {tr(trip.title)}
                   </h3>
-                  <p className="text-stone-500 text-sm mb-4 line-clamp-2">{trip.description}</p>
+                  <p className="text-stone-500 text-sm mb-4 line-clamp-2">{tr(trip.description)}</p>
                   <div className="flex items-center gap-4 text-sm text-stone-400 mb-4">
                     <span className="flex items-center gap-1">
                       <Clock size={14} />
-                      {trip.duration} {trip.duration === 1 ? "day" : "days"}
+                      {tr(trip.duration === 1 ? tr("{count} day") : tr("{count} days"), { count: trip.duration })}
                     </span>
                     <span className="flex items-center gap-1">
                       <MapPin size={14} />
-                      {trip.locations.length} locations
-                    </span>
+                      {trip.locations.length}{tr("locations")}</span>
                   </div>
                   <div className="flex items-center justify-between pt-4 border-t border-stone-100">
                     <div>
                       <span className="text-2xl font-bold text-primary">
                         {formatPrice(trip.price, currency)}
                       </span>
-                      <span className="text-stone-400 text-sm"> /person</span>
+                      <span className="text-stone-400 text-sm"> {tr("/person")}</span>
                     </div>
                     <div className="flex items-center gap-1 text-sm">
                       <Star size={14} className="fill-accent text-accent" />
@@ -130,8 +128,7 @@ export function FeaturedTrips() {
             href="/trips"
             className="inline-flex items-center gap-2 btn-secondary px-8 py-4 rounded-full font-semibold"
           >
-            {t.common.viewAll} Trips
-            <ArrowRight size={18} />
+            {tr("View all trips")}<ArrowRight size={18} />
           </Link>
         </motion.div>
       </div>

@@ -1,5 +1,8 @@
 "use client"
 
+import { formatLocalizedDate } from "@/lib/localization"
+import { useTranslations } from "@/context/useTranslations"
+
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Calendar, Clock, ArrowRight, BookOpen, Sparkles } from "lucide-react"
@@ -8,6 +11,7 @@ import { useEffect, useMemo, useState } from "react"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function BlogPage() {
+  const { tr, language } = useTranslations()
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [selectedCategory, setSelectedCategory] = useState("All")
   const categories = useMemo(
@@ -39,7 +43,7 @@ export default function BlogPage() {
         <div className="absolute inset-0">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=2000&q=80"
-            alt="Morocco coastal travel journal"
+            alt={tr("Morocco coastal travel journal")}
             fill
             preload
             sizes="100vw"
@@ -61,23 +65,14 @@ export default function BlogPage() {
             className="max-w-3xl"
           >
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-amber-200 ring-1 ring-white/15 backdrop-blur-md">
-              <BookOpen size={16} />
-              Travel Journal
-            </span>
-            <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white">
-              Morocco Travel Blog
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">
-              Expert guides, insider tips, and stories from the heart of Morocco.
-            </p>
+              <BookOpen size={16} />{tr("Travel Journal")}</span>
+            <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white">{tr("Morocco Travel Blog")}</h1>
+            <p className="mt-6 max-w-2xl text-lg text-white/80 md:text-xl">{tr("Expert guides, insider tips, and stories from the heart of Morocco.")}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur-md">
                 <Sparkles size={15} className="text-amber-200" />
-                {blogPosts.length} guides
-              </span>
-              <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur-md">
-                Local-first travel advice
-              </span>
+                {blogPosts.length}{tr("guides")}</span>
+              <span className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur-md">{tr("Local-first travel advice")}</span>
             </div>
           </motion.div>
         </div>
@@ -96,7 +91,7 @@ export default function BlogPage() {
                     : "bg-white text-stone-600 hover:bg-stone-50 border border-stone-200"
                 }`}
               >
-                {cat}
+                {tr(cat)}
                 <span className="ml-2 text-xs opacity-70">
                   {cat === "All" ? blogPosts.length : blogPosts.filter((post) => post.category === cat).length}
                 </span>
@@ -106,8 +101,8 @@ export default function BlogPage() {
 
           {filteredPosts.length === 0 ? (
             <div className="rounded-3xl border border-stone-200 bg-white p-12 text-center shadow-sm">
-              <h2 className="text-2xl font-bold text-stone-900">No articles in this category yet</h2>
-              <p className="mt-3 text-stone-500">Try another category or come back soon for new Morocco guides.</p>
+              <h2 className="text-2xl font-bold text-stone-900">{tr("No articles in this category yet")}</h2>
+              <p className="mt-3 text-stone-500">{tr("Try another category or come back soon for new Morocco guides.")}</p>
             </div>
           ) : (
             <>
@@ -129,21 +124,21 @@ export default function BlogPage() {
                       fallbackClassName="absolute inset-0"
                     />
                   </div>
-                  <span className="text-primary text-sm font-semibold">{post.category}</span>
+                  <span className="text-primary text-sm font-semibold">{tr(post.category)}</span>
                   <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 mt-2 mb-3 group-hover:text-primary transition-colors">
-                    {post.title}
+                    {tr(post.title)}
                   </h2>
-                  <p className="text-stone-500 text-lg mb-4">{post.excerpt}</p>
+                  <p className="text-stone-500 text-lg mb-4">{tr(post.excerpt)}</p>
                   <div className="flex items-center gap-4 text-sm text-stone-400">
                     <span className="flex items-center gap-1">
                       <Calendar size={14} />
-                      {post.date}
+                      {formatLocalizedDate(language, post.date)}
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock size={14} />
-                      {post.readTime}
+                      {tr(post.readTime)}
                     </span>
-                    <span>By {post.author}</span>
+                    <span>{tr("By")} {post.author}</span>
                   </div>
                 </Link>
               </motion.div>
@@ -169,13 +164,13 @@ export default function BlogPage() {
                       />
                     </div>
                     <div>
-                      <span className="text-primary text-xs font-semibold">{post.category}</span>
+                      <span className="text-primary text-xs font-semibold">{tr(post.category)}</span>
                       <h3 className="font-bold text-stone-900 mt-1 group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
+                        {tr(post.title)}
                       </h3>
                       <div className="flex items-center gap-3 text-xs text-stone-400 mt-2">
-                        <span>{post.date}</span>
-                        <span>{post.readTime}</span>
+                        <span>{formatLocalizedDate(language, post.date)}</span>
+                        <span>{tr(post.readTime)}</span>
                       </div>
                     </div>
                   </Link>
@@ -205,21 +200,20 @@ export default function BlogPage() {
                       />
                     </div>
                     <div className="p-5">
-                      <span className="text-primary text-xs font-semibold">{post.category}</span>
+                      <span className="text-primary text-xs font-semibold">{tr(post.category)}</span>
                       <h3 className="text-lg font-bold text-stone-900 mt-2 mb-2 group-hover:text-primary transition-colors">
-                        {post.title}
+                        {tr(post.title)}
                       </h3>
-                      <p className="text-stone-500 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                      <p className="text-stone-500 text-sm mb-4 line-clamp-2">{tr(post.excerpt)}</p>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 text-xs text-stone-400">
                           <span className="flex items-center gap-1">
                             <Calendar size={12} />
-                            {post.date}
+                            {formatLocalizedDate(language, post.date)}
                           </span>
-                          <span>{post.readTime}</span>
+                          <span>{tr(post.readTime)}</span>
                         </div>
-                        <span className="text-primary text-sm font-medium flex items-center gap-1">
-                          Read <ArrowRight size={14} />
+                        <span className="text-primary text-sm font-medium flex items-center gap-1">{tr("Read")}<ArrowRight size={14} />
                         </span>
                       </div>
                     </div>

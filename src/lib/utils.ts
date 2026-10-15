@@ -27,7 +27,7 @@ export const translations = {
   },
   fr: {
     nav: { home: "Accueil", trips: "Voyages & Circuits", destinations: "Destinations", experiences: "Exp\u00E9riences", blog: "Blog", about: "\u00C0 propos", contact: "Contact", generateTrip: "Planifier un voyage" },
-    hero: { headline: "Planifiez votre voyage au Maroc sur mesure", subheadline: "D\u00E9couvrez des exp\u00E9riences curatoriales, des joyaux cach\u00E9s et des aventures authentiques \u00E0 travers le Maroc.", ctaGenerate: "G\u00E9n\u00E9rer votre voyage", ctaExplore: "Explorer les voyages", promptPlaceholder: "D\u00E9crivez votre voyage r\u00EAv\u00E9 au Maroc..." },
+    hero: { headline: "Planifiez votre voyage au Maroc sur mesure", subheadline: "Découvrez des expériences choisies avec soin, des lieux méconnus et des aventures authentiques à travers le Maroc.", ctaGenerate: "G\u00E9n\u00E9rer votre voyage", ctaExplore: "Explorer les voyages", promptPlaceholder: "D\u00E9crivez votre voyage r\u00EAv\u00E9 au Maroc..." },
     common: { price: "Prix", duration: "Dur\u00E9e", rating: "Note", reviews: "Avis", bookNow: "R\u00E9server", learnMore: "En savoir plus", readMore: "Lire plus", viewAll: "Voir tout", featured: "En vedette", popular: "Populaire", search: "Rechercher", filter: "Filtrer", save: "Sauvegarder", share: "Partager" },
     footer: { description: "Votre plateforme pour des voyages sur mesure au Maroc. Exp\u00E9riences authentiques, expertise locale, souvenirs inoubliables.", quickLinks: "Liens rapides", support: "Support", newsletter: "Newsletter", newsletterPlaceholder: "Entrez votre email", subscribe: "S'abonner", rights: "Tous droits r\u00E9serv\u00E9s." },
   },

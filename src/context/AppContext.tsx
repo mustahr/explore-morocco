@@ -3,6 +3,7 @@
 import {
   createContext,
   useCallback,
+  useEffect,
   useContext,
   useMemo,
   useSyncExternalStore,
@@ -125,6 +126,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   )
 
   const language = hasHydrated ? storedLanguage : "en"
+  useEffect(() => {
+    document.documentElement.lang = language
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr"
+  }, [language])
+
   const currency = hasHydrated ? storedCurrency : "MAD"
   const wishlist = hasHydrated ? storedWishlist : EMPTY_WISHLIST
 

@@ -1,5 +1,8 @@
 "use client"
 
+import { formatLocalizedDate } from "@/lib/localization"
+import { useTranslations } from "@/context/useTranslations"
+
 import { buildBlogNavigation } from "@/lib/blog-navigation"
 import { contactWhatsAppHref } from "@/lib/contact"
 
@@ -22,6 +25,7 @@ import { type BlogPost } from "@/lib/data"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost; relatedPosts: BlogPost[] }) {
+  const { tr, language } = useTranslations()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const contactMessage = (`Hi, I read "${post.title}" and want help planning a Morocco trip.`)
 
@@ -49,30 +53,26 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white">
-            <ArrowLeft size={17} />
-            Back to blog
-          </Link>
+            <ArrowLeft size={17} />{tr("Back to blog")}</Link>
 
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="mt-10 max-w-4xl">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-amber-200 ring-1 ring-white/15 backdrop-blur-md">
               <Sparkles size={14} />
-              {post.category}
+              {tr(post.category)}
             </span>
-            <h1 className="mt-6 text-4xl font-bold text-white md:text-5xl lg:text-7xl">{post.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/82 md:text-xl">{post.excerpt}</p>
+            <h1 className="mt-6 text-4xl font-bold text-white md:text-5xl lg:text-7xl">{tr(post.title)}</h1>
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/82 md:text-xl">{tr(post.excerpt)}</p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-white/88">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15 backdrop-blur-md">
                 <Calendar size={16} />
-                {post.date}
+                {formatLocalizedDate(language, post.date)}
               </span>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15 backdrop-blur-md">
                 <Clock size={16} />
-                {post.readTime} read
-              </span>
+                {tr(post.readTime)} {tr("read")}</span>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 ring-1 ring-white/15 backdrop-blur-md">
-                <MapPin size={16} />
-                By {post.author}
+                <MapPin size={16} />{tr("By")} {post.author}
               </span>
             </div>
           </motion.div>
@@ -85,19 +85,15 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
             <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-6">
               <div className="flex flex-wrap gap-3">
                 <button className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-600 transition hover:border-primary hover:text-primary">
-                  <Bookmark size={16} />
-                  Save
-                </button>
+                  <Bookmark size={16} />{tr("Save")}</button>
                 <button className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-600 transition hover:border-primary hover:text-primary">
-                  <Share2 size={16} />
-                  Share
-                </button>
+                  <Share2 size={16} />{tr("Share")}</button>
               </div>
               <button
                 onClick={() => setSidebarOpen((current) => !current)}
                 className="inline-flex items-center gap-2 rounded-full border border-stone-200 bg-stone-50 px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 lg:hidden"
               >
-                {sidebarOpen ? "Hide planning tools" : "Show planning tools"}
+                {sidebarOpen ? tr("Hide planning tools") : tr("Show planning tools")}
                 <ChevronRight size={16} className={sidebarOpen ? "rotate-90 transition-transform" : "transition-transform"} />
               </button>
             </div>
@@ -106,20 +102,20 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
               <div className="mb-10 rounded-3xl border border-stone-200 bg-stone-50 p-5">
                 <div className="mb-4 flex items-center justify-between gap-4">
                   <div>
-                    <h2 className="text-lg font-bold text-stone-900">Table of Contents</h2>
-                    <p className="mt-1 text-sm text-stone-500">Jump to the section you need.</p>
+                    <h2 className="text-lg font-bold text-stone-900">{tr("Table of Contents")}</h2>
+                    <p className="mt-1 text-sm text-stone-500">{tr("Jump to the section you need.")}</p>
                   </div>
                   <Sparkles size={20} className="text-primary" />
                 </div>
-                <nav aria-label="Table of contents" className="grid gap-2 sm:grid-cols-2">
+                <nav aria-label={tr("Table of contents")} className="grid gap-2 sm:grid-cols-2">
                   {article.tableOfContents.map((item) => (
                     <a
                       key={item.id}
                       href={`#${encodeURIComponent(item.id)}`}
-                      className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-left text-sm font-semibold text-stone-600 transition hover:border-primary hover:bg-primary/5 hover:text-primary"
+                      className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-start text-sm font-semibold text-stone-600 transition hover:border-primary hover:bg-primary/5 hover:text-primary"
                     >
                       <ChevronRight size={15} />
-                      {item.label}
+                      {tr(item.label)}
                     </a>
                   ))}
                 </nav>
@@ -135,12 +131,10 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
               <section className="mt-14 border-t border-stone-200 pt-10">
                 <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
                   <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">Keep Reading</p>
-                    <h2 className="mt-2 text-2xl font-bold text-stone-900">Related Articles</h2>
+                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary">{tr("Keep Reading")}</p>
+                    <h2 className="mt-2 text-2xl font-bold text-stone-900">{tr("Related Articles")}</h2>
                   </div>
-                  <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
-                    All posts
-                    <ChevronRight size={16} />
+                  <Link href="/blog" className="inline-flex items-center gap-2 text-sm font-semibold text-primary">{tr("All posts")}<ChevronRight size={16} />
                   </Link>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -157,8 +151,8 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
                         />
                       </div>
                       <div className="p-5">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{relatedPost.category}</p>
-                        <h3 className="mt-2 line-clamp-2 font-bold text-stone-900 group-hover:text-primary">{relatedPost.title}</h3>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{tr(relatedPost.category)}</p>
+                        <h3 className="mt-2 line-clamp-2 font-bold text-stone-900 group-hover:text-primary">{tr(relatedPost.title)}</h3>
                         <p className="mt-2 line-clamp-2 text-sm text-stone-500">{relatedPost.excerpt}</p>
                         <p className="mt-4 text-xs text-stone-400">{relatedPost.readTime} - {relatedPost.date}</p>
                       </div>
@@ -174,24 +168,20 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
               <div className="mb-4 flex items-center gap-3">
                 <Send size={20} className="text-primary" />
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Plan from this guide</p>
-                  <h2 className="font-bold text-stone-900">Turn ideas into a trip</h2>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{tr("Plan from this guide")}</p>
+                  <h2 className="font-bold text-stone-900">{tr("Turn ideas into a trip")}</h2>
                 </div>
               </div>
-              <p className="mb-5 text-sm leading-6 text-stone-600">Use this article as a starting point and get a Morocco route built around your dates.</p>
+              <p className="mb-5 text-sm leading-6 text-stone-600">{tr("Use this article as a starting point and get a Morocco route built around your dates.")}</p>
               <div className="grid gap-3">
-                <Link href="/trip-generator" className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark">
-                  Generate itinerary
-                </Link>
+                <Link href="/trip-generator" className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark">{tr("Generate itinerary")}</Link>
                 <a
                   href={contactWhatsAppHref(contactMessage)}
                 target="_blank"
                 rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-700 transition hover:bg-green-500 hover:text-white"
                 >
-                  <MessageCircle size={16} />
-                  Ask on WhatsApp
-                </a>
+                  <MessageCircle size={16} />{tr("Ask on WhatsApp")}</a>
               </div>
             </div>
 
@@ -199,35 +189,31 @@ export default function BlogPostClient({ post, relatedPosts }: { post: BlogPost;
               <div className="mb-4 flex items-center gap-3">
                 <Sparkles size={20} className="text-primary" />
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-stone-500">Quick Tips</p>
-                  <h2 className="font-bold text-stone-900">Use this story well</h2>
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-stone-500">{tr("Quick Tips")}</p>
+                  <h2 className="font-bold text-stone-900">{tr("Use this story well")}</h2>
                 </div>
               </div>
               <ul className="space-y-3 text-sm text-stone-600">
-                <li className="rounded-2xl bg-stone-50 px-4 py-3">Bookmark useful sections before comparing itineraries.</li>
-                <li className="rounded-2xl bg-stone-50 px-4 py-3">Share with your group before booking hotels.</li>
-                <li className="rounded-2xl bg-stone-50 px-4 py-3">Use the table of contents for fast planning.</li>
+                <li className="rounded-2xl bg-stone-50 px-4 py-3">{tr("Bookmark useful sections before comparing itineraries.")}</li>
+                <li className="rounded-2xl bg-stone-50 px-4 py-3">{tr("Share with your group before booking hotels.")}</li>
+                <li className="rounded-2xl bg-stone-50 px-4 py-3">{tr("Use the table of contents for fast planning.")}</li>
               </ul>
             </div>
 
             <div className="rounded-[2rem] border border-stone-200 bg-stone-100 p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-stone-500">Need inspiration?</p>
-              <h2 className="mt-2 font-bold text-stone-900">Explore more guides</h2>
-              <p className="mt-3 text-sm leading-6 text-stone-600">Discover places, food, and route ideas to build the perfect Morocco itinerary.</p>
-              <Link href="/blog" className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5">
-                Browse all posts
-                <ChevronRight size={16} />
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-stone-500">{tr("Need inspiration?")}</p>
+              <h2 className="mt-2 font-bold text-stone-900">{tr("Explore more guides")}</h2>
+              <p className="mt-3 text-sm leading-6 text-stone-600">{tr("Discover places, food, and route ideas to build the perfect Morocco itinerary.")}</p>
+              <Link href="/blog" className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-primary shadow-sm transition hover:bg-primary/5">{tr("Browse all posts")}<ChevronRight size={16} />
               </Link>
             </div>
           </aside>
         </div>
 
         <div className="mt-10 rounded-[2rem] bg-linear-to-r from-[#0D0D0D] via-[#1F1A14] to-[#0F3D2E] p-8 text-center text-white shadow-[0_20px_60px_-30px_rgba(13,13,13,0.7)] ring-1 ring-primary/20">
-          <h2 className="text-2xl font-bold">Ready to Plan Your Trip?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/90">Create your personalized Morocco itinerary from the ideas in this guide.</p>
-          <Link href="/trip-generator" className="mt-6 inline-flex items-center justify-center rounded-full bg-stone-950 px-8 py-4 text-sm font-semibold shadow-lg shadow-stone-950/20 transition hover:bg-stone-900">
-            Generate Your Trip
-          </Link>
+          <h2 className="text-2xl font-bold">{tr("Ready to Plan Your Trip?")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-white/90">{tr("Create your personalized Morocco itinerary from the ideas in this guide.")}</p>
+          <Link href="/trip-generator" className="mt-6 inline-flex items-center justify-center rounded-full bg-stone-950 px-8 py-4 text-sm font-semibold shadow-lg shadow-stone-950/20 transition hover:bg-stone-900">{tr("Generate Your Trip")}</Link>
         </div>
       </section>
     </article>

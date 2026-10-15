@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
 import { useMemo, useState } from "react"
 import Link from "next/link"
@@ -81,7 +83,7 @@ function getExperienceDetail(experience: Experience): ExperienceDetail {
 
   return {
     ...categoryDetail,
-    overview: `${experience.title} is designed for travelers who want a richer, easier way to experience ${experience.location}. We coordinate the trusted local host, timing, and practical details so you can focus on the moment, whether you are joining as a couple, family, solo traveler, or private group.`,
+    overview: "",
   }
 }
 
@@ -92,8 +94,12 @@ export default function ExperienceDetailClient({
   experience: Experience
   relatedExperiences: Experience[]
 }) {
+  const { tr } = useTranslations()
   const { currency } = useApp()
-  const detail = useMemo(() => getExperienceDetail(experience), [experience])
+  const detail = useMemo(() => ({
+    ...getExperienceDetail(experience),
+    overview: tr("{title} is designed for travelers who want a richer, easier way to experience {place}. We coordinate the trusted local host, timing, and practical details so you can focus on the moment, whether you are joining as a couple, family, solo traveler, or private group.", { title: tr(experience.title), place: tr(experience.location) }),
+  }), [experience, tr])
   const [travelers, setTravelers] = useState(2)
   const [submitted, setSubmitted] = useState(false)
   const [sending, setSending] = useState(false)
@@ -153,36 +159,31 @@ export default function ExperienceDetailClient({
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <Link href="/experiences" className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 hover:text-white">
-            <ArrowLeft size={16} />
-            Back to experiences
-          </Link>
+            <ArrowLeft size={16} />{tr("Back to experiences")}</Link>
 
           <div className="mt-12 grid items-end gap-10 lg:grid-cols-[1fr_24rem]">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="inline-flex rounded-full bg-white px-4 py-2 text-sm font-bold text-primary shadow-lg shadow-stone-950/20">
-                  {experience.category}
+                  {tr(experience.category)}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md ring-1 ring-white/20">
                   <Star size={15} className="fill-accent text-accent" />
-                  {experience.rating} guest rated
-                </span>
+                  {experience.rating}{tr("guest rated")}</span>
               </div>
-              <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white drop-shadow-sm">{experience.title}</h1>
-              <p className="mt-6 max-w-2xl text-lg text-white/85 md:text-xl">{experience.description}</p>
+              <h1 className="mt-6 text-4xl md:text-5xl lg:text-7xl font-bold text-white drop-shadow-sm">{tr(experience.title)}</h1>
+              <p className="mt-6 max-w-2xl text-lg text-white/85 md:text-xl">{tr(experience.description)}</p>
               <div className="mt-8 flex flex-wrap gap-3 text-sm text-white/90">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-md ring-1 ring-white/15">
                   <MapPin size={16} />
-                  {experience.location}
+                  {tr(experience.location)}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-md ring-1 ring-white/15">
                   <Clock size={16} />
-                  {experience.duration}
+                  {tr(experience.duration)}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-md ring-1 ring-white/15">
-                  <Users size={16} />
-                  Private or small group
-                </span>
+                  <Users size={16} />{tr("Private or small group")}</span>
               </div>
             </motion.div>
 
@@ -206,16 +207,16 @@ export default function ExperienceDetailClient({
               </div>
               <div className="grid grid-cols-3 gap-3 pt-4 text-center">
                 <div className="rounded-2xl bg-white p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">From</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">{tr("From")}</p>
                   <p className="mt-1 font-bold text-primary">{formatPrice(experience.price, currency)}</p>
                 </div>
                 <div className="rounded-2xl bg-white p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">Time</p>
-                  <p className="mt-1 font-bold text-stone-900">{experience.duration}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">{tr("Time")}</p>
+                  <p className="mt-1 font-bold text-stone-900">{tr(experience.duration)}</p>
                 </div>
                 <div className="rounded-2xl bg-white p-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">Place</p>
-                  <p className="mt-1 font-bold text-stone-900">{experience.location}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-stone-400">{tr("Place")}</p>
+                  <p className="mt-1 font-bold text-stone-900">{tr(experience.location)}</p>
                 </div>
               </div>
             </motion.div>
@@ -228,32 +229,32 @@ export default function ExperienceDetailClient({
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_24rem] gap-12">
             <main className="space-y-14">
               <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <span className="text-primary font-semibold text-sm uppercase tracking-wider">Experience Details</span>
-                <h2 className="mt-3 text-3xl font-bold text-stone-900">What to expect</h2>
-                <p className="mt-5 text-lg leading-relaxed text-stone-600">{detail.overview}</p>
+                <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Experience Details")}</span>
+                <h2 className="mt-3 text-3xl font-bold text-stone-900">{tr("What to expect")}</h2>
+                <p className="mt-5 text-lg leading-relaxed text-stone-600">{tr(detail.overview)}</p>
               </motion.section>
 
               <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <h2 className="text-2xl font-bold text-stone-900 mb-6">Highlights</h2>
+                <h2 className="text-2xl font-bold text-stone-900 mb-6">{tr("Highlights")}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {detail.highlights.map((highlight) => (
                     <div key={highlight} className="flex gap-3 rounded-2xl border border-stone-100 bg-stone-50 p-4">
                       <CheckCircle size={20} className="mt-0.5 flex-shrink-0 text-primary" />
-                      <span className="font-medium text-stone-700">{highlight}</span>
+                      <span className="font-medium text-stone-700">{tr(highlight)}</span>
                     </div>
                   ))}
                 </div>
               </motion.section>
 
               <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <h2 className="text-2xl font-bold text-stone-900 mb-6">Simple itinerary</h2>
+                <h2 className="text-2xl font-bold text-stone-900 mb-6">{tr("Simple itinerary")}</h2>
                 <div className="space-y-4">
                   {detail.schedule.map((item) => (
-                    <div key={item.time} className="grid gap-4 rounded-2xl border border-stone-100 p-5 sm:grid-cols-[7rem_1fr]">
-                      <span className="text-sm font-bold uppercase tracking-wider text-primary">{item.time}</span>
+                    <div key={tr(item.time)} className="grid gap-4 rounded-2xl border border-stone-100 p-5 sm:grid-cols-[7rem_1fr]">
+                      <span className="text-sm font-bold uppercase tracking-wider text-primary">{tr(item.time)}</span>
                       <div>
-                        <h3 className="font-bold text-stone-900">{item.title}</h3>
-                        <p className="mt-1 text-stone-500">{item.description}</p>
+                        <h3 className="font-bold text-stone-900">{tr(item.title)}</h3>
+                        <p className="mt-1 text-stone-500">{tr(item.description)}</p>
                       </div>
                     </div>
                   ))}
@@ -262,24 +263,24 @@ export default function ExperienceDetailClient({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                  <h2 className="text-2xl font-bold text-stone-900 mb-5">Included</h2>
+                  <h2 className="text-2xl font-bold text-stone-900 mb-5">{tr("Included")}</h2>
                   <div className="space-y-3">
                     {detail.includes.map((item) => (
                       <p key={item} className="flex items-center gap-3 text-stone-600">
                         <CheckCircle size={18} className="text-riad-green" />
-                        {item}
+                        {tr(item)}
                       </p>
                     ))}
                   </div>
                 </motion.section>
 
                 <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                  <h2 className="text-2xl font-bold text-stone-900 mb-5">Good to know</h2>
+                  <h2 className="text-2xl font-bold text-stone-900 mb-5">{tr("Good to know")}</h2>
                   <div className="space-y-3">
                     {detail.goodToKnow.map((item) => (
                       <p key={item} className="flex items-center gap-3 text-stone-600">
                         <Shield size={18} className="text-secondary" />
-                        {item}
+                        {tr(item)}
                       </p>
                     ))}
                   </div>
@@ -290,12 +291,10 @@ export default function ExperienceDetailClient({
                 <motion.section initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                   <div className="flex items-end justify-between gap-4 mb-6">
                     <div>
-                      <span className="text-primary font-semibold text-sm uppercase tracking-wider">Keep Exploring</span>
-                      <h2 className="mt-2 text-2xl font-bold text-stone-900">Related experiences</h2>
+                      <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Keep Exploring")}</span>
+                      <h2 className="mt-2 text-2xl font-bold text-stone-900">{tr("Related experiences")}</h2>
                     </div>
-                    <Link href="/experiences" className="hidden sm:inline-flex items-center gap-2 font-semibold text-primary">
-                      View all
-                      <ArrowRight size={16} />
+                    <Link href="/experiences" className="hidden sm:inline-flex items-center gap-2 font-semibold text-primary">{tr("View all")}<ArrowRight size={16} />
                     </Link>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -312,9 +311,9 @@ export default function ExperienceDetailClient({
                           />
                         </div>
                         <div className="p-4">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
-                          <h3 className="mt-2 font-bold text-stone-900 group-hover:text-primary">{item.title}</h3>
-                          <p className="mt-1 text-sm text-stone-500">{formatPrice(item.price, currency)} - {item.duration}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{tr(item.category)}</p>
+                          <h3 className="mt-2 font-bold text-stone-900 group-hover:text-primary">{tr(item.title)}</h3>
+                          <p className="mt-1 text-sm text-stone-500">{formatPrice(item.price, currency)} - {tr(item.duration)}</p>
                         </div>
                       </Link>
                     ))}
@@ -327,9 +326,9 @@ export default function ExperienceDetailClient({
               <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-stone-100 bg-white p-6 shadow-xl shadow-stone-900/10">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm text-stone-500">From</p>
+                    <p className="text-sm text-stone-500">{tr("From")}</p>
                     <p className="text-3xl font-bold text-primary">{formatPrice(experience.price, currency)}</p>
-                    <p className="text-sm text-stone-500">per person</p>
+                    <p className="text-sm text-stone-500">{tr("per person")}</p>
                   </div>
                   <span className="inline-flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-sm font-semibold text-accent">
                     <Star size={14} className="fill-accent" />
@@ -338,11 +337,11 @@ export default function ExperienceDetailClient({
                 </div>
 
 
-                {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">{error}</p>}
-                {submitted && <div role="status" className="mt-4 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900"><p>Request saved. Reference: {reference}</p><BookingWhatsAppCopy reference={reference} title={experience.title} name={formData.name} email={formData.email} phone={formData.phone} date={formData.date} travelers={travelers} notes={formData.notes} /></div>}
+                {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-800">{tr(error)}</p>}
+                {submitted && <div role="status" className="mt-4 rounded-xl bg-emerald-50 p-4 text-sm text-emerald-900"><p>{tr("Request saved. Reference:")} {reference}</p><BookingWhatsAppCopy reference={reference} title={experience.title} name={formData.name} email={formData.email} phone={formData.phone} date={formData.date} travelers={travelers} notes={formData.notes} /></div>}
                 <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                   <div>
-                    <label htmlFor="experience-date" className="mb-2 block text-sm font-semibold text-stone-700">Preferred date</label>
+                    <label htmlFor="experience-date" className="mb-2 block text-sm font-semibold text-stone-700">{tr("Preferred date")}</label>
                     <div className="relative">
                       <Calendar size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
                       <input
@@ -357,7 +356,7 @@ export default function ExperienceDetailClient({
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-semibold text-stone-700">Travelers</label>
+                    <label className="mb-2 block text-sm font-semibold text-stone-700">{tr("Travelers")}</label>
                     <div className="flex items-center justify-between rounded-xl border border-stone-200 p-2">
                       <button type="button" onClick={() => setTravelers(Math.max(1, travelers - 1))} className="flex h-10 w-10 items-center justify-center rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200">
                         <Minus size={16} />
@@ -378,35 +377,35 @@ export default function ExperienceDetailClient({
                       required
                       value={formData.name}
                       onChange={(event) => setFormData({ ...formData, name: event.target.value })}
-                      placeholder="Your name"
+                      placeholder={tr("Your name")}
                       className="w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-700 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     />
                     <input
-                      type="email"
+                      type="email" dir="ltr"
                       required
                       value={formData.email}
                       onChange={(event) => setFormData({ ...formData, email: event.target.value })}
-                      placeholder="Email address"
+                      placeholder={tr("Email address")}
                       className="w-full rounded-xl border border-stone-200 px-4 py-3 text-stone-700 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     />
-                    <label className="grid gap-1 text-sm">Phone / WhatsApp<input type="tel" autoComplete="tel" required value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} className="admin-input" /></label>
+                    <label className="grid gap-1 text-sm">{tr("Phone / WhatsApp")}<input type="tel" dir="ltr" autoComplete="tel" required value={formData.phone} onChange={(event) => setFormData({ ...formData, phone: event.target.value })} className="admin-input" /></label>
                   <textarea
                       value={formData.notes}
                       onChange={(event) => setFormData({ ...formData, notes: event.target.value })}
-                      placeholder="Pickup address, private group, dietary needs..."
+                      placeholder={tr("Pickup address, private group, dietary needs...")}
                       rows={3}
                       className="w-full resize-none rounded-xl border border-stone-200 px-4 py-3 text-stone-700 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                     />
                   </div>
 
                   <div className="flex items-center justify-between border-t border-stone-100 pt-4">
-                    <span className="font-semibold text-stone-600">Estimated total</span>
+                    <span className="font-semibold text-stone-600">{tr("Estimated total")}</span>
                     <span className="text-xl font-bold text-stone-900">{formatPrice(total, currency)}</span>
                   </div>
 
                   <button type="submit" disabled={sending} className="disabled:opacity-60 flex w-full items-center justify-center gap-2 rounded-xl btn-primary py-4 font-semibold text-white">
                     <Send size={18} />
-                    {sending ? "Sending…" : "Request Booking"}
+                    {sending ? tr("Sending…") : tr("Request Booking")}
                   </button>
                 </form>
 
@@ -414,11 +413,9 @@ export default function ExperienceDetailClient({
                   <div className="flex items-start gap-3">
                     <MessageCircle size={20} className="mt-0.5 flex-shrink-0 text-primary" />
                     <div>
-                      <h3 className="font-bold text-stone-900">Want a custom version?</h3>
-                      <p className="mt-1 text-sm text-stone-500">Tell us your timing, group style, and interests. We{"'"}ll shape it for you.</p>
-                      <Link href="/contact" className="mt-3 inline-flex items-center gap-2 font-semibold text-primary">
-                        Contact us
-                        <Mail size={16} />
+                      <h3 className="font-bold text-stone-900">{tr("Want a custom version?")}</h3>
+                      <p className="mt-1 text-sm text-stone-500">{tr("Tell us your timing, group style, and interests. We’ll shape it for you.")}</p>
+                      <Link href="/contact" className="mt-3 inline-flex items-center gap-2 font-semibold text-primary">{tr("Contact us")}<Mail size={16} />
                       </Link>
                     </div>
                   </div>

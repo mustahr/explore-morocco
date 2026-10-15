@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import type { FormEvent } from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
@@ -11,6 +13,7 @@ import { translations } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function HeroSection() {
+  const { tr } = useTranslations()
   const [prompt, setPrompt] = useState("")
   const router = useRouter()
   const { language } = useApp()
@@ -30,7 +33,7 @@ export function HeroSection() {
       <div className="absolute inset-0">
         <ImageWithFallback
           src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=1920&q=80"
-          alt="Morocco landscape"
+          alt={tr("Morocco landscape")}
           fill
           preload
           sizes="100vw"
@@ -49,9 +52,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm"
-        >
-          Moroccan trips & tours, made for you
-        </motion.div>
+        >{tr("Moroccan trips & tours, made for you")}</motion.div>
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
           {t.hero.headline}
@@ -109,15 +110,15 @@ export function HeroSection() {
         >
           <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">500+</p>
-            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Moroccan Tours</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">{tr("Moroccan Tours")}</p>
           </div>
           <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">50k+</p>
-            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Dream Trips Planned</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">{tr("Dream Trips Planned")}</p>
           </div>
           <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">4.9</p>
-            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Average Rating</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">{tr("Average Rating")}</p>
           </div>
         </motion.div>
 

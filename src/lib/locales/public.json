@@ -1,0 +1,2930 @@
+{
+  "Request a booking": {
+    "fr": "Demander une réservation",
+    "ar": "طلب حجز"
+  },
+  "Close booking form": {
+    "fr": "Fermer le formulaire de réservation",
+    "ar": "إغلاق نموذج الحجز"
+  },
+  "Booking request received.": {
+    "fr": "Demande de réservation reçue.",
+    "ar": "تم استلام طلب الحجز."
+  },
+  "Reference:": {
+    "fr": "Référence :",
+    "ar": "المرجع:"
+  },
+  ". Our team will contact you to confirm availability and pricing.": {
+    "fr": ". Notre équipe vous contactera pour confirmer les disponibilités et le tarif.",
+    "ar": ". سيتواصل معك فريقنا لتأكيد التوفر والسعر."
+  },
+  "Full name": {
+    "fr": "Nom complet",
+    "ar": "الاسم الكامل"
+  },
+  "Name": {
+    "fr": "Nom",
+    "ar": "الاسم"
+  },
+  "Email": {
+    "fr": "E-mail",
+    "ar": "البريد الإلكتروني"
+  },
+  "Email address": {
+    "fr": "Adresse e-mail",
+    "ar": "البريد الإلكتروني"
+  },
+  "Phone / WhatsApp": {
+    "fr": "Téléphone / WhatsApp",
+    "ar": "الهاتف / واتساب"
+  },
+  "Phone or WhatsApp": {
+    "fr": "Téléphone ou WhatsApp",
+    "ar": "الهاتف أو واتساب"
+  },
+  "Phone": {
+    "fr": "Téléphone",
+    "ar": "الهاتف"
+  },
+  "Preferred date": {
+    "fr": "Date souhaitée",
+    "ar": "التاريخ المفضل"
+  },
+  "Travelers": {
+    "fr": "Voyageurs",
+    "ar": "المسافرون"
+  },
+  "Notes": {
+    "fr": "Remarques",
+    "ar": "ملاحظات"
+  },
+  "Sending request…": {
+    "fr": "Envoi de la demande…",
+    "ar": "جارٍ إرسال الطلب…"
+  },
+  "Sending request...": {
+    "fr": "Envoi de la demande…",
+    "ar": "جارٍ إرسال الطلب…"
+  },
+  "Send booking request": {
+    "fr": "Envoyer la demande de réservation",
+    "ar": "إرسال طلب الحجز"
+  },
+  "Send Booking Request": {
+    "fr": "Envoyer la demande de réservation",
+    "ar": "إرسال طلب الحجز"
+  },
+  "This is a booking request. Our team will confirm availability and the final price.": {
+    "fr": "Ceci est une demande de réservation. Notre équipe confirmera les disponibilités et le prix final.",
+    "ar": "هذا طلب حجز. سيؤكد فريقنا التوفر والسعر النهائي."
+  },
+  "Could not send your request.": {
+    "fr": "Impossible d’envoyer votre demande. Veuillez réessayer.",
+    "ar": "تعذر إرسال طلبك. يرجى المحاولة مجددًا."
+  },
+  "Could not send your request. Please try again.": {
+    "fr": "Impossible d’envoyer votre demande. Veuillez réessayer.",
+    "ar": "تعذر إرسال طلبك. يرجى المحاولة مجددًا."
+  },
+  "Could not send your message.": {
+    "fr": "Impossible d’envoyer votre message. Veuillez réessayer.",
+    "ar": "تعذر إرسال رسالتك. يرجى المحاولة مجددًا."
+  },
+  "We could not send this booking request.": {
+    "fr": "Impossible d’envoyer cette demande de réservation.",
+    "ar": "تعذر إرسال طلب الحجز."
+  },
+  "We could not create this booking request.": {
+    "fr": "Impossible de créer cette demande de réservation.",
+    "ar": "تعذر إنشاء طلب الحجز."
+  },
+  "Send a copy on WhatsApp": {
+    "fr": "Envoyer une copie sur WhatsApp",
+    "ar": "إرسال نسخة عبر واتساب"
+  },
+  "Your request is saved. To send a WhatsApp copy, open the link and press Send.": {
+    "fr": "Votre demande est enregistrée. Pour envoyer une copie sur WhatsApp, ouvrez le lien et appuyez sur Envoyer.",
+    "ar": "تم حفظ طلبك. لإرسال نسخة عبر واتساب، افتح الرابط واضغط على إرسال."
+  },
+  "Your name": {
+    "fr": "Votre nom",
+    "ar": "اسمك"
+  },
+  "Pickup address, private group, dietary needs...": {
+    "fr": "Adresse de prise en charge, groupe privé, régime alimentaire…",
+    "ar": "عنوان الاستقبال، مجموعة خاصة، احتياجات غذائية…"
+  },
+  "Estimated total": {
+    "fr": "Total estimé",
+    "ar": "الإجمالي التقديري"
+  },
+  "Sending…": {
+    "fr": "Envoi…",
+    "ar": "جارٍ الإرسال…"
+  },
+  "Sending...": {
+    "fr": "Envoi…",
+    "ar": "جارٍ الإرسال…"
+  },
+  "Request Booking": {
+    "fr": "Demander une réservation",
+    "ar": "طلب حجز"
+  },
+  "Request saved. Reference:": {
+    "fr": "Demande enregistrée. Référence :",
+    "ar": "تم حفظ الطلب. المرجع:"
+  },
+  "Want a custom version?": {
+    "fr": "Envie d’une expérience sur mesure ?",
+    "ar": "هل تريد تجربة مخصصة؟"
+  },
+  "Tell us your timing, group style, and interests. We’ll shape it for you.": {
+    "fr": "Indiquez vos horaires, votre groupe et vos envies. Nous adapterons l’expérience.",
+    "ar": "أخبرنا بموعدك وطبيعة مجموعتك واهتماماتك لنصمم التجربة لك."
+  },
+  "Home": {
+    "fr": "Accueil",
+    "ar": "الرئيسية"
+  },
+  "Contact us": {
+    "fr": "Contactez-nous",
+    "ar": "اتصل بنا"
+  },
+  "Contact our team": {
+    "fr": "Contacter notre équipe",
+    "ar": "تواصل مع فريقنا"
+  },
+  "Select language": {
+    "fr": "Choisir la langue",
+    "ar": "اختر اللغة"
+  },
+  "Select currency": {
+    "fr": "Choisir la devise",
+    "ar": "اختر العملة"
+  },
+  "Dunexplore Morocco home": {
+    "fr": "Dunexplore Morocco — Accueil",
+    "ar": "دون إكسبلور المغرب — الرئيسية"
+  },
+  "Open navigation menu": {
+    "fr": "Ouvrir le menu",
+    "ar": "فتح القائمة"
+  },
+  "Get travel inspiration and exclusive offers.": {
+    "fr": "Recevez des idées de voyage et des offres exclusives.",
+    "ar": "احصل على أفكار للسفر وعروض حصرية."
+  },
+  "Contact Dunexplore Morocco on WhatsApp (opens in a new tab)": {
+    "fr": "Contacter Dunexplore Morocco sur WhatsApp (nouvel onglet)",
+    "ar": "تواصل مع دون إكسبلور المغرب عبر واتساب (نافذة جديدة)"
+  },
+  "Email Dunexplore Morocco": {
+    "fr": "Écrire à Dunexplore Morocco",
+    "ar": "راسل دون إكسبلور المغرب"
+  },
+  "Privacy Policy": {
+    "fr": "Politique de confidentialité",
+    "ar": "سياسة الخصوصية"
+  },
+  "Terms of Service": {
+    "fr": "Conditions d’utilisation",
+    "ar": "شروط الاستخدام"
+  },
+  "Last updated: 15 October 2026": {
+    "fr": "Dernière mise à jour : 15 octobre 2026",
+    "ar": "آخر تحديث: 15 أكتوبر 2026"
+  },
+  "For questions, contact our team at": {
+    "fr": "Pour toute question, contactez notre équipe à",
+    "ar": "للاستفسارات، تواصل مع فريقنا عبر"
+  },
+  "Email preferences": {
+    "fr": "Préférences e-mail",
+    "ar": "تفضيلات البريد الإلكتروني"
+  },
+  "Stop receiving travel newsletters and offers from Dunexplore Morocco. Messages about your booking can still be sent separately.": {
+    "fr": "Ne plus recevoir nos newsletters et offres de voyage. Les messages liés à votre réservation pourront toujours vous être envoyés séparément.",
+    "ar": "إيقاف تلقي النشرات والعروض من دون إكسبلور المغرب. قد تستمر الرسائل المتعلقة بحجزك بشكل منفصل."
+  },
+  "Saving…": {
+    "fr": "Enregistrement…",
+    "ar": "جارٍ الحفظ…"
+  },
+  "Unsubscribe": {
+    "fr": "Se désabonner",
+    "ar": "إلغاء الاشتراك"
+  },
+  "Open the unsubscribe link in your email, or contact our team for help.": {
+    "fr": "Ouvrez le lien de désabonnement dans votre e-mail ou contactez notre équipe.",
+    "ar": "افتح رابط إلغاء الاشتراك في بريدك أو تواصل مع فريقنا للمساعدة."
+  },
+  "Please try again.": {
+    "fr": "Veuillez réessayer.",
+    "ar": "يرجى المحاولة مجددًا."
+  },
+  "You have been unsubscribed.": {
+    "fr": "Votre désabonnement est confirmé.",
+    "ar": "تم إلغاء اشتراكك."
+  },
+  "Morocco tours, tailored to you": {
+    "fr": "Des circuits au Maroc à votre mesure",
+    "ar": "جولات في المغرب مصممة لك"
+  },
+  "Ready to Make Your Morocco Dream Trip Real?": {
+    "fr": "Prêt à réaliser le voyage de vos rêves au Maroc ?",
+    "ar": "هل أنت مستعد لتحقيق رحلة أحلامك في المغرب؟"
+  },
+  "Choose the Moroccan experiences you love, and we’ll shape them into a personalized trip with routes, timing, and tour ideas.": {
+    "fr": "Choisissez les expériences qui vous attirent : nous les réunirons dans un voyage personnalisé avec un itinéraire et un programme adaptés.",
+    "ar": "اختر التجارب المغربية التي تحبها، وسنصمم منها رحلة مخصصة بمسارات ومواعيد وأفكار للجولات."
+  },
+  "Talk to an Expert": {
+    "fr": "Parler à un expert",
+    "ar": "تحدث مع خبير"
+  },
+  "Testimonials": {
+    "fr": "Témoignages",
+    "ar": "آراء المسافرين"
+  },
+  "What Travelers Say": {
+    "fr": "Ce que disent nos voyageurs",
+    "ar": "ماذا يقول مسافرونا"
+  },
+  "Unforgettable Experiences": {
+    "fr": "Des expériences inoubliables",
+    "ar": "تجارب لا تُنسى"
+  },
+  "From camel rides to cooking classes, discover what makes Morocco special": {
+    "fr": "Des balades à dos de chameau aux cours de cuisine, découvrez ce qui rend le Maroc unique",
+    "ar": "من ركوب الجمال إلى دروس الطبخ، اكتشف ما يميز المغرب"
+  },
+  "View All Experiences": {
+    "fr": "Voir toutes les expériences",
+    "ar": "عرض جميع التجارب"
+  },
+  "Discover Morocco’s Best": {
+    "fr": "Découvrez le meilleur du Maroc",
+    "ar": "اكتشف أجمل ما في المغرب"
+  },
+  "From the blue streets of Chefchaouen to the golden Sahara dunes": {
+    "fr": "Des ruelles bleues de Chefchaouen aux dunes dorées du Sahara",
+    "ar": "من أزقة شفشاون الزرقاء إلى كثبان الصحراء الذهبية"
+  },
+  "Curated Trips & Tours": {
+    "fr": "Voyages et circuits sélectionnés",
+    "ar": "رحلات وجولات مختارة"
+  },
+  "Handpicked experiences designed by local experts": {
+    "fr": "Des expériences choisies et conçues par des experts locaux",
+    "ar": "تجارب مختارة بعناية يصممها خبراء محليون"
+  },
+  "Moroccan trips & tours, made for you": {
+    "fr": "Des voyages au Maroc conçus pour vous",
+    "ar": "رحلات وجولات مغربية مصممة لك"
+  },
+  "Moroccan Tours": {
+    "fr": "Circuits au Maroc",
+    "ar": "جولات المغرب"
+  },
+  "Dream Trips Planned": {
+    "fr": "Voyages de rêve planifiés",
+    "ar": "رحلات أحلام تم التخطيط لها"
+  },
+  "Average Rating": {
+    "fr": "Note moyenne",
+    "ar": "متوسط التقييم"
+  },
+  "Trips": {
+    "fr": "Voyages",
+    "ar": "الرحلات"
+  },
+  "Destinations": {
+    "fr": "Destinations",
+    "ar": "الوجهات"
+  },
+  "Experiences": {
+    "fr": "Expériences",
+    "ar": "التجارب"
+  },
+  "day": {
+    "fr": "jour",
+    "ar": "يوم"
+  },
+  "days": {
+    "fr": "jours",
+    "ar": "أيام"
+  },
+  "locations": {
+    "fr": "étapes",
+    "ar": "وجهات"
+  },
+  "/person": {
+    "fr": "/ personne",
+    "ar": "/ للشخص"
+  },
+  "per person": {
+    "fr": "par personne",
+    "ar": "للشخص"
+  },
+  "reviews": {
+    "fr": "avis",
+    "ar": "تقييمات"
+  },
+  "reviews)": {
+    "fr": "avis)",
+    "ar": "تقييمات)"
+  },
+  "Local activities": {
+    "fr": "Activités locales",
+    "ar": "أنشطة محلية"
+  },
+  "From camel rides to cooking classes, immerse yourself in authentic Moroccan experiences.": {
+    "fr": "Des balades à dos de chameau aux cours de cuisine, vivez des expériences marocaines authentiques.",
+    "ar": "من ركوب الجمال إلى دروس الطبخ، عش تجارب مغربية أصيلة."
+  },
+  "Details": {
+    "fr": "Détails",
+    "ar": "التفاصيل"
+  },
+  "No experiences found in this category": {
+    "fr": "Aucune expérience dans cette catégorie",
+    "ar": "لا توجد تجارب في هذه الفئة"
+  },
+  "Show all experiences": {
+    "fr": "Voir toutes les expériences",
+    "ar": "عرض جميع التجارب"
+  },
+  "All": {
+    "fr": "Tout",
+    "ar": "الكل"
+  },
+  "Adventure": {
+    "fr": "Aventure",
+    "ar": "مغامرة"
+  },
+  "Wellness": {
+    "fr": "Bien-être",
+    "ar": "استرخاء وعناية"
+  },
+  "Food & Drink": {
+    "fr": "Cuisine et boissons",
+    "ar": "مأكولات ومشروبات"
+  },
+  "Culture": {
+    "fr": "Culture",
+    "ar": "ثقافة"
+  },
+  "Luxury": {
+    "fr": "Luxe",
+    "ar": "فاخرة"
+  },
+  "Budget": {
+    "fr": "Économique",
+    "ar": "اقتصادي"
+  },
+  "Cultural": {
+    "fr": "Culturel",
+    "ar": "ثقافي"
+  },
+  "Romantic": {
+    "fr": "Romantique",
+    "ar": "رومانسي"
+  },
+  "Family": {
+    "fr": "En famille",
+    "ar": "عائلي"
+  },
+  "Favorited": {
+    "fr": "Favoris",
+    "ar": "المفضلة"
+  },
+  "Back to experiences": {
+    "fr": "Retour aux expériences",
+    "ar": "العودة إلى التجارب"
+  },
+  "guest rated": {
+    "fr": "noté par les voyageurs",
+    "ar": "تقييم المسافرين"
+  },
+  "Private or small group": {
+    "fr": "En privé ou en petit groupe",
+    "ar": "خاصة أو ضمن مجموعة صغيرة"
+  },
+  "From": {
+    "fr": "À partir de",
+    "ar": "ابتداءً من"
+  },
+  "Time": {
+    "fr": "Durée",
+    "ar": "المدة"
+  },
+  "Place": {
+    "fr": "Lieu",
+    "ar": "المكان"
+  },
+  "Experience Details": {
+    "fr": "Détails de l’expérience",
+    "ar": "تفاصيل التجربة"
+  },
+  "What to expect": {
+    "fr": "À quoi s’attendre",
+    "ar": "ما الذي ينتظرك"
+  },
+  "Highlights": {
+    "fr": "Les incontournables",
+    "ar": "أبرز المحطات"
+  },
+  "Simple itinerary": {
+    "fr": "Programme",
+    "ar": "البرنامج"
+  },
+  "Included": {
+    "fr": "Inclus",
+    "ar": "يشمل"
+  },
+  "Good to know": {
+    "fr": "Bon à savoir",
+    "ar": "معلومات مفيدة"
+  },
+  "Keep Exploring": {
+    "fr": "Continuez à explorer",
+    "ar": "واصل الاستكشاف"
+  },
+  "Related experiences": {
+    "fr": "Expériences similaires",
+    "ar": "تجارب مشابهة"
+  },
+  "View all": {
+    "fr": "Tout voir",
+    "ar": "عرض الكل"
+  },
+  "Meet your guide": {
+    "fr": "Rencontrez votre guide",
+    "ar": "التقِ بمرشدك"
+  },
+  "Confirm preferences, safety notes, and the best route for the day.": {
+    "fr": "Précisez vos préférences et les consignes de sécurité, puis choisissez le parcours du jour.",
+    "ar": "أكد تفضيلاتك وتعليمات السلامة وأفضل مسار لليوم."
+  },
+  "Experience Morocco up close": {
+    "fr": "Vivez le Maroc de près",
+    "ar": "عش المغرب عن قرب"
+  },
+  "Enjoy the landscape with guided support and relaxed stops.": {
+    "fr": "Profitez du paysage avec votre guide et des pauses à votre rythme.",
+    "ar": "استمتع بالمناظر مع مرشد وتوقفات مريحة."
+  },
+  "Return and recommendations": {
+    "fr": "Retour et recommandations",
+    "ar": "العودة والتوصيات"
+  },
+  "Wrap up with local tips for food, viewpoints, or your next stop.": {
+    "fr": "Terminez avec des conseils locaux pour les repas, les points de vue ou votre prochaine étape.",
+    "ar": "اختم التجربة بنصائح محلية للمطاعم والمناظر ومحطتك القادمة."
+  },
+  "Warm welcome": {
+    "fr": "Un accueil chaleureux",
+    "ar": "استقبال حار"
+  },
+  "Settle in, confirm your preferences, and enjoy traditional hospitality.": {
+    "fr": "Installez-vous, précisez vos préférences et profitez de l’hospitalité traditionnelle.",
+    "ar": "استقر وأكد تفضيلاتك واستمتع بالضيافة التقليدية."
+  },
+  "Moroccan ritual": {
+    "fr": "Rituel marocain",
+    "ar": "طقوس مغربية"
+  },
+  "Relax through the core experience with attentive local care.": {
+    "fr": "Détendez-vous et profitez de soins attentifs.",
+    "ar": "استرخ واستمتع بعناية محلية مميزة."
+  },
+  "Tea and downtime": {
+    "fr": "Thé et détente",
+    "ar": "شاي وراحة"
+  },
+  "Ease back into the day with mint tea and simple aftercare guidance.": {
+    "fr": "Reprenez votre journée avec un thé à la menthe et quelques conseils de soin.",
+    "ar": "عد إلى يومك بهدوء مع شاي بالنعناع ونصائح للعناية."
+  },
+  "Intro to local flavors": {
+    "fr": "Découvrez les saveurs locales",
+    "ar": "اكتشف النكهات المحلية"
+  },
+  "Learn what makes Moroccan ingredients and spices so distinctive.": {
+    "fr": "Découvrez la richesse des ingrédients et des épices du Maroc.",
+    "ar": "تعرف على ما يميز المكونات والتوابل المغربية."
+  },
+  "Cook or explore": {
+    "fr": "Cuisinez ou explorez",
+    "ar": "اطبخ أو استكشف"
+  },
+  "Visit favorite stops, prepare dishes, or taste your way through the medina.": {
+    "fr": "Découvrez nos adresses préférées, préparez des plats ou dégustez les saveurs de la médina.",
+    "ar": "زر محطات مميزة وحضر الأطباق أو تذوق نكهات المدينة العتيقة."
+  },
+  "Final bites": {
+    "fr": "Dernières dégustations",
+    "ar": "تذوق أخير"
+  },
+  "Finish with tea, stories, and recommendations for the rest of your stay.": {
+    "fr": "Terminez avec un thé, des histoires et des conseils pour la suite de votre séjour.",
+    "ar": "اختم بالشاي والقصص والنصائح لبقية إقامتك."
+  },
+  "Meet your host": {
+    "fr": "Rencontrez votre hôte",
+    "ar": "التقِ بمضيفك"
+  },
+  "Get oriented with the neighborhood, craft, or cultural tradition.": {
+    "fr": "Découvrez le quartier, l’artisanat ou la tradition culturelle.",
+    "ar": "تعرف على الحي أو الحرفة أو التقليد الثقافي."
+  },
+  "Hands-on experience": {
+    "fr": "Une expérience pratique",
+    "ar": "تجربة عملية"
+  },
+  "Learn techniques, stories, and local customs through guided participation.": {
+    "fr": "Apprenez les techniques, les histoires et les coutumes locales avec votre hôte.",
+    "ar": "تعلم التقنيات والقصص والعادات المحلية بالمشاركة مع مرشد."
+  },
+  "Local tips": {
+    "fr": "Conseils locaux",
+    "ar": "نصائح محلية"
+  },
+  "Leave with practical recommendations and a deeper sense of place.": {
+    "fr": "Repartez avec des conseils pratiques et une meilleure connaissance du lieu.",
+    "ar": "غادر بتوصيات عملية وفهم أعمق للمكان."
+  },
+  "Plan your journey": {
+    "fr": "Préparez votre voyage",
+    "ar": "خطط لرحلتك"
+  },
+  "Trip Generator": {
+    "fr": "Planificateur de voyage",
+    "ar": "مخطط الرحلات"
+  },
+  "Tell us your preferences and create your personalized Morocco itinerary.": {
+    "fr": "Indiquez vos préférences pour créer votre itinéraire personnalisé au Maroc.",
+    "ar": "أخبرنا بتفضيلاتك لإنشاء برنامج رحلتك المخصص في المغرب."
+  },
+  "What’s your budget?": {
+    "fr": "Quel est votre budget ?",
+    "ar": "ما ميزانيتك؟"
+  },
+  "Per person, including accommodation, activities, and transport": {
+    "fr": "Par personne, hébergement, activités et transport compris",
+    "ar": "للشخص، يشمل الإقامة والأنشطة والنقل"
+  },
+  "How many days?": {
+    "fr": "Combien de jours ?",
+    "ar": "كم يومًا؟"
+  },
+  "Total trip duration": {
+    "fr": "Durée totale du voyage",
+    "ar": "المدة الإجمالية للرحلة"
+  },
+  "How many travelers?": {
+    "fr": "Combien de voyageurs ?",
+    "ar": "كم عدد المسافرين؟"
+  },
+  "Including yourself": {
+    "fr": "Vous compris",
+    "ar": "بما في ذلك أنت"
+  },
+  "travelers": {
+    "fr": "voyageurs",
+    "ar": "مسافرون"
+  },
+  "Continue": {
+    "fr": "Continuer",
+    "ar": "متابعة"
+  },
+  "Travel style": {
+    "fr": "Style de voyage",
+    "ar": "أسلوب السفر"
+  },
+  "What kind of experience are you looking for?": {
+    "fr": "Quel type d’expérience recherchez-vous ?",
+    "ar": "ما نوع التجربة التي تبحث عنها؟"
+  },
+  "Where do you want to go?": {
+    "fr": "Où souhaitez-vous aller ?",
+    "ar": "إلى أين تريد الذهاب؟"
+  },
+  "Select one or more destinations (optional)": {
+    "fr": "Choisissez une ou plusieurs destinations (facultatif)",
+    "ar": "اختر وجهة أو أكثر (اختياري)"
+  },
+  "Anything else?": {
+    "fr": "Autre chose ?",
+    "ar": "هل لديك تفاصيل أخرى؟"
+  },
+  "Describe your dream trip in your own words": {
+    "fr": "Décrivez le voyage de vos rêves avec vos mots",
+    "ar": "صف رحلة أحلامك بكلماتك"
+  },
+  "I want to see the desert, try authentic Moroccan food, and stay in beautiful riads...": {
+    "fr": "Je souhaite découvrir le désert, goûter la cuisine marocaine et séjourner dans de beaux riads…",
+    "ar": "أريد زيارة الصحراء وتذوق المأكولات المغربية والإقامة في رياض جميل…"
+  },
+  "Back": {
+    "fr": "Retour",
+    "ar": "رجوع"
+  },
+  "Generating...": {
+    "fr": "Création…",
+    "ar": "جارٍ الإنشاء…"
+  },
+  "Generate My Trip": {
+    "fr": "Créer mon voyage",
+    "ar": "إنشاء رحلتي"
+  },
+  "Accommodation:": {
+    "fr": "Hébergement :",
+    "ar": "الإقامة:"
+  },
+  "Estimated Total Cost": {
+    "fr": "Coût total estimé",
+    "ar": "التكلفة الإجمالية التقديرية"
+  },
+  "Per person. Includes accommodation, activities, transport, and some meals. Prices may vary based on season and availability.": {
+    "fr": "Par personne. Hébergement, activités, transport et certains repas inclus. Les prix peuvent varier selon la saison et les disponibilités.",
+    "ar": "للشخص. يشمل الإقامة والأنشطة والنقل وبعض الوجبات. قد تختلف الأسعار بحسب الموسم والتوفر."
+  },
+  "Book This Trip": {
+    "fr": "Réserver ce voyage",
+    "ar": "احجز هذه الرحلة"
+  },
+  "Save": {
+    "fr": "Enregistrer",
+    "ar": "حفظ"
+  },
+  "Share": {
+    "fr": "Partager",
+    "ar": "مشاركة"
+  },
+  "Export": {
+    "fr": "Exporter",
+    "ar": "تصدير"
+  },
+  "Request this custom trip": {
+    "fr": "Demander ce voyage sur mesure",
+    "ar": "اطلب هذه الرحلة المخصصة"
+  },
+  "Send your generated itinerary to our team so we can confirm availability, pricing, and local details.": {
+    "fr": "Envoyez votre itinéraire à notre équipe pour confirmer les disponibilités, les tarifs et les détails.",
+    "ar": "أرسل برنامجك إلى فريقنا لتأكيد التوفر والأسعار والتفاصيل المحلية."
+  },
+  "Start date": {
+    "fr": "Date de départ",
+    "ar": "تاريخ البداية"
+  },
+  "Back to trips": {
+    "fr": "Retour aux voyages",
+    "ar": "العودة إلى الرحلات"
+  },
+  "Edit Preferences": {
+    "fr": "Modifier mes préférences",
+    "ar": "تعديل التفضيلات"
+  },
+  "Custom route": {
+    "fr": "Itinéraire sur mesure",
+    "ar": "مسار مخصص"
+  },
+  "Duration": {
+    "fr": "Durée",
+    "ar": "المدة"
+  },
+  "Pickup": {
+    "fr": "Prise en charge",
+    "ar": "الاستقبال"
+  },
+  "Meals": {
+    "fr": "Repas",
+    "ar": "الوجبات"
+  },
+  "Transport": {
+    "fr": "Transport",
+    "ar": "النقل"
+  },
+  "Difficulty": {
+    "fr": "Difficulté",
+    "ar": "الصعوبة"
+  },
+  "Languages": {
+    "fr": "Langues",
+    "ar": "اللغات"
+  },
+  "Cancellation": {
+    "fr": "Annulation",
+    "ar": "الإلغاء"
+  },
+  "Soonest": {
+    "fr": "Prochain départ",
+    "ar": "أقرب موعد"
+  },
+  "Popular": {
+    "fr": "Populaire",
+    "ar": "الأكثر طلبًا"
+  },
+  "Best value": {
+    "fr": "Meilleur rapport qualité-prix",
+    "ar": "أفضل قيمة"
+  },
+  "Flexible": {
+    "fr": "Flexible",
+    "ar": "مرن"
+  },
+  "Back to Trips": {
+    "fr": "Retour aux voyages",
+    "ar": "العودة إلى الرحلات"
+  },
+  "Premium Moroccan Escape": {
+    "fr": "Escapade marocaine d’exception",
+    "ar": "رحلة مغربية مميزة"
+  },
+  "Early booking savings applied · Save": {
+    "fr": "Réduction anticipée appliquée · Économisez",
+    "ar": "تم تطبيق خصم الحجز المبكر · وفّر"
+  },
+  "Starting date": {
+    "fr": "Date de départ",
+    "ar": "تاريخ الانطلاق"
+  },
+  "day trip · Ends": {
+    "fr": "jours · Retour",
+    "ar": "أيام · تنتهي"
+  },
+  "Choose departure": {
+    "fr": "Choisir le départ",
+    "ar": "اختر موعد الانطلاق"
+  },
+  "Pick a sample date or choose any date below.": {
+    "fr": "Choisissez une date proposée ou une autre date ci-dessous.",
+    "ar": "اختر موعدًا مقترحًا أو حدد تاريخًا أدناه."
+  },
+  "Ends": {
+    "fr": "Retour",
+    "ar": "تنتهي"
+  },
+  "nights": {
+    "fr": "nuits",
+    "ar": "ليالٍ"
+  },
+  "Choose any date": {
+    "fr": "Choisir une autre date",
+    "ar": "اختر أي تاريخ"
+  },
+  "Selected travel period:": {
+    "fr": "Période sélectionnée :",
+    "ar": "فترة السفر المختارة:"
+  },
+  "traveler": {
+    "fr": "voyageur",
+    "ar": "مسافر"
+  },
+  "Group discount": {
+    "fr": "Réduction de groupe",
+    "ar": "خصم المجموعة"
+  },
+  "Your details": {
+    "fr": "Vos coordonnées",
+    "ar": "بياناتك"
+  },
+  "Anything we should know?": {
+    "fr": "Une précision à nous communiquer ?",
+    "ar": "هل هناك شيء ينبغي أن نعرفه؟"
+  },
+  "Final confirmation and payment instructions are sent after review.": {
+    "fr": "La confirmation finale et les instructions de paiement sont envoyées après examen.",
+    "ar": "يُرسل التأكيد النهائي وتعليمات الدفع بعد مراجعة الطلب."
+  },
+  "Reference": {
+    "fr": "Référence",
+    "ar": "المرجع"
+  },
+  ". Our team will contact you shortly.": {
+    "fr": ". Notre équipe vous contactera prochainement.",
+    "ar": ". سيتواصل معك فريقنا قريبًا."
+  },
+  "Book Now": {
+    "fr": "Réserver",
+    "ar": "احجز الآن"
+  },
+  "Fill details to reserve via WhatsApp": {
+    "fr": "Renseignez vos coordonnées pour demander une réservation",
+    "ar": "أدخل بياناتك لطلب الحجز"
+  },
+  "Limited availability for selected dates.": {
+    "fr": "Disponibilités limitées aux dates sélectionnées.",
+    "ar": "التوفر محدود في المواعيد المختارة."
+  },
+  "Book now to secure your preferred travel period.": {
+    "fr": "Envoyez votre demande pour la période souhaitée.",
+    "ar": "أرسل طلبك لفترة السفر المفضلة."
+  },
+  "Secure booking": {
+    "fr": "Réservation sécurisée",
+    "ar": "حجز آمن"
+  },
+  "No hidden fees, safe local payments.": {
+    "fr": "Aucuns frais cachés, paiements locaux sécurisés.",
+    "ar": "دون رسوم خفية، ودفعات محلية آمنة."
+  },
+  "About the experience": {
+    "fr": "À propos de l’expérience",
+    "ar": "عن التجربة"
+  },
+  "A cinematic desert escape designed for discerning travelers.": {
+    "fr": "Une escapade spectaculaire dans le désert pour les voyageurs exigeants.",
+    "ar": "رحلة صحراوية مذهلة مصممة للمسافرين الباحثين عن التميز."
+  },
+  "Begin with the vibrant energy of Marrakech and feel the landscape shift from red city walls to dramatic mountain passes and endless sand sea. Every moment is crafted to balance immersive culture, timeless luxury, and authentic Moroccan hospitality.": {
+    "fr": "Partez de Marrakech et découvrez des paysages changeants, des remparts rouges aux cols montagneux et aux dunes infinies. Chaque étape allie culture, confort et hospitalité marocaine.",
+    "ar": "ابدأ من مراكش النابضة بالحياة، وانتقل من الأسوار الحمراء إلى الممرات الجبلية وبحار الرمال. تجمع كل محطة بين الثقافة والراحة والضيافة المغربية الأصيلة."
+  },
+  "What makes this trip unique": {
+    "fr": "Ce qui rend ce voyage unique",
+    "ar": "ما الذي يميز هذه الرحلة"
+  },
+  "Your Journey Day by Day": {
+    "fr": "Votre voyage jour après jour",
+    "ar": "رحلتك يومًا بيوم"
+  },
+  "Discover the magic of each moment": {
+    "fr": "Découvrez la magie de chaque instant",
+    "ar": "اكتشف سحر كل لحظة"
+  },
+  "Premium Experience": {
+    "fr": "Expérience d’exception",
+    "ar": "تجربة مميزة"
+  },
+  "Accommodation": {
+    "fr": "Hébergement",
+    "ar": "الإقامة"
+  },
+  "Included / Not Included": {
+    "fr": "Inclus / Non inclus",
+    "ar": "يشمل / لا يشمل"
+  },
+  "Not included": {
+    "fr": "Non inclus",
+    "ar": "لا يشمل"
+  },
+  "Traveler reviews": {
+    "fr": "Avis des voyageurs",
+    "ar": "آراء المسافرين"
+  },
+  "Real feedback from luxury travelers.": {
+    "fr": "Les témoignages de nos voyageurs.",
+    "ar": "آراء حقيقية من مسافرينا."
+  },
+  "5.0 average": {
+    "fr": "Moyenne de 5,0",
+    "ar": "متوسط 5.0"
+  },
+  "Frequently asked questions": {
+    "fr": "Questions fréquentes",
+    "ar": "الأسئلة الشائعة"
+  },
+  "Morocco route map": {
+    "fr": "Carte de l’itinéraire au Maroc",
+    "ar": "خريطة المسار في المغرب"
+  },
+  "Route map": {
+    "fr": "Carte du parcours",
+    "ar": "خريطة المسار"
+  },
+  "Morocco route overview": {
+    "fr": "Aperçu du parcours au Maroc",
+    "ar": "نظرة على المسار في المغرب"
+  },
+  "Follow the uninterrupted journey from Marrakech through mountain kasbahs to the iconic Erg Chebbi dunes.": {
+    "fr": "Suivez le parcours depuis Marrakech, à travers les kasbahs de montagne jusqu’aux dunes de l’Erg Chebbi.",
+    "ar": "اتبع الرحلة من مراكش عبر القصبات الجبلية إلى كثبان عرق الشبي."
+  },
+  "Departure": {
+    "fr": "Départ",
+    "ar": "الانطلاق"
+  },
+  "Return": {
+    "fr": "Retour",
+    "ar": "العودة"
+  },
+  "Scenic stop": {
+    "fr": "Étape panoramique",
+    "ar": "محطة للاستمتاع بالمناظر"
+  },
+  "Related trips": {
+    "fr": "Voyages similaires",
+    "ar": "رحلات مشابهة"
+  },
+  "days ·": {
+    "fr": "jours ·",
+    "ar": "أيام ·"
+  },
+  "Trusted by thousands": {
+    "fr": "Des milliers de voyageurs nous font confiance",
+    "ar": "يثق بنا آلاف المسافرين"
+  },
+  "Verified trips and responsible travel for luxury guests.": {
+    "fr": "Des voyages vérifiés et responsables.",
+    "ar": "رحلات موثوقة وسفر مسؤول."
+  },
+  "Local expert guides": {
+    "fr": "Guides locaux expérimentés",
+    "ar": "مرشدون محليون خبراء"
+  },
+  "Authentic route knowledge with insider access.": {
+    "fr": "Une connaissance authentique des lieux et des adresses privilégiées.",
+    "ar": "معرفة أصيلة بالمسارات والأماكن المميزة."
+  },
+  "Small groups": {
+    "fr": "Petits groupes",
+    "ar": "مجموعات صغيرة"
+  },
+  "Intimate experiences with curated group sizes.": {
+    "fr": "Des expériences conviviales en groupes limités.",
+    "ar": "تجارب مميزة مع مجموعات محدودة العدد."
+  },
+  "Transparent pricing": {
+    "fr": "Tarifs transparents",
+    "ar": "أسعار واضحة"
+  },
+  "No hidden costs, clear inclusions, easy checkout.": {
+    "fr": "Pas de frais cachés, prestations claires et réservation simple.",
+    "ar": "دون تكاليف خفية، خدمات واضحة وحجز سهل."
+  },
+  "Starting from": {
+    "fr": "À partir de",
+    "ar": "ابتداءً من"
+  },
+  "Discover Your Next Adventure": {
+    "fr": "Découvrez votre prochaine aventure",
+    "ar": "اكتشف مغامرتك القادمة"
+  },
+  "Luxury Trips & Tours in Morocco": {
+    "fr": "Voyages et circuits de luxe au Maroc",
+    "ar": "رحلات وجولات فاخرة في المغرب"
+  },
+  "Handcrafted itineraries by local experts. From desert escapes to coastal retreats, each journey is designed for unforgettable experiences.": {
+    "fr": "Des itinéraires créés par des experts locaux. Du désert au littoral, chaque voyage vous promet des souvenirs inoubliables.",
+    "ar": "برامج يصممها خبراء محليون. من الصحراء إلى الساحل، كل رحلة مصممة لتجارب لا تُنسى."
+  },
+  "Best Sellers": {
+    "fr": "Nos incontournables",
+    "ar": "الأكثر حجزًا"
+  },
+  "Small Groups": {
+    "fr": "Petits groupes",
+    "ar": "مجموعات صغيرة"
+  },
+  "Premium Guides": {
+    "fr": "Guides experts",
+    "ar": "مرشدون مميزون"
+  },
+  "Filters": {
+    "fr": "Filtres",
+    "ar": "عوامل التصفية"
+  },
+  "Filter": {
+    "fr": "Filtrer",
+    "ar": "تصفية"
+  },
+  "Category": {
+    "fr": "Catégorie",
+    "ar": "الفئة"
+  },
+  "Max Price": {
+    "fr": "Prix maximum",
+    "ar": "السعر الأقصى"
+  },
+  "Up to": {
+    "fr": "Jusqu’à",
+    "ar": "حتى"
+  },
+  "Favorited Trips": {
+    "fr": "Voyages favoris",
+    "ar": "الرحلات المفضلة"
+  },
+  "Results": {
+    "fr": "Résultats",
+    "ar": "النتائج"
+  },
+  "Loading trips...": {
+    "fr": "Chargement des voyages…",
+    "ar": "جارٍ تحميل الرحلات…"
+  },
+  "Rating": {
+    "fr": "Note",
+    "ar": "التقييم"
+  },
+  "Reviews": {
+    "fr": "Avis",
+    "ar": "التقييمات"
+  },
+  "Explore": {
+    "fr": "Explorer",
+    "ar": "استكشف"
+  },
+  "No trips match your filters": {
+    "fr": "Aucun voyage ne correspond à vos filtres",
+    "ar": "لا توجد رحلات تطابق اختياراتك"
+  },
+  "Clear all filters": {
+    "fr": "Effacer tous les filtres",
+    "ar": "مسح جميع عوامل التصفية"
+  },
+  "Back to blog": {
+    "fr": "Retour au blog",
+    "ar": "العودة إلى المدونة"
+  },
+  "read": {
+    "fr": "de lecture",
+    "ar": "قراءة"
+  },
+  "By": {
+    "fr": "Par",
+    "ar": "بقلم"
+  },
+  "Hide planning tools": {
+    "fr": "Masquer les outils de planification",
+    "ar": "إخفاء أدوات التخطيط"
+  },
+  "Show planning tools": {
+    "fr": "Afficher les outils de planification",
+    "ar": "إظهار أدوات التخطيط"
+  },
+  "Table of Contents": {
+    "fr": "Sommaire",
+    "ar": "جدول المحتويات"
+  },
+  "Table of contents": {
+    "fr": "Sommaire",
+    "ar": "جدول المحتويات"
+  },
+  "Jump to the section you need.": {
+    "fr": "Accédez directement à la rubrique souhaitée.",
+    "ar": "انتقل مباشرة إلى القسم الذي تحتاجه."
+  },
+  "Keep Reading": {
+    "fr": "Continuez votre lecture",
+    "ar": "واصل القراءة"
+  },
+  "Related Articles": {
+    "fr": "Articles similaires",
+    "ar": "مقالات ذات صلة"
+  },
+  "All posts": {
+    "fr": "Tous les articles",
+    "ar": "جميع المقالات"
+  },
+  "Plan from this guide": {
+    "fr": "Planifiez avec ce guide",
+    "ar": "خطط انطلاقًا من هذا الدليل"
+  },
+  "Turn ideas into a trip": {
+    "fr": "Transformez vos idées en voyage",
+    "ar": "حوّل الأفكار إلى رحلة"
+  },
+  "Use this article as a starting point and get a Morocco route built around your dates.": {
+    "fr": "Partez de cet article pour créer un itinéraire au Maroc adapté à vos dates.",
+    "ar": "استخدم هذا المقال نقطة بداية لمسار في المغرب يناسب مواعيدك."
+  },
+  "Generate itinerary": {
+    "fr": "Créer un itinéraire",
+    "ar": "إنشاء برنامج رحلة"
+  },
+  "Ask on WhatsApp": {
+    "fr": "Poser une question sur WhatsApp",
+    "ar": "استفسر عبر واتساب"
+  },
+  "Quick Tips": {
+    "fr": "Conseils pratiques",
+    "ar": "نصائح سريعة"
+  },
+  "Use this story well": {
+    "fr": "Profitez de ce guide",
+    "ar": "استفد من هذا الدليل"
+  },
+  "Bookmark useful sections before comparing itineraries.": {
+    "fr": "Enregistrez les rubriques utiles avant de comparer les itinéraires.",
+    "ar": "احفظ الأقسام المفيدة قبل مقارنة البرامج."
+  },
+  "Share with your group before booking hotels.": {
+    "fr": "Partagez avec votre groupe avant de réserver vos hôtels.",
+    "ar": "شارك الدليل مع مجموعتك قبل حجز الفنادق."
+  },
+  "Use the table of contents for fast planning.": {
+    "fr": "Utilisez le sommaire pour planifier rapidement.",
+    "ar": "استخدم جدول المحتويات للتخطيط بسرعة."
+  },
+  "Need inspiration?": {
+    "fr": "Besoin d’inspiration ?",
+    "ar": "هل تحتاج إلى أفكار؟"
+  },
+  "Explore more guides": {
+    "fr": "Découvrez d’autres guides",
+    "ar": "استكشف المزيد من الأدلة"
+  },
+  "Discover places, food, and route ideas to build the perfect Morocco itinerary.": {
+    "fr": "Découvrez des lieux, des saveurs et des idées de parcours pour votre voyage au Maroc.",
+    "ar": "اكتشف الأماكن والمأكولات وأفكار المسارات لبرنامجك في المغرب."
+  },
+  "Browse all posts": {
+    "fr": "Voir tous les articles",
+    "ar": "تصفح جميع المقالات"
+  },
+  "Ready to Plan Your Trip?": {
+    "fr": "Prêt à préparer votre voyage ?",
+    "ar": "هل أنت مستعد للتخطيط لرحلتك؟"
+  },
+  "Create your personalized Morocco itinerary from the ideas in this guide.": {
+    "fr": "Créez votre itinéraire personnalisé à partir des idées de ce guide.",
+    "ar": "أنشئ برنامجك المخصص في المغرب من أفكار هذا الدليل."
+  },
+  "Generate Your Trip": {
+    "fr": "Créer votre voyage",
+    "ar": "خطط لرحلتك"
+  },
+  "Travel Journal": {
+    "fr": "Carnet de voyage",
+    "ar": "يوميات السفر"
+  },
+  "Morocco Travel Blog": {
+    "fr": "Blog de voyage au Maroc",
+    "ar": "مدونة السفر في المغرب"
+  },
+  "Expert guides, insider tips, and stories from the heart of Morocco.": {
+    "fr": "Guides d’experts, conseils locaux et récits au cœur du Maroc.",
+    "ar": "أدلة الخبراء ونصائح محلية وقصص من قلب المغرب."
+  },
+  "guides": {
+    "fr": "guides",
+    "ar": "أدلة"
+  },
+  "Local-first travel advice": {
+    "fr": "Des conseils de voyage locaux",
+    "ar": "نصائح سفر من أهل البلد"
+  },
+  "No articles in this category yet": {
+    "fr": "Aucun article dans cette catégorie pour le moment",
+    "ar": "لا توجد مقالات في هذه الفئة بعد"
+  },
+  "Try another category or come back soon for new Morocco guides.": {
+    "fr": "Choisissez une autre catégorie ou revenez bientôt découvrir nos nouveaux guides.",
+    "ar": "جرب فئة أخرى أو عد قريبًا لأدلة جديدة عن المغرب."
+  },
+  "Read": {
+    "fr": "Lire",
+    "ar": "اقرأ"
+  },
+  "Morocco travel desk": {
+    "fr": "Votre équipe voyage au Maroc",
+    "ar": "فريق السفر في المغرب"
+  },
+  "Contact Us in Morocco": {
+    "fr": "Contactez-nous au Maroc",
+    "ar": "تواصل معنا في المغرب"
+  },
+  "Tell us where you want to go. Our Marrakech-based team will reply with route ideas, local advice, and next steps within 24 hours.": {
+    "fr": "Dites-nous où vous souhaitez aller. Notre équipe à Marrakech vous répondra sous 24 heures avec des idées de parcours, des conseils et les prochaines étapes.",
+    "ar": "أخبرنا إلى أين تريد الذهاب. سيرد فريقنا في مراكش خلال 24 ساعة بأفكار للمسارات ونصائح والخطوات التالية."
+  },
+  "Send a message": {
+    "fr": "Envoyer un message",
+    "ar": "إرسال رسالة"
+  },
+  "WhatsApp us": {
+    "fr": "Écrivez-nous sur WhatsApp",
+    "ar": "راسلنا عبر واتساب"
+  },
+  "Marrakech office": {
+    "fr": "Bureau à Marrakech",
+    "ar": "مكتب مراكش"
+  },
+  "Custom tour routes": {
+    "fr": "Circuits sur mesure",
+    "ar": "مسارات جولات مخصصة"
+  },
+  "Local trip advice": {
+    "fr": "Conseils d’experts locaux",
+    "ar": "نصائح سفر محلية"
+  },
+  "Quick help": {
+    "fr": "Aide rapide",
+    "ar": "مساعدة سريعة"
+  },
+  "Choose how to reach us": {
+    "fr": "Choisissez comment nous joindre",
+    "ar": "اختر طريقة التواصل معنا"
+  },
+  "Office": {
+    "fr": "Bureau",
+    "ar": "المكتب"
+  },
+  "Typical reply time": {
+    "fr": "Délai de réponse habituel",
+    "ar": "وقت الرد المعتاد"
+  },
+  "Within 24h": {
+    "fr": "Sous 24 h",
+    "ar": "خلال 24 ساعة"
+  },
+  "Start planning": {
+    "fr": "Commencez à planifier",
+    "ar": "ابدأ التخطيط"
+  },
+  "Send us a message": {
+    "fr": "Envoyez-nous un message",
+    "ar": "أرسل لنا رسالة"
+  },
+  "Share your dates, destinations, or questions and we will help you shape the next step.": {
+    "fr": "Indiquez vos dates, vos destinations ou vos questions : nous vous aiderons à préparer la suite.",
+    "ar": "شارك مواعيدك ووجهاتك وأسئلتك وسنساعدك في الخطوة التالية."
+  },
+  "Thank you! We’ll get back to you within 24 hours.": {
+    "fr": "Merci ! Nous vous répondrons sous 24 heures.",
+    "ar": "شكرًا! سنرد عليك خلال 24 ساعة."
+  },
+  "Back to home": {
+    "fr": "Retour à l’accueil",
+    "ar": "العودة إلى الرئيسية"
+  },
+  "Subject": {
+    "fr": "Objet",
+    "ar": "الموضوع"
+  },
+  "Message": {
+    "fr": "Message",
+    "ar": "الرسالة"
+  },
+  "How can we help?": {
+    "fr": "Comment pouvons-nous vous aider ?",
+    "ar": "كيف يمكننا مساعدتك؟"
+  },
+  "Tell us more about your inquiry...": {
+    "fr": "Précisez votre demande…",
+    "ar": "أخبرنا بالمزيد عن استفسارك…"
+  },
+  "Send Message": {
+    "fr": "Envoyer le message",
+    "ar": "إرسال الرسالة"
+  },
+  "Moroccan contact desk": {
+    "fr": "Votre contact au Maroc",
+    "ar": "فريق التواصل في المغرب"
+  },
+  "Message us about routes, riads, desert nights, and private tours.": {
+    "fr": "Écrivez-nous pour vos circuits, riads, nuits au désert et visites privées.",
+    "ar": "راسلنا بشأن المسارات والرياض وليالي الصحراء والجولات الخاصة."
+  },
+  "Contact Information": {
+    "fr": "Coordonnées",
+    "ar": "معلومات التواصل"
+  },
+  "Address": {
+    "fr": "Adresse",
+    "ar": "العنوان"
+  },
+  "Working Hours": {
+    "fr": "Horaires",
+    "ar": "ساعات العمل"
+  },
+  "Mon-Sat: 9AM - 7PM (GMT+1)": {
+    "fr": "Lun.–sam. : 9 h–19 h (GMT+1)",
+    "ar": "الاثنين–السبت: 9 صباحًا–7 مساءً (GMT+1)"
+  },
+  "WhatsApp our travel team": {
+    "fr": "Contactez notre équipe sur WhatsApp",
+    "ar": "راسل فريق السفر عبر واتساب"
+  },
+  "Chat with us about your dates, destination, and questions. Our team will help you plan your Morocco trip.": {
+    "fr": "Parlez-nous de vos dates, de votre destination et de vos questions. Notre équipe vous aidera à préparer votre voyage au Maroc.",
+    "ar": "تحدث معنا عن مواعيدك ووجهتك وأسئلتك. سيساعدك فريقنا في التخطيط لرحلتك في المغرب."
+  },
+  "Chat on WhatsApp": {
+    "fr": "Discuter sur WhatsApp",
+    "ar": "دردش عبر واتساب"
+  },
+  "Need a Custom Trip?": {
+    "fr": "Besoin d’un voyage sur mesure ?",
+    "ar": "هل تحتاج إلى رحلة مخصصة؟"
+  },
+  "Let us create a personalized itinerary just for you.": {
+    "fr": "Créons ensemble un itinéraire qui vous ressemble.",
+    "ar": "دعنا نصمم برنامج رحلة خصيصًا لك."
+  },
+  "Overview": {
+    "fr": "Aperçu",
+    "ar": "نظرة عامة"
+  },
+  "Things to Do": {
+    "fr": "Activités",
+    "ar": "أنشطة تستحق التجربة"
+  },
+  "Itineraries": {
+    "fr": "Itinéraires",
+    "ar": "برامج الرحلات"
+  },
+  "All Destinations": {
+    "fr": "Toutes les destinations",
+    "ar": "جميع الوجهات"
+  },
+  "Best:": {
+    "fr": "Meilleure période :",
+    "ar": "أفضل وقت:"
+  },
+  "Destination sections": {
+    "fr": "Rubriques de la destination",
+    "ar": "أقسام الوجهة"
+  },
+  "Why go": {
+    "fr": "Pourquoi y aller",
+    "ar": "لماذا تزورها"
+  },
+  "The feel of": {
+    "fr": "Découvrez",
+    "ar": "اكتشف أجواء"
+  },
+  "Best for": {
+    "fr": "Idéal pour",
+    "ar": "مثالية من أجل"
+  },
+  "Key areas to know": {
+    "fr": "Les quartiers à découvrir",
+    "ar": "مناطق تستحق الاستكشاف"
+  },
+  "What to taste": {
+    "fr": "À déguster",
+    "ar": "ماذا تتذوق"
+  },
+  "Gallery": {
+    "fr": "Galerie",
+    "ar": "معرض الصور"
+  },
+  "Things to do": {
+    "fr": "Activités",
+    "ar": "الأنشطة"
+  },
+  "Build your days around the right pace": {
+    "fr": "Organisez vos journées à votre rythme",
+    "ar": "نظم أيامك بالوتيرة المناسبة"
+  },
+  "Choose from our curated itineraries designed by local experts.": {
+    "fr": "Choisissez parmi nos itinéraires conçus par des experts locaux.",
+    "ar": "اختر من برامجنا التي يصممها خبراء محليون."
+  },
+  "days itinerary": {
+    "fr": "jours de voyage",
+    "ar": "أيام في البرنامج"
+  },
+  "Day": {
+    "fr": "Jour",
+    "ar": "اليوم"
+  },
+  "Book This Itinerary": {
+    "fr": "Réserver cet itinéraire",
+    "ar": "احجز هذا البرنامج"
+  },
+  "Slow morning, final viewpoints or shopping, then departure.": {
+    "fr": "Matinée tranquille, dernières visites ou achats, puis départ.",
+    "ar": "صباح هادئ وآخر جولة أو تسوق ثم المغادرة."
+  },
+  "2-4 hours": {
+    "fr": "2 à 4 heures",
+    "ar": "من ساعتين إلى 4 ساعات"
+  },
+  "Learn more": {
+    "fr": "En savoir plus",
+    "ar": "اعرف المزيد"
+  },
+  "Plan Your Trip": {
+    "fr": "Préparez votre voyage",
+    "ar": "خطط لرحلتك"
+  },
+  "Generate Itinerary": {
+    "fr": "Créer un itinéraire",
+    "ar": "إنشاء برنامج رحلة"
+  },
+  "Book a": {
+    "fr": "Réserver un voyage à",
+    "ar": "احجز رحلة إلى"
+  },
+  "Trip": {
+    "fr": "Voyage",
+    "ar": "رحلة"
+  },
+  "Request via WhatsApp": {
+    "fr": "Demander sur WhatsApp",
+    "ar": "اطلب عبر واتساب"
+  },
+  "Stay style": {
+    "fr": "Type d’hébergement",
+    "ar": "نوع الإقامة"
+  },
+  "Local note": {
+    "fr": "Conseil local",
+    "ar": "نصيحة محلية"
+  },
+  "Need a custom route?": {
+    "fr": "Besoin d’un itinéraire sur mesure ?",
+    "ar": "هل تحتاج إلى مسار مخصص؟"
+  },
+  "Contact the team": {
+    "fr": "Contacter l’équipe",
+    "ar": "تواصل مع الفريق"
+  },
+  "From ancient medinas to vast desert landscapes, discover the many faces of Morocco.": {
+    "fr": "Des médinas anciennes aux vastes paysages désertiques, découvrez les multiples facettes du Maroc.",
+    "ar": "من المدن العتيقة إلى المناظر الصحراوية الشاسعة، اكتشف تنوع المغرب."
+  },
+  "Places": {
+    "fr": "Lieux",
+    "ar": "أماكن"
+  },
+  "Avg rating": {
+    "fr": "Note moyenne",
+    "ar": "متوسط التقييم"
+  },
+  "Regions": {
+    "fr": "Régions",
+    "ar": "مناطق"
+  },
+  "Destination": {
+    "fr": "Destination",
+    "ar": "الوجهة"
+  },
+  "Suggested Itineraries": {
+    "fr": "Itinéraires suggérés",
+    "ar": "برامج مقترحة"
+  },
+  "-day": {
+    "fr": "jours",
+    "ar": "أيام"
+  },
+  "from": {
+    "fr": "à partir de",
+    "ar": "ابتداءً من"
+  },
+  "Born in Morocco,": {
+    "fr": "Nés au Maroc,",
+    "ar": "من المغرب،"
+  },
+  "Built for the World": {
+    "fr": "ouverts sur le monde",
+    "ar": "إلى العالم"
+  },
+  "We’re a team of Moroccan travel experts and tech innovators on a mission to share the magic of our homeland with the world.": {
+    "fr": "Nous sommes une équipe d’experts du voyage au Maroc et de passionnés de technologie qui souhaitent partager les merveilles de leur pays.",
+    "ar": "نحن فريق من خبراء السفر المغاربة والمبتكرين، نسعى لمشاركة سحر وطننا مع العالم."
+  },
+  "Our Story": {
+    "fr": "Notre histoire",
+    "ar": "قصتنا"
+  },
+  "From Local Guides to Global Platform": {
+    "fr": "Des guides locaux à une plateforme ouverte sur le monde",
+    "ar": "من مرشدين محليين إلى منصة عالمية"
+  },
+  "Dunexplore Morocco started as a simple idea: what if travelers could plan their perfect Morocco trip with the guidance of local experts and the freedom to tailor every detail?": {
+    "fr": "Dunexplore Morocco est né d’une idée simple : permettre à chacun de préparer son voyage idéal au Maroc avec des experts locaux et la liberté de personnaliser chaque détail.",
+    "ar": "بدأت دون إكسبلور المغرب بفكرة بسيطة: ماذا لو استطاع المسافرون التخطيط لرحلتهم المثالية بمساعدة خبراء محليين وحرية تخصيص كل التفاصيل؟"
+  },
+  "Founded in Marrakech by a team of travel enthusiasts, software engineers, and hospitality professionals, we combine deep local knowledge with cutting-edge technology to create travel experiences that are both authentic and seamless.": {
+    "fr": "Fondée à Marrakech par des passionnés de voyage, des ingénieurs et des professionnels de l’hospitalité, notre équipe allie connaissance locale et technologie pour des voyages authentiques et fluides.",
+    "ar": "تأسست المنصة في مراكش على يد عشاق السفر ومهندسين ومتخصصين في الضيافة، وتجمع المعرفة المحلية بالتقنية لتقديم رحلات أصيلة وسلسة."
+  },
+  "Every itinerary we generate is informed by years of experience hosting thousands of travelers across Morocco. We know the hidden riads, the best times to visit the Sahara, and the secret spots in Chefchaouen that most tourists never find.": {
+    "fr": "Chaque itinéraire repose sur des années d’accueil de milliers de voyageurs au Maroc. Nous connaissons les riads discrets, les meilleures périodes pour le Sahara et les coins secrets de Chefchaouen.",
+    "ar": "يستند كل برنامج إلى سنوات من استقبال آلاف المسافرين في المغرب. نعرف الرياض الخفي وأفضل أوقات زيارة الصحراء وأماكن شفشاون التي لا يكتشفها كثير من الزوار."
+  },
+  "Why Choose Us": {
+    "fr": "Pourquoi nous choisir",
+    "ar": "لماذا تختارنا"
+  },
+  "What Makes Us Different": {
+    "fr": "Ce qui nous distingue",
+    "ar": "ما الذي يميزنا"
+  },
+  "Local Expertise": {
+    "fr": "Expertise locale",
+    "ar": "خبرة محلية"
+  },
+  "Born and raised in Morocco, we know every corner of this beautiful country.": {
+    "fr": "Nés et élevés au Maroc, nous connaissons les richesses de notre pays.",
+    "ar": "نشأنا في المغرب ونعرف زوايا هذا البلد الجميل."
+  },
+  "Personalized Planning": {
+    "fr": "Planification sur mesure",
+    "ar": "تخطيط مخصص"
+  },
+  "Create personalized itineraries based on your preferences and budget.": {
+    "fr": "Créez des itinéraires adaptés à vos envies et à votre budget.",
+    "ar": "أنشئ برامج سفر تناسب تفضيلاتك وميزانيتك."
+  },
+  "Authentic Experiences": {
+    "fr": "Expériences authentiques",
+    "ar": "تجارب أصيلة"
+  },
+  "We connect you with real local guides, artisans, and families.": {
+    "fr": "Nous vous mettons en relation avec des guides, artisans et familles du pays.",
+    "ar": "نربطك بمرشدين وحرفيين وعائلات محلية."
+  },
+  "Trusted & Secure": {
+    "fr": "Fiabilité et sécurité",
+    "ar": "ثقة وأمان"
+  },
+  "24/7 support, verified partners, and transparent pricing.": {
+    "fr": "Assistance 24 h/24, partenaires vérifiés et tarifs transparents.",
+    "ar": "دعم على مدار الساعة وشركاء موثوقون وأسعار واضحة."
+  },
+  "Meet Your Local Team": {
+    "fr": "Rencontrez notre équipe locale",
+    "ar": "تعرف على فريقنا المحلي"
+  },
+  "Guides who make the details feel effortless": {
+    "fr": "Des guides qui s’occupent de chaque détail",
+    "ar": "مرشدون يعتنون بأدق التفاصيل"
+  },
+  "Each itinerary is supported by people who know when to slow down, when to skip a crowded stop, and how to make a trip feel personal.": {
+    "fr": "Chaque itinéraire est accompagné par des personnes qui savent prendre le temps, éviter la foule et personnaliser votre voyage.",
+    "ar": "يدعم كل برنامج أشخاص يعرفون متى يبطئون الوتيرة ويتجنبون الزحام ويجعلون الرحلة شخصية."
+  },
+  "years": {
+    "fr": "ans",
+    "ar": "سنوات"
+  },
+  "Happy Travelers": {
+    "fr": "Voyageurs satisfaits",
+    "ar": "مسافرون سعداء"
+  },
+  "Curated Trips": {
+    "fr": "Voyages sélectionnés",
+    "ar": "رحلات مختارة"
+  },
+  "Local Partners": {
+    "fr": "Partenaires locaux",
+    "ar": "شركاء محليون"
+  },
+  "Our Mission": {
+    "fr": "Notre mission",
+    "ar": "مهمتنا"
+  },
+  "Making Morocco Accessible to Everyone": {
+    "fr": "Rendre le Maroc accessible à tous",
+    "ar": "جعل المغرب متاحًا للجميع"
+  },
+  "Start Planning": {
+    "fr": "Commencer à planifier",
+    "ar": "ابدأ التخطيط"
+  },
+  "Marrakech": {
+    "fr": "Marrakech",
+    "ar": "مراكش"
+  },
+  "Morocco": {
+    "fr": "Maroc",
+    "ar": "المغرب"
+  },
+  "Marrakech, Morocco": {
+    "fr": "Marrakech, Maroc",
+    "ar": "مراكش، المغرب"
+  },
+  "Fes": {
+    "fr": "Fès",
+    "ar": "فاس"
+  },
+  "Chefchaouen": {
+    "fr": "Chefchaouen",
+    "ar": "شفشاون"
+  },
+  "Essaouira": {
+    "fr": "Essaouira",
+    "ar": "الصويرة"
+  },
+  "Sahara Desert": {
+    "fr": "Désert du Sahara",
+    "ar": "الصحراء الكبرى"
+  },
+  "Atlas Mountains": {
+    "fr": "Montagnes de l’Atlas",
+    "ar": "جبال الأطلس"
+  },
+  "Getting around": {
+    "fr": "Se déplacer",
+    "ar": "التنقل"
+  },
+  "Where to stay": {
+    "fr": "Où séjourner",
+    "ar": "أين تقيم"
+  },
+  "Best time to visit": {
+    "fr": "Meilleure période",
+    "ar": "أفضل وقت للزيارة"
+  },
+  "Explore Morocco": {
+    "fr": "Explorez le Maroc",
+    "ar": "اكتشف المغرب"
+  },
+  "offers a wealth of activities and experiences for every type of traveler.": {
+    "fr": "offre une multitude d’activités et d’expériences pour tous les voyageurs.",
+    "ar": "تقدم أنشطة وتجارب متنوعة لكل مسافر."
+  },
+  "Experience": {
+    "fr": "Découvrez",
+    "ar": "اكتشف"
+  },
+  "with enough context, time for photos, and practical local guidance.": {
+    "fr": "avec des explications, du temps pour les photos et des conseils locaux.",
+    "ar": "مع معلومات كافية ووقت للتصوير وإرشادات محلية عملية."
+  },
+  "Immerse yourself in authentic experiences unique to": {
+    "fr": "Vivez des expériences authentiques propres à",
+    "ar": "عش تجارب أصيلة تتميز بها"
+  },
+  "Tell us your dates, travel style, and group size. We’ll shape a plan around": {
+    "fr": "Indiquez vos dates, votre style de voyage et la taille de votre groupe. Nous créerons un programme autour de",
+    "ar": "أخبرنا بمواعيدك وأسلوب سفرك وعدد أفراد مجموعتك. سنصمم برنامجًا حول"
+  },
+  "We believe that traveling to Morocco should be easy, authentic, and transformative. That’s why we’ve built a platform that combines the warmth of Moroccan hospitality with the convenience of modern technology.": {
+    "fr": "Nous pensons qu’un voyage au Maroc doit être simple, authentique et enrichissant. Notre plateforme allie la chaleur de l’hospitalité marocaine aux avantages de la technologie.",
+    "ar": "نؤمن بأن السفر إلى المغرب يجب أن يكون سهلًا وأصيلًا ومُلهمًا. لذلك أنشأنا منصة تجمع دفء الضيافة المغربية وسهولة التقنية الحديثة."
+  },
+  "Whether you’re a first-time visitor or a seasoned traveler, we’ll help you discover the Morocco that guidebooks miss - the hidden courtyards, the family-run restaurants, the sunrise viewpoints known only to locals.": {
+    "fr": "Pour une première visite ou un nouveau séjour, nous vous aidons à découvrir le Maroc discret : cours cachées, restaurants familiaux et levers de soleil connus des habitants.",
+    "ar": "سواء كانت زيارتك الأولى أو كنت مسافرًا متمرسًا، سنساعدك على اكتشاف المغرب الذي لا تذكره الأدلة: الأفنية الخفية والمطاعم العائلية وإطلالات الشروق التي يعرفها أهل البلد."
+  },
+  "Morocco landscape": {
+    "fr": "Paysage du Maroc",
+    "ar": "مناظر المغرب"
+  },
+  "Sahara desert": {
+    "fr": "Désert du Sahara",
+    "ar": "الصحراء الكبرى"
+  },
+  "Morocco desert": {
+    "fr": "Désert marocain",
+    "ar": "الصحراء المغربية"
+  },
+  "Morocco riad": {
+    "fr": "Riad marocain",
+    "ar": "رياض مغربي"
+  },
+  "Morocco coastal travel journal": {
+    "fr": "Carnet de voyage sur la côte marocaine",
+    "ar": "يوميات سفر على الساحل المغربي"
+  },
+  "Blue buildings of Chefchaouen beneath the Rif Mountains": {
+    "fr": "Maisons bleues de Chefchaouen au pied du Rif",
+    "ar": "مباني شفشاون الزرقاء عند سفوح جبال الريف"
+  },
+  "Moroccan travel contact desk with map, message phone, lantern, and mint tea": {
+    "fr": "Bureau de voyage marocain avec carte, téléphone, lanterne et thé à la menthe",
+    "ar": "مكتب سفر مغربي مع خريطة وهاتف وفانوس وشاي بالنعناع"
+  },
+  "Sharing traditional Moroccan food around a table": {
+    "fr": "Un repas marocain traditionnel partagé à table",
+    "ar": "مشاركة الطعام المغربي التقليدي حول المائدة"
+  },
+  "3-Day Sahara Desert Experience from Marrakech": {
+    "fr": "3 jours dans le Sahara au départ de Marrakech",
+    "ar": "تجربة صحراوية لمدة 3 أيام من مراكش"
+  },
+  "Atlas Mountains crossing": {
+    "fr": "Traversée de l’Atlas",
+    "ar": "عبور جبال الأطلس"
+  },
+  "Camel trek at sunset": {
+    "fr": "Balade à dos de chameau au coucher du soleil",
+    "ar": "ركوب الجمال عند الغروب"
+  },
+  "Sunrise dune views": {
+    "fr": "Lever de soleil sur les dunes",
+    "ar": "مشاهد الشروق فوق الكثبان"
+  },
+  "Breakfast, Lunch": {
+    "fr": "Petit-déjeuner et déjeuner",
+    "ar": "الإفطار والغداء"
+  },
+  "Breakfast, Lunch, Dinner": {
+    "fr": "Petit-déjeuner, déjeuner et dîner",
+    "ar": "الإفطار والغداء والعشاء"
+  },
+  "Breakfast, lunch, dinner": {
+    "fr": "Petit-déjeuner, déjeuner et dîner",
+    "ar": "الإفطار والغداء والعشاء"
+  },
+  "Luxury riad with courtyard": {
+    "fr": "Riad de luxe avec patio",
+    "ar": "رياض فاخر مع فناء"
+  },
+  "Premium desert camp": {
+    "fr": "Campement haut de gamme dans le désert",
+    "ar": "مخيم صحراوي مميز"
+  },
+  "Boutique hotel in Marrakech": {
+    "fr": "Hôtel de charme à Marrakech",
+    "ar": "فندق مميز في مراكش"
+  },
+  "Private 4x4": {
+    "fr": "4x4 privé",
+    "ar": "سيارة دفع رباعي خاصة"
+  },
+  "Camel + 4x4": {
+    "fr": "Chameau et 4x4",
+    "ar": "جمال ودفع رباعي"
+  },
+  "Private transfer": {
+    "fr": "Transfert privé",
+    "ar": "نقل خاص"
+  },
+  "Marrakech riad or hotel": {
+    "fr": "Riad ou hôtel à Marrakech",
+    "ar": "رياض أو فندق في مراكش"
+  },
+  "Luxury 4x4 + camel trek": {
+    "fr": "4x4 haut de gamme et balade à dos de chameau",
+    "ar": "دفع رباعي فاخر وركوب الجمال"
+  },
+  "Easy to moderate": {
+    "fr": "Facile à modéré",
+    "ar": "سهلة إلى متوسطة"
+  },
+  "English, French, Arabic": {
+    "fr": "Anglais, français, arabe",
+    "ar": "الإنجليزية والفرنسية والعربية"
+  },
+  "Free 48h notice": {
+    "fr": "Annulation gratuite avec préavis de 48 h",
+    "ar": "إلغاء مجاني قبل 48 ساعة"
+  },
+  "Arrival & Medina Welcome": {
+    "fr": "Arrivée et découverte de la médina",
+    "ar": "الوصول والترحيب في المدينة العتيقة"
+  },
+  "Culture, Souks & Local Flavors": {
+    "fr": "Culture, souks et saveurs locales",
+    "ar": "ثقافة وأسواق ونكهات محلية"
+  },
+  "Atlas Mountains & Berber Villages": {
+    "fr": "Atlas et villages amazighs",
+    "ar": "جبال الأطلس والقرى الأمازيغية"
+  },
+  "Kasbah Road to the Desert": {
+    "fr": "La route des kasbahs vers le désert",
+    "ar": "طريق القصبات إلى الصحراء"
+  },
+  "Sahara Dunes & Desert Camp": {
+    "fr": "Dunes du Sahara et campement",
+    "ar": "كثبان الصحراء والمخيم"
+  },
+  "Desert Sunrise & Scenic Return": {
+    "fr": "Lever de soleil au désert et retour panoramique",
+    "ar": "شروق الصحراء والعودة عبر المناظر الطبيعية"
+  },
+  "Final City Moments & Departure": {
+    "fr": "Derniers instants en ville et départ",
+    "ar": "آخر لحظات المدينة والمغادرة"
+  },
+  "Chefchaouen Blue City Walk": {
+    "fr": "Balade dans la ville bleue de Chefchaouen",
+    "ar": "جولة في مدينة شفشاون الزرقاء"
+  },
+  "Fes Heritage Day": {
+    "fr": "Journée patrimoine à Fès",
+    "ar": "يوم تراثي في فاس"
+  },
+  "Essaouira Coast & Seafood": {
+    "fr": "Côte d’Essaouira et fruits de mer",
+    "ar": "ساحل الصويرة والمأكولات البحرية"
+  },
+  "Flexible Morocco Discovery Day": {
+    "fr": "Journée de découverte du Maroc à votre rythme",
+    "ar": "يوم مرن لاكتشاف المغرب"
+  },
+  "Check into your riad": {
+    "fr": "Installation dans votre riad",
+    "ar": "تسجيل الوصول إلى الرياض"
+  },
+  "Gentle medina orientation walk": {
+    "fr": "Première balade tranquille dans la médina",
+    "ar": "جولة تعريفية هادئة في المدينة العتيقة"
+  },
+  "Jemaa el-Fnaa square at sunset": {
+    "fr": "Place Jemaa el-Fna au coucher du soleil",
+    "ar": "ساحة جامع الفنا عند الغروب"
+  },
+  "Traditional Moroccan dinner": {
+    "fr": "Dîner marocain traditionnel",
+    "ar": "عشاء مغربي تقليدي"
+  },
+  "Traditional Riad": {
+    "fr": "Riad traditionnel",
+    "ar": "رياض تقليدي"
+  },
+  "Guided souk visit": {
+    "fr": "Visite guidée des souks",
+    "ar": "زيارة الأسواق مع مرشد"
+  },
+  "Bahia Palace or artisan quarter": {
+    "fr": "Palais de la Bahia ou quartier des artisans",
+    "ar": "قصر الباهية أو حي الحرفيين"
+  },
+  "Moroccan cooking class": {
+    "fr": "Cours de cuisine marocaine",
+    "ar": "درس في الطبخ المغربي"
+  },
+  "Tea stop on a rooftop terrace": {
+    "fr": "Pause thé sur un toit-terrasse",
+    "ar": "استراحة شاي على السطح"
+  },
+  "Scenic mountain drive": {
+    "fr": "Route panoramique en montagne",
+    "ar": "رحلة عبر المناظر الجبلية"
+  },
+  "Visit Berber villages": {
+    "fr": "Visite de villages amazighs",
+    "ar": "زيارة القرى الأمازيغية"
+  },
+  "Easy valley walk": {
+    "fr": "Balade facile dans la vallée",
+    "ar": "مشي سهل في الوادي"
+  },
+  "Traditional lunch with a local family": {
+    "fr": "Déjeuner traditionnel dans une famille locale",
+    "ar": "غداء تقليدي مع عائلة محلية"
+  },
+  "Mountain Guesthouse": {
+    "fr": "Maison d’hôtes en montagne",
+    "ar": "دار ضيافة جبلية"
+  },
+  "Cross the Tizi n'Tichka pass": {
+    "fr": "Traversée du col du Tizi n’Tichka",
+    "ar": "عبور ممر تيزي نتيشكا"
+  },
+  "Explore Ait Ben Haddou kasbah": {
+    "fr": "Découverte de la kasbah d’Aït Ben Haddou",
+    "ar": "استكشاف قصبة آيت بن حدو"
+  },
+  "Stop in Ouarzazate": {
+    "fr": "Étape à Ouarzazate",
+    "ar": "توقف في ورزازات"
+  },
+  "Continue toward the Dades Valley": {
+    "fr": "Route vers la vallée du Dadès",
+    "ar": "متابعة الطريق إلى وادي دادس"
+  },
+  "Kasbah Hotel": {
+    "fr": "Hôtel dans une kasbah",
+    "ar": "فندق في قصبة"
+  },
+  "Drive through Todra Gorge": {
+    "fr": "Traversée des gorges du Todra",
+    "ar": "عبور مضيق تودغى"
+  },
+  "Arrive near Erg Chebbi": {
+    "fr": "Arrivée près de l’Erg Chebbi",
+    "ar": "الوصول إلى عرق الشبي"
+  },
+  "Camel trek or 4x4 dune transfer": {
+    "fr": "Balade à dos de chameau ou transfert en 4x4 dans les dunes",
+    "ar": "ركوب الجمال أو نقل بالدفع الرباعي عبر الكثبان"
+  },
+  "Sunset and dinner at desert camp": {
+    "fr": "Coucher de soleil et dîner au campement",
+    "ar": "غروب وعشاء في المخيم الصحراوي"
+  },
+  "Desert Camp": {
+    "fr": "Campement dans le désert",
+    "ar": "مخيم صحراوي"
+  },
+  "Sunrise over the dunes": {
+    "fr": "Lever de soleil sur les dunes",
+    "ar": "شروق الشمس فوق الكثبان"
+  },
+  "Breakfast at camp": {
+    "fr": "Petit-déjeuner au campement",
+    "ar": "الإفطار في المخيم"
+  },
+  "Visit local desert villages": {
+    "fr": "Visite de villages du désert",
+    "ar": "زيارة القرى الصحراوية"
+  },
+  "Scenic return through palm groves": {
+    "fr": "Retour panoramique à travers les palmeraies",
+    "ar": "عودة عبر مناظر بساتين النخيل"
+  },
+  "Relaxed breakfast": {
+    "fr": "Petit-déjeuner à votre rythme",
+    "ar": "إفطار هادئ"
+  },
+  "Last souk or garden visit": {
+    "fr": "Dernière visite d’un souk ou d’un jardin",
+    "ar": "آخر زيارة للسوق أو الحديقة"
+  },
+  "Pick up final souvenirs": {
+    "fr": "Derniers achats de souvenirs",
+    "ar": "شراء آخر الهدايا التذكارية"
+  },
+  "Airport transfer or onward travel": {
+    "fr": "Transfert aéroport ou poursuite du voyage",
+    "ar": "نقل إلى المطار أو متابعة السفر"
+  },
+  "N/A": {
+    "fr": "Sans objet",
+    "ar": "لا ينطبق"
+  },
+  "Photogenic blue medina walk": {
+    "fr": "Balade photo dans la médina bleue",
+    "ar": "جولة تصوير في المدينة العتيقة الزرقاء"
+  },
+  "Ras El Maa viewpoint": {
+    "fr": "Point de vue de Ras El Maa",
+    "ar": "إطلالة رأس الماء"
+  },
+  "Local craft shops": {
+    "fr": "Boutiques d’artisanat local",
+    "ar": "متاجر الحرف المحلية"
+  },
+  "Sunset from the Spanish Mosque trail": {
+    "fr": "Coucher de soleil depuis le sentier de la mosquée espagnole",
+    "ar": "الغروب من مسار المسجد الإسباني"
+  },
+  "Boutique Riad": {
+    "fr": "Riad de charme",
+    "ar": "رياض مميز"
+  },
+  "Guided Fes el-Bali visit": {
+    "fr": "Visite guidée de Fès el-Bali",
+    "ar": "زيارة فاس البالي مع مرشد"
+  },
+  "Tanneries viewpoint": {
+    "fr": "Vue sur les tanneries",
+    "ar": "إطلالة على المدابغ"
+  },
+  "Medersa Bou Inania": {
+    "fr": "Médersa Bou Inania",
+    "ar": "المدرسة البوعنانية"
+  },
+  "Traditional dinner in the old city": {
+    "fr": "Dîner traditionnel dans la vieille ville",
+    "ar": "عشاء تقليدي في المدينة العتيقة"
+  },
+  "Fes Riad": {
+    "fr": "Riad à Fès",
+    "ar": "رياض في فاس"
+  },
+  "Atlantic coastal drive": {
+    "fr": "Route le long de l’Atlantique",
+    "ar": "رحلة على ساحل الأطلسي"
+  },
+  "Skala ramparts": {
+    "fr": "Remparts de la Skala",
+    "ar": "أسوار السقالة"
+  },
+  "Fresh seafood lunch": {
+    "fr": "Déjeuner de fruits de mer frais",
+    "ar": "غداء من المأكولات البحرية الطازجة"
+  },
+  "Free time in the breezy medina": {
+    "fr": "Temps libre dans la médina face à l’océan",
+    "ar": "وقت حر في المدينة العتيقة بنسيم البحر"
+  },
+  "Coastal Riad": {
+    "fr": "Riad en bord de mer",
+    "ar": "رياض ساحلي"
+  },
+  "Private guided exploration": {
+    "fr": "Découverte avec un guide privé",
+    "ar": "استكشاف مع مرشد خاص"
+  },
+  "Local market or village stop": {
+    "fr": "Étape dans un marché ou village local",
+    "ar": "توقف في سوق أو قرية محلية"
+  },
+  "Time for photos and rest": {
+    "fr": "Temps pour les photos et le repos",
+    "ar": "وقت للتصوير والراحة"
+  },
+  "Dinner with regional dishes": {
+    "fr": "Dîner aux saveurs régionales",
+    "ar": "عشاء بأطباق المنطقة"
+  },
+  "Handpicked Stay": {
+    "fr": "Hébergement sélectionné",
+    "ar": "إقامة مختارة بعناية"
+  },
+  "Personalized": {
+    "fr": "Sur mesure",
+    "ar": "مخصصة"
+  },
+  "Backpacking": {
+    "fr": "Sac à dos",
+    "ar": "سفر بحقيبة الظهر"
+  },
+  "{days}-Day {style} Morocco Adventure": {
+    "fr": "Voyage au Maroc de {days} jours — {style}",
+    "ar": "رحلة في المغرب لمدة {days} أيام — {style}"
+  },
+  "A carefully crafted {days}-day journey through Morocco, visiting {places}. This itinerary balances iconic landmarks with hidden gems, giving you an authentic Moroccan experience tailored to your preferences.": {
+    "fr": "Un voyage de {days} jours au Maroc, à la découverte de {places}. Cet itinéraire allie incontournables et lieux plus discrets pour une expérience authentique adaptée à vos envies.",
+    "ar": "رحلة مدروسة لمدة {days} أيام في المغرب، لزيارة {places}. يجمع البرنامج المعالم الشهيرة والأماكن الخفية لتجربة مغربية أصيلة تناسب تفضيلاتك."
+  },
+  "Built around your request: {request}": {
+    "fr": "Adapté à votre demande : {request}",
+    "ar": "مصممة بحسب طلبك: {request}"
+  },
+  "{count} traveler": {
+    "fr": "{count} voyageur",
+    "ar": "مسافر واحد"
+  },
+  "{count} travelers": {
+    "fr": "{count} voyageurs",
+    "ar": "{count} مسافرين"
+  },
+  "{count} days · {nights} nights": {
+    "fr": "{count} jours · {nights} nuits",
+    "ar": "{count} أيام · {nights} ليالٍ"
+  },
+  "Camel Trekking in the Sahara": {
+    "fr": "Balade à dos de chameau dans le Sahara",
+    "ar": "ركوب الجمال في الصحراء"
+  },
+  "Ride through golden dunes at sunset and spend the night in a desert camp": {
+    "fr": "Parcourez les dunes dorées au coucher du soleil et passez la nuit au campement",
+    "ar": "تجول بين الكثبان الذهبية عند الغروب واقضِ الليل في مخيم صحراوي"
+  },
+  "Traditional Hammam Experience": {
+    "fr": "Hammam traditionnel",
+    "ar": "تجربة الحمام التقليدي"
+  },
+  "Authentic Moroccan steam bath and black soap scrub in a historic hammam": {
+    "fr": "Bain de vapeur marocain et gommage au savon noir dans un hammam historique",
+    "ar": "حمام بخار مغربي وتقشير بالصابون الأسود في حمام تاريخي"
+  },
+  "Moroccan Cooking Class": {
+    "fr": "Cours de cuisine marocaine",
+    "ar": "درس الطبخ المغربي"
+  },
+  "Learn to make tagine, couscous, and pastilla with a local family": {
+    "fr": "Apprenez à préparer tajine, couscous et pastilla dans une famille locale",
+    "ar": "تعلم إعداد الطاجين والكسكس والبسطيلة مع عائلة محلية"
+  },
+  "Quad Biking Adventure": {
+    "fr": "Aventure en quad",
+    "ar": "مغامرة الدراجات الرباعية"
+  },
+  "Race through palm groves, Berber villages, and desert landscapes": {
+    "fr": "Parcourez les palmeraies, villages amazighs et paysages désertiques",
+    "ar": "انطلق عبر بساتين النخيل والقرى الأمازيغية والمناظر الصحراوية"
+  },
+  "Surfing Lessons": {
+    "fr": "Cours de surf",
+    "ar": "دروس ركوب الأمواج"
+  },
+  "Catch waves on Morocco's Atlantic coast with expert instructors": {
+    "fr": "Surfez sur la côte atlantique marocaine avec des moniteurs expérimentés",
+    "ar": "اركب الأمواج على الساحل الأطلسي المغربي مع مدربين خبراء"
+  },
+  "Hot Air Balloon Ride": {
+    "fr": "Vol en montgolfière",
+    "ar": "رحلة المنطاد"
+  },
+  "Float over the Atlas Mountains and Marrakech countryside at sunrise": {
+    "fr": "Survolez l’Atlas et la campagne de Marrakech au lever du soleil",
+    "ar": "حلّق فوق جبال الأطلس وريف مراكش عند الشروق"
+  },
+  "Pottery Making Workshop": {
+    "fr": "Atelier de poterie",
+    "ar": "ورشة صناعة الفخار"
+  },
+  "Create your own Moroccan ceramic masterpiece with master artisans": {
+    "fr": "Créez votre propre céramique marocaine avec des maîtres artisans",
+    "ar": "اصنع قطعتك الخزفية المغربية مع حرفيين مهرة"
+  },
+  "Luxury Riad Spa Day": {
+    "fr": "Journée spa dans un riad de luxe",
+    "ar": "يوم استرخاء في رياض فاخر"
+  },
+  "Full day of argan oil massage, facial, and relaxation in a premium riad": {
+    "fr": "Une journée de massage à l’huile d’argan, soins du visage et détente dans un riad haut de gamme",
+    "ar": "يوم من التدليك بزيت الأركان والعناية بالوجه والاسترخاء في رياض مميز"
+  },
+  "Street Food Tour": {
+    "fr": "Circuit de cuisine de rue",
+    "ar": "جولة مأكولات الشارع"
+  },
+  "Taste your way through the medina's best hidden food stalls": {
+    "fr": "Dégustez les spécialités des meilleures échoppes discrètes de la médina",
+    "ar": "تذوق ألذ المأكولات في أركان المدينة العتيقة الخفية"
+  },
+  "Beach Horse Riding": {
+    "fr": "Balade à cheval sur la plage",
+    "ar": "ركوب الخيل على الشاطئ"
+  },
+  "Gallop along the Atlantic coastline at sunset": {
+    "fr": "Parcourez le littoral atlantique à cheval au coucher du soleil",
+    "ar": "انطلق بالخيل على الساحل الأطلسي عند الغروب"
+  },
+  "Photography Walking Tour": {
+    "fr": "Balade photo",
+    "ar": "جولة تصوير مشيًا"
+  },
+  "Capture the perfect shots of blue streets and hidden corners": {
+    "fr": "Photographiez les ruelles bleues et les coins cachés",
+    "ar": "التقط أجمل صور الأزقة الزرقاء والزوايا الخفية"
+  },
+  "Spice Market Tour": {
+    "fr": "Visite du marché aux épices",
+    "ar": "جولة سوق التوابل"
+  },
+  "Discover Morocco's aromatic spices and learn their uses": {
+    "fr": "Découvrez les épices parfumées du Maroc et leurs usages",
+    "ar": "اكتشف توابل المغرب العطرة وتعلم استخداماتها"
+  },
+  "Full day": {
+    "fr": "Journée complète",
+    "ar": "يوم كامل"
+  },
+  "Merzouga": {
+    "fr": "Merzouga",
+    "ar": "مرزوكة"
+  },
+  "Agafay Desert": {
+    "fr": "Désert d’Agafay",
+    "ar": "صحراء أكفاي"
+  },
+  "Ait Ben Haddou": {
+    "fr": "Aït Ben Haddou",
+    "ar": "آيت بن حدو"
+  },
+  "Todra Gorge": {
+    "fr": "Gorges du Todra",
+    "ar": "مضيق تودغى"
+  },
+  "Dades Valley": {
+    "fr": "Vallée du Dadès",
+    "ar": "وادي دادس"
+  },
+  "Premium riads, private tours, exclusive experiences": {
+    "fr": "Riads haut de gamme, visites privées et expériences exclusives",
+    "ar": "رياض فاخر وجولات خاصة وتجارب حصرية"
+  },
+  "Budget-friendly, hostels, local transport": {
+    "fr": "Petits budgets, auberges et transports locaux",
+    "ar": "تكلفة مناسبة ونزل ونقل محلي"
+  },
+  "Couples retreat, sunset dinners, spa": {
+    "fr": "Séjours en couple, dîners au coucher du soleil et spa",
+    "ar": "رحلات للأزواج وعشاء عند الغروب واسترخاء"
+  },
+  "Kid-friendly activities, safe, relaxed pace": {
+    "fr": "Activités pour les enfants, sécurité et rythme tranquille",
+    "ar": "أنشطة مناسبة للأطفال وآمنة ووتيرة مريحة"
+  },
+  "Hiking, desert camping, extreme sports": {
+    "fr": "Randonnée, bivouac dans le désert et sports extrêmes",
+    "ar": "مشي وتخييم صحراوي ورياضات المغامرة"
+  },
+  "Historical sites, local traditions, authentic": {
+    "fr": "Sites historiques et traditions locales authentiques",
+    "ar": "مواقع تاريخية وتقاليد محلية أصيلة"
+  },
+  "Online requests are temporarily unavailable. Please contact us directly.": {
+    "fr": "Les demandes en ligne sont temporairement indisponibles. Veuillez nous contacter directement.",
+    "ar": "الطلبات عبر الموقع غير متاحة مؤقتًا. يرجى التواصل معنا مباشرة."
+  },
+  "Name and email are required.": {
+    "fr": "Le nom et l’adresse e-mail sont obligatoires.",
+    "ar": "الاسم والبريد الإلكتروني مطلوبان."
+  },
+  "Trip, name, email, date, and travelers are required.": {
+    "fr": "Le voyage, le nom, l’e-mail, la date et le nombre de voyageurs sont obligatoires.",
+    "ar": "الرحلة والاسم والبريد والتاريخ وعدد المسافرين مطلوبة."
+  },
+  "Please choose a valid future start date.": {
+    "fr": "Choisissez une date de départ valide à venir.",
+    "ar": "اختر تاريخ بداية صالحًا في المستقبل."
+  },
+  "The selected trip or destination is unavailable.": {
+    "fr": "Le voyage ou la destination sélectionné n’est pas disponible.",
+    "ar": "الرحلة أو الوجهة المختارة غير متاحة."
+  },
+  "Could not send your message right now. Please try again in a moment.": {
+    "fr": "Impossible d’envoyer votre message pour le moment. Veuillez réessayer dans un instant.",
+    "ar": "تعذر إرسال رسالتك الآن. يرجى المحاولة بعد قليل."
+  },
+  "This unsubscribe link is invalid.": {
+    "fr": "Ce lien de désabonnement n’est pas valide.",
+    "ar": "رابط إلغاء الاشتراك غير صالح."
+  },
+  "You are unsubscribed from newsletters and offers.": {
+    "fr": "Vous êtes désabonné des newsletters et des offres.",
+    "ar": "تم إلغاء اشتراكك في النشرات والعروض."
+  },
+  "Could not unsubscribe. Please contact contact@dunexplore-morocco.com.": {
+    "fr": "Désabonnement impossible. Contactez contact@dunexplore-morocco.com.",
+    "ar": "تعذر إلغاء الاشتراك. تواصل عبر contact@dunexplore-morocco.com."
+  },
+  "Local experiences": {
+    "fr": "Expériences locales",
+    "ar": "تجارب محلية"
+  },
+  "Scenic stays": {
+    "fr": "Séjours panoramiques",
+    "ar": "إقامات بإطلالات جميلة"
+  },
+  "Guided trips": {
+    "fr": "Voyages accompagnés",
+    "ar": "رحلات مع مرشد"
+  },
+  "Traditional Moroccan tagine": {
+    "fr": "Tajine marocain traditionnel",
+    "ar": "طاجين مغربي تقليدي"
+  },
+  "Mint tea": {
+    "fr": "Thé à la menthe",
+    "ar": "شاي بالنعناع"
+  },
+  "Seasonal local specialties": {
+    "fr": "Spécialités locales de saison",
+    "ar": "أطباق محلية موسمية"
+  },
+  "Start early for quieter streets and better light.": {
+    "fr": "Partez tôt pour des rues plus calmes et une belle lumière.",
+    "ar": "ابدأ مبكرًا لأزقة أهدأ وإضاءة أفضل."
+  },
+  "Book guided activities ahead in peak season.": {
+    "fr": "Réservez vos activités guidées à l’avance en haute saison.",
+    "ar": "احجز الأنشطة مع المرشد مسبقًا في موسم الذروة."
+  },
+  "Keep small cash for taxis, tips, and market stops.": {
+    "fr": "Prévoyez de la monnaie pour les taxis, pourboires et achats au marché.",
+    "ar": "احتفظ بنقود صغيرة لسيارات الأجرة والإكراميات والأسواق."
+  },
+  "A signature part of {place}, best explored with time and local context.": {
+    "fr": "Un incontournable de {place}, à découvrir en prenant le temps avec des conseils locaux.",
+    "ar": "جزء مميز من {place}، يستحق الاستكشاف بتأنٍ وإرشادات محلية."
+  },
+  "Use a mix of walking, taxis, and private transfers depending on where you stay in {place}.": {
+    "fr": "Combinez marche, taxis et transferts privés selon votre lieu de séjour à {place}.",
+    "ar": "اجمع بين المشي وسيارات الأجرة والنقل الخاص بحسب مكان إقامتك في {place}."
+  },
+  "Choose a central stay in {place} if you want easy access to restaurants, guides, and main sights.": {
+    "fr": "Privilégiez un hébergement central à {place} pour accéder facilement aux restaurants, guides et sites principaux.",
+    "ar": "اختر إقامة مركزية في {place} للوصول بسهولة إلى المطاعم والمرشدين والمعالم الرئيسية."
+  },
+  "Casablanca": {
+    "fr": "Casablanca",
+    "ar": "الدار البيضاء"
+  },
+  "Rabat": {
+    "fr": "Rabat",
+    "ar": "الرباط"
+  },
+  "Meknes": {
+    "fr": "Meknès",
+    "ar": "مكناس"
+  },
+  "Erg Chebbi": {
+    "fr": "Erg Chebbi",
+    "ar": "عرق الشبي"
+  },
+  "Ouarzazate": {
+    "fr": "Ouarzazate",
+    "ar": "ورزازات"
+  },
+  "Guide": {
+    "fr": "Guide",
+    "ar": "مرشد"
+  },
+  "Camel ride": {
+    "fr": "Balade à dos de chameau",
+    "ar": "ركوب الجمال"
+  },
+  "Camel trekking": {
+    "fr": "Randonnée à dos de chameau",
+    "ar": "رحلة بالجمال"
+  },
+  "Luxury desert camp": {
+    "fr": "Campement de luxe dans le désert",
+    "ar": "مخيم صحراوي فاخر"
+  },
+  "Stargazing": {
+    "fr": "Observation des étoiles",
+    "ar": "مراقبة النجوم"
+  },
+  "Travel Tips": {
+    "fr": "Conseils de voyage",
+    "ar": "نصائح السفر"
+  },
+  "Food": {
+    "fr": "Cuisine",
+    "ar": "مأكولات"
+  },
+  "Travel": {
+    "fr": "Voyage",
+    "ar": "سفر"
+  },
+  "City Guides": {
+    "fr": "Guides des villes",
+    "ar": "أدلة المدن"
+  },
+  "Practical Tips": {
+    "fr": "Conseils pratiques",
+    "ar": "نصائح عملية"
+  },
+  "3-Day Sahara Desert Adventure": {
+    "fr": "Aventure de 3 jours dans le Sahara",
+    "ar": "مغامرة 3 أيام في الصحراء"
+  },
+  "Journey from Marrakech through the Atlas Mountains to the golden dunes of Merzouga. Sleep under the stars in a luxury desert camp.": {
+    "fr": "Partez de Marrakech, traversez l’Atlas et rejoignez les dunes dorées de Merzouga. Dormez sous les étoiles dans un campement de luxe.",
+    "ar": "انطلق من مراكش عبر جبال الأطلس إلى كثبان مرزوكة الذهبية. نم تحت النجوم في مخيم صحراوي فاخر."
+  },
+  "7-Day Imperial Cities Tour": {
+    "fr": "Circuit des villes impériales en 7 jours",
+    "ar": "جولة المدن الإمبراطورية في 7 أيام"
+  },
+  "Discover Morocco's four imperial cities: Casablanca, Rabat, Fes, and Marrakech. A cultural immersion through history and architecture.": {
+    "fr": "Découvrez Casablanca, Rabat, Fès et Marrakech. Une immersion dans l’histoire et l’architecture marocaines.",
+    "ar": "اكتشف الدار البيضاء والرباط وفاس ومراكش في رحلة ثقافية عبر التاريخ والعمارة."
+  },
+  "View all trips": {
+    "fr": "Voir tous les voyages",
+    "ar": "عرض جميع الرحلات"
+  },
+  "View all destinations": {
+    "fr": "Voir toutes les destinations",
+    "ar": "عرض جميع الوجهات"
+  },
+  "{count} locations": {
+    "fr": "{count} étapes",
+    "ar": "{count} وجهات"
+  },
+  "{count} days": {
+    "fr": "{count} jours",
+    "ar": "{count} أيام"
+  },
+  "{count} day": {
+    "fr": "{count} jour",
+    "ar": "يوم واحد"
+  },
+  "Day {day}": {
+    "fr": "Jour {day}",
+    "ar": "اليوم {day}"
+  },
+  "Not provided": {
+    "fr": "Non renseigné",
+    "ar": "غير محدد"
+  },
+  "Booking request": {
+    "fr": "Demande de réservation",
+    "ar": "طلب حجز"
+  },
+  "Date": {
+    "fr": "Date",
+    "ar": "التاريخ"
+  },
+  "Your request could not be completed. Please try again or contact our team.": {
+    "fr": "Votre demande n’a pas pu être traitée. Réessayez ou contactez notre équipe.",
+    "ar": "تعذر إتمام طلبك. حاول مجددًا أو تواصل مع فريقنا."
+  },
+  "This page explains how information is handled when you browse Dunexplore Morocco or contact our travel team.": {
+    "fr": "Cette page explique le traitement des informations lorsque vous consultez Dunexplore Morocco ou contactez notre équipe.",
+    "ar": "توضح هذه الصفحة كيفية التعامل مع معلوماتك عند تصفح دون إكسبلور المغرب أو التواصل مع فريق السفر."
+  },
+  "Information you share": {
+    "fr": "Les informations que vous partagez",
+    "ar": "المعلومات التي تشاركها"
+  },
+  "Booking and trip requests collect your name, email address, phone or WhatsApp number, preferred date, traveler count, and the travel preferences or notes you choose to provide. Contact forms collect your name, email address, subject, and message. Newsletter subscriptions store your email address, subscription time, and the consent given on the signup form. Please avoid including passport numbers, payment card details, or other sensitive information in these forms.": {
+    "fr": "Les demandes de réservation recueillent votre nom, e-mail, téléphone ou numéro WhatsApp, date souhaitée, nombre de voyageurs et préférences ou remarques. Les formulaires de contact recueillent votre nom, e-mail, objet et message. Les inscriptions à la newsletter enregistrent votre e-mail, la date et votre consentement. Évitez de transmettre des numéros de passeport, coordonnées bancaires ou autres informations sensibles.",
+    "ar": "تجمع طلبات الحجز اسمك وبريدك ورقم هاتفك أو واتساب والتاريخ المفضل وعدد المسافرين والتفضيلات والملاحظات. تجمع نماذج التواصل الاسم والبريد والموضوع والرسالة. تسجل النشرة بريدك ووقت الاشتراك وموافقتك. يرجى تجنب أرقام جوازات السفر وبيانات البطاقات وغيرها من المعلومات الحساسة."
+  },
+  "How information is used": {
+    "fr": "Utilisation des informations",
+    "ar": "استخدام المعلومات"
+  },
+  "We use the details you submit to respond to enquiries, prepare itineraries, review availability, and follow up on booking requests. Requests are stored for our team to manage them. Email addresses and their sources may also be retained in our contact directory for follow-up; newsletter subscription and unsubscribe preferences are tracked separately. If you subscribe to the newsletter, we use your email to send travel inspiration and offers. Use the unsubscribe link in a newsletter or contact us to unsubscribe or request removal from the newsletter list. Contact details may also be used to send operational notifications related to your request.": {
+    "fr": "Nous utilisons vos informations pour répondre aux demandes, préparer les itinéraires, vérifier les disponibilités et assurer le suivi des réservations. Les demandes sont enregistrées pour notre équipe. Les e-mails et leurs sources peuvent être conservés dans notre répertoire pour le suivi ; les préférences de newsletter et de désabonnement sont gérées séparément. Les abonnés reçoivent des idées de voyage et des offres. Utilisez le lien de désabonnement ou contactez-nous pour vous désabonner ou demander votre retrait de la liste. Vos coordonnées peuvent aussi servir aux notifications liées à votre demande.",
+    "ar": "نستخدم بياناتك للرد على الاستفسارات وإعداد البرامج ومراجعة التوفر ومتابعة طلبات الحجز. تُحفظ الطلبات لإدارتها من فريقنا. قد نحتفظ بالبريد ومصدره في دليل التواصل للمتابعة، مع إدارة تفضيلات النشرة وإلغاء الاشتراك بشكل منفصل. يتلقى المشتركون أفكار السفر والعروض. استخدم رابط إلغاء الاشتراك أو تواصل معنا لإلغاء الاشتراك أو طلب الحذف من القائمة. قد تُستخدم بيانات التواصل لإشعارات تتعلق بطلبك."
+  },
+  "Service providers": {
+    "fr": "Prestataires",
+    "ar": "مزودو الخدمات"
+  },
+  "The website uses Vercel for hosting and analytics, Neon Postgres for stored records, and Vercel Blob for uploaded images. Email and WhatsApp services may process request details when those notification channels are enabled. If you open a WhatsApp link or another external service, that provider’s own privacy terms apply.": {
+    "fr": "Le site utilise Vercel pour l’hébergement et les statistiques, Neon Postgres pour les données et Vercel Blob pour les images. Les services e-mail et WhatsApp peuvent traiter les détails de vos demandes lorsque ces canaux sont activés. Si vous ouvrez un lien WhatsApp ou un service externe, sa propre politique de confidentialité s’applique.",
+    "ar": "يستخدم الموقع Vercel للاستضافة والتحليلات، وNeon Postgres للسجلات، وVercel Blob للصور. قد تعالج خدمات البريد وواتساب تفاصيل الطلب عند تفعيلها. عند فتح واتساب أو أي خدمة خارجية، تسري سياسة الخصوصية الخاصة بها."
+  },
+  "Browser storage and analytics": {
+    "fr": "Stockage du navigateur et statistiques",
+    "ar": "تخزين المتصفح والتحليلات"
+  },
+  "Your browser stores language, currency, and saved-trip preferences locally. An administrative session cookie supports secure access to the admin area. Vercel Analytics records website usage and selected interactions, including trip views and contact or booking button clicks. You can clear locally stored preferences through your browser settings.": {
+    "fr": "Votre navigateur conserve localement vos préférences de langue, devise et voyages favoris. Un cookie de session sécurise l’accès administrateur. Vercel Analytics enregistre l’utilisation du site et certaines interactions, notamment les consultations de voyages et les clics de contact ou de réservation. Vous pouvez effacer vos préférences dans les paramètres du navigateur.",
+    "ar": "يحفظ متصفحك تفضيلات اللغة والعملة والرحلات المفضلة محليًا. تحمي ملفات جلسة الإدارة الوصول إلى لوحة التحكم. تسجل Vercel Analytics استخدام الموقع وبعض التفاعلات، بما فيها مشاهدة الرحلات والنقر على التواصل والحجز. يمكنك مسح التفضيلات من إعدادات المتصفح."
+  },
+  "Access, corrections, and removal requests": {
+    "fr": "Accès, corrections et suppression",
+    "ar": "الوصول والتصحيح والحذف"
+  },
+  "Contact our team if you want to ask about information you submitted, correct an error, or request removal. Include enough detail to help us identify the request without sending sensitive documents. We may need to verify the request and explain whether any records must be retained for operational or applicable legal reasons.": {
+    "fr": "Contactez-nous pour consulter, corriger ou demander la suppression de vos informations. Donnez les détails nécessaires pour identifier la demande sans transmettre de documents sensibles. Nous pouvons vérifier votre identité et expliquer si certains éléments doivent être conservés pour des raisons opérationnelles ou légales.",
+    "ar": "تواصل معنا للاستفسار عن معلوماتك أو تصحيحها أو طلب حذفها. قدم ما يكفي لتحديد الطلب دون إرسال مستندات حساسة. قد نحتاج إلى التحقق من الطلب وتوضيح السجلات التي يلزم الاحتفاظ بها لأسباب تشغيلية أو قانونية."
+  },
+  "Updates": {
+    "fr": "Mises à jour",
+    "ar": "التحديثات"
+  },
+  "This page may change as website features and services change. The update date above identifies the latest version published here.": {
+    "fr": "Cette page peut évoluer avec les fonctionnalités et services du site. La date ci-dessus indique la dernière version publiée.",
+    "ar": "قد تتغير الصفحة مع تطور خدمات الموقع. يشير التاريخ أعلاه إلى أحدث نسخة منشورة."
+  },
+  "These terms explain how to use our travel website and what to expect when sending a trip or booking request.": {
+    "fr": "Ces conditions expliquent l’utilisation de notre site et le fonctionnement des demandes de voyage ou de réservation.",
+    "ar": "توضح هذه الشروط كيفية استخدام موقع السفر وما يمكن توقعه عند إرسال طلب رحلة أو حجز."
+  },
+  "Website and travel information": {
+    "fr": "Informations sur le site et les voyages",
+    "ar": "معلومات الموقع والسفر"
+  },
+  "Dunexplore Morocco provides information about Moroccan destinations, trips, and experiences, along with tools for preparing a personalized itinerary. Website descriptions and suggested itineraries help you explore options; specific arrangements must be confirmed with our team.": {
+    "fr": "Dunexplore Morocco présente les destinations, voyages et expériences au Maroc et propose des outils d’itinéraire personnalisé. Les descriptions et suggestions permettent d’explorer les possibilités ; les prestations doivent être confirmées avec notre équipe.",
+    "ar": "تقدم دون إكسبلور المغرب معلومات عن الوجهات والرحلات والتجارب وأدوات لإعداد برنامج مخصص. تساعد الأوصاف والبرامج المقترحة في استكشاف الخيارات، ويجب تأكيد الترتيبات مع فريقنا."
+  },
+  "Booking requests and confirmation": {
+    "fr": "Demandes de réservation et confirmation",
+    "ar": "طلبات الحجز والتأكيد"
+  },
+  "Submitting a form sends a booking request. A request reference acknowledges receipt and does not confirm availability or a reservation. Our team will review your dates, traveler details, and requested services, then contact you about availability, the final itinerary, pricing, and payment instructions.": {
+    "fr": "L’envoi d’un formulaire constitue une demande de réservation. La référence accuse réception sans confirmer la disponibilité ni la réservation. Notre équipe examine vos dates, les voyageurs et les prestations souhaitées, puis vous contacte pour les disponibilités, l’itinéraire final, le prix et les instructions de paiement.",
+    "ar": "إرسال النموذج يرسل طلب حجز. يؤكد المرجع الاستلام دون تأكيد التوفر أو الحجز. يراجع فريقنا المواعيد وبيانات المسافرين والخدمات المطلوبة ثم يتواصل بشأن التوفر والبرنامج النهائي والسعر وتعليمات الدفع."
+  },
+  "Prices and currency": {
+    "fr": "Prix et devises",
+    "ar": "الأسعار والعملات"
+  },
+  "Displayed prices and itinerary totals are indicative until confirmed by our team. Currency conversions are provided for convenience. Before proceeding, ask our team to confirm the payment currency, total amount, inclusions, exclusions, and any additional charges.": {
+    "fr": "Les prix et totaux sont indicatifs jusqu’à confirmation par notre équipe. Les conversions sont fournies à titre pratique. Avant de poursuivre, faites confirmer la devise de paiement, le montant total, les prestations incluses et exclues et les éventuels frais supplémentaires.",
+    "ar": "الأسعار والإجماليات المعروضة تقديرية حتى تأكيدها من فريقنا. تحويلات العملات للتسهيل فقط. قبل المتابعة، تأكد من عملة الدفع والمبلغ الإجمالي والخدمات المشمولة وغير المشمولة وأي رسوم إضافية."
+  },
+  "Changes, cancellations, and refunds": {
+    "fr": "Modifications, annulations et remboursements",
+    "ar": "التغييرات والإلغاء والاسترداد"
+  },
+  "Ask our team for the cancellation, change, deposit, and refund conditions that apply to your selected trip before confirming or paying. Conditions can depend on the confirmed services and suppliers. This page does not establish a universal cancellation or refund entitlement for all trips.": {
+    "fr": "Avant de confirmer ou payer, demandez les conditions d’annulation, de modification, d’acompte et de remboursement de votre voyage. Elles dépendent des prestations et fournisseurs confirmés. Cette page ne crée pas de droit universel à l’annulation ou au remboursement.",
+    "ar": "اسأل فريقنا عن شروط الإلغاء والتعديل والعربون والاسترداد الخاصة برحلتك قبل التأكيد أو الدفع. قد تختلف بحسب الخدمات والموردين المؤكدين. لا تنشئ هذه الصفحة حقًا عامًا في الإلغاء أو الاسترداد لكل الرحلات."
+  },
+  "Your request details": {
+    "fr": "Les détails de votre demande",
+    "ar": "تفاصيل طلبك"
+  },
+  "Provide accurate contact information, dates, and traveler details so our team can respond. Let us know about travel requirements that may affect the proposed itinerary, and confirm that the final arrangements meet your needs before proceeding.": {
+    "fr": "Fournissez des coordonnées, dates et informations voyageurs exactes pour que notre équipe puisse répondre. Signalez les besoins susceptibles d’influencer l’itinéraire et vérifiez que les prestations finales répondent à vos attentes.",
+    "ar": "قدم معلومات تواصل ومواعيد وبيانات مسافرين دقيقة لنتمكن من الرد. أخبرنا بالمتطلبات التي قد تؤثر في البرنامج، وتأكد أن الترتيبات النهائية تلبي احتياجاتك قبل المتابعة."
+  },
+  "Using the website": {
+    "fr": "Utilisation du site",
+    "ar": "استخدام الموقع"
+  },
+  "Use the website for genuine travel enquiries. Do not submit unlawful content, spam, or information belonging to another person without permission, and do not attempt to interfere with the website or access private administrative records.": {
+    "fr": "Utilisez le site pour des demandes de voyage réelles. Ne soumettez pas de contenu illicite, de spam ou d’informations d’autrui sans autorisation. Ne perturbez pas le site et ne tentez pas d’accéder aux dossiers administratifs privés.",
+    "ar": "استخدم الموقع لاستفسارات السفر الحقيقية. لا ترسل محتوى مخالفًا أو رسائل مزعجة أو معلومات تخص غيرك دون إذن، ولا تحاول تعطيل الموقع أو الوصول إلى سجلات الإدارة الخاصة."
+  },
+  "External services and updates": {
+    "fr": "Services externes et mises à jour",
+    "ar": "الخدمات الخارجية والتحديثات"
+  },
+  "External links, including WhatsApp, open services operated by other providers. Their terms apply when you use them. Website information and these terms may be updated as our services change; contact our team if you need clarification about a specific request.": {
+    "fr": "Les liens externes, dont WhatsApp, ouvrent des services exploités par d’autres prestataires. Leurs conditions s’appliquent. Les informations du site et ces conditions peuvent évoluer ; contactez notre équipe pour toute précision sur une demande.",
+    "ar": "تفتح الروابط الخارجية ومنها واتساب خدمات يديرها مزودون آخرون وتسري شروطهم عند استخدامها. قد تتغير معلومات الموقع والشروط مع خدماتنا. تواصل معنا لأي توضيح بشأن طلب محدد."
+  },
+  "Private or small-group guiding": {
+    "fr": "Guide privé ou en petit groupe",
+    "ar": "إرشاد خاص أو لمجموعة صغيرة"
+  },
+  "Scenic photo stops": {
+    "fr": "Arrêts photo panoramiques",
+    "ar": "توقفات تصوير بإطلالات جميلة"
+  },
+  "Flexible pace for beginners": {
+    "fr": "Rythme adapté aux débutants",
+    "ar": "وتيرة مرنة للمبتدئين"
+  },
+  "Hotel or meeting-point coordination": {
+    "fr": "Organisation du rendez-vous à l’hôtel ou sur place",
+    "ar": "تنسيق اللقاء في الفندق أو نقطة التجمع"
+  },
+  "Local host or instructor": {
+    "fr": "Hôte ou moniteur local",
+    "ar": "مضيف أو مدرب محلي"
+  },
+  "Safety briefing": {
+    "fr": "Consignes de sécurité",
+    "ar": "تعليمات السلامة"
+  },
+  "Activity equipment": {
+    "fr": "Équipement de l’activité",
+    "ar": "معدات النشاط"
+  },
+  "Bottled water": {
+    "fr": "Eau en bouteille",
+    "ar": "مياه معبأة"
+  },
+  "Wear comfortable shoes": {
+    "fr": "Portez des chaussures confortables",
+    "ar": "ارتدِ حذاءً مريحًا"
+  },
+  "Bring sunscreen and a light layer": {
+    "fr": "Prévoyez de la crème solaire et une veste légère",
+    "ar": "أحضر واقي الشمس وملابس خفيفة إضافية"
+  },
+  "Pickup can be arranged on request": {
+    "fr": "Prise en charge possible sur demande",
+    "ar": "يمكن ترتيب الاستقبال عند الطلب"
+  },
+  "Authentic Moroccan wellness rituals": {
+    "fr": "Rituels marocains de bien-être",
+    "ar": "طقوس استرخاء مغربية أصيلة"
+  },
+  "Trusted local spa partners": {
+    "fr": "Spas locaux de confiance",
+    "ar": "شركاء محليون موثوقون للعناية والاسترخاء"
+  },
+  "Calm spaces away from the crowds": {
+    "fr": "Des espaces calmes loin de la foule",
+    "ar": "أماكن هادئة بعيدًا عن الزحام"
+  },
+  "Optional private upgrades": {
+    "fr": "Options privées disponibles",
+    "ar": "خيارات خاصة إضافية"
+  },
+  "Reserved appointment": {
+    "fr": "Rendez-vous réservé",
+    "ar": "موعد محجوز"
+  },
+  "Local coordination": {
+    "fr": "Coordination locale",
+    "ar": "تنسيق محلي"
+  },
+  "Tea or refreshment": {
+    "fr": "Thé ou rafraîchissement",
+    "ar": "شاي أو مرطبات"
+  },
+  "Wellness essentials": {
+    "fr": "Produits de soin essentiels",
+    "ar": "مستلزمات العناية الأساسية"
+  },
+  "Arrive 10 minutes early": {
+    "fr": "Arrivez 10 minutes à l’avance",
+    "ar": "احضر قبل الموعد بعشر دقائق"
+  },
+  "Tell us about allergies or sensitivities": {
+    "fr": "Signalez toute allergie ou sensibilité",
+    "ar": "أخبرنا بأي حساسية"
+  },
+  "Private transfers can be added": {
+    "fr": "Transferts privés en supplément",
+    "ar": "يمكن إضافة نقل خاص"
+  },
+  "Market-to-table local flavor": {
+    "fr": "Saveurs locales du marché à la table",
+    "ar": "نكهات محلية من السوق إلى المائدة"
+  },
+  "Family recipes and food stories": {
+    "fr": "Recettes familiales et histoires culinaires",
+    "ar": "وصفات عائلية وقصص الطعام"
+  },
+  "Vegetarian-friendly options": {
+    "fr": "Options végétariennes",
+    "ar": "خيارات نباتية"
+  },
+  "Small groups with plenty of tasting": {
+    "fr": "Petits groupes et nombreuses dégustations",
+    "ar": "مجموعات صغيرة والكثير من التذوق"
+  },
+  "Local food host": {
+    "fr": "Hôte gastronomique local",
+    "ar": "مضيف محلي لتجربة الطعام"
+  },
+  "Tastings or ingredients": {
+    "fr": "Dégustations ou ingrédients",
+    "ar": "تذوق أو مكونات"
+  },
+  "Recipe notes": {
+    "fr": "Fiches recettes",
+    "ar": "ملاحظات الوصفات"
+  },
+  "Tea or soft drink": {
+    "fr": "Thé ou boisson sans alcool",
+    "ar": "شاي أو مشروب غير كحولي"
+  },
+  "Come hungry": {
+    "fr": "Venez avec de l’appétit",
+    "ar": "تعال مستعدًا لتذوق الطعام"
+  },
+  "Share dietary needs before booking": {
+    "fr": "Précisez votre régime alimentaire avant de réserver",
+    "ar": "أخبرنا باحتياجاتك الغذائية قبل الحجز"
+  },
+  "Comfortable walking shoes are recommended": {
+    "fr": "Prévoyez des chaussures de marche confortables",
+    "ar": "يُنصح بحذاء مشي مريح"
+  },
+  "Hands-on learning with local artisans": {
+    "fr": "Apprentissage pratique avec des artisans locaux",
+    "ar": "تعلم عملي مع حرفيين محليين"
+  },
+  "Context from a Moroccan host": {
+    "fr": "Les explications d’un hôte marocain",
+    "ar": "شروحات من مضيف مغربي"
+  },
+  "Support for community craft traditions": {
+    "fr": "Soutien aux traditions artisanales locales",
+    "ar": "دعم تقاليد الحرف المحلية"
+  },
+  "Great for curious travelers": {
+    "fr": "Idéal pour les voyageurs curieux",
+    "ar": "مثالية للمسافرين الفضوليين"
+  },
+  "Workshop or guided visit": {
+    "fr": "Atelier ou visite guidée",
+    "ar": "ورشة أو زيارة مع مرشد"
+  },
+  "Materials where needed": {
+    "fr": "Matériel nécessaire",
+    "ar": "المواد عند الحاجة"
+  },
+  "Local host": {
+    "fr": "Hôte local",
+    "ar": "مضيف محلي"
+  },
+  "Takeaway notes": {
+    "fr": "Notes à emporter",
+    "ar": "ملاحظات للاحتفاظ بها"
+  },
+  "Ask before photographing artisans": {
+    "fr": "Demandez l’autorisation avant de photographier les artisans",
+    "ar": "استأذن قبل تصوير الحرفيين"
+  },
+  "Modest dress is appreciated": {
+    "fr": "Une tenue respectueuse est appréciée",
+    "ar": "تُفضل الملابس المحتشمة"
+  },
+  "Custom private sessions are available": {
+    "fr": "Séances privées sur mesure disponibles",
+    "ar": "تتوفر جلسات خاصة مخصصة"
+  },
+  "Start": {
+    "fr": "Début",
+    "ar": "البداية"
+  },
+  "Main activity": {
+    "fr": "Activité principale",
+    "ar": "النشاط الرئيسي"
+  },
+  "Finish": {
+    "fr": "Fin",
+    "ar": "النهاية"
+  },
+  "Arrival": {
+    "fr": "Arrivée",
+    "ar": "الوصول"
+  },
+  "Treatment": {
+    "fr": "Soin",
+    "ar": "العناية"
+  },
+  "Aftercare": {
+    "fr": "Après le soin",
+    "ar": "بعد العناية"
+  },
+  "Meet": {
+    "fr": "Rencontre",
+    "ar": "اللقاء"
+  },
+  "Taste": {
+    "fr": "Dégustation",
+    "ar": "التذوق"
+  },
+  "Welcome": {
+    "fr": "Bienvenue",
+    "ar": "الترحيب"
+  },
+  "Discover": {
+    "fr": "Découvrir",
+    "ar": "الاكتشاف"
+  },
+  "Close": {
+    "fr": "Clôture",
+    "ar": "الختام"
+  },
+  "{title} is designed for travelers who want a richer, easier way to experience {place}. We coordinate the trusted local host, timing, and practical details so you can focus on the moment, whether you are joining as a couple, family, solo traveler, or private group.": {
+    "fr": "{title} vous permet de découvrir {place} en toute simplicité. Nous organisons l’accueil local, les horaires et les détails pratiques pour que vous profitiez pleinement, en couple, en famille, en solo ou en groupe privé.",
+    "ar": "تمنحك تجربة {title} طريقة أعمق وأسهل لاكتشاف {place}. ننسق المضيف المحلي والمواعيد والتفاصيل العملية لتستمتع باللحظة، سواء مع شريك أو عائلة أو بمفردك أو ضمن مجموعة خاصة."
+  },
+  "Could not save the booking request.": {
+    "fr": "Impossible d’enregistrer la demande de réservation.",
+    "ar": "تعذر حفظ طلب الحجز."
+  },
+  "6h": {
+    "fr": "6 h",
+    "ar": "6 ساعات"
+  },
+  "3h": {
+    "fr": "3 h",
+    "ar": "3 ساعات"
+  },
+  "7h": {
+    "fr": "7 h",
+    "ar": "7 ساعات"
+  },
+  "adventure": {
+    "fr": "Aventure",
+    "ar": "مغامرة"
+  },
+  "luxury": {
+    "fr": "Luxe",
+    "ar": "فاخرة"
+  },
+  "budget": {
+    "fr": "Économique",
+    "ar": "اقتصادي"
+  },
+  "cultural": {
+    "fr": "Culturel",
+    "ar": "ثقافي"
+  },
+  "romantic": {
+    "fr": "Romantique",
+    "ar": "رومانسي"
+  },
+  "family": {
+    "fr": "En famille",
+    "ar": "عائلي"
+  },
+  "culture": {
+    "fr": "Culture",
+    "ar": "ثقافة"
+  },
+  "wellness": {
+    "fr": "Bien-être",
+    "ar": "استرخاء وعناية"
+  },
+  "2-Day Chefchaouen Blue City Escape": {
+    "fr": "Échappée de 2 jours dans la ville bleue de Chefchaouen",
+    "ar": "رحلة يومين إلى مدينة شفشاون الزرقاء"
+  },
+  "Get lost in the mesmerizing blue streets of Chefchaouen. Perfect for photography lovers and those seeking tranquility.": {
+    "fr": "Perdez-vous dans les ruelles bleues envoûtantes de Chefchaouen. Idéal pour les amateurs de photo et de tranquillité.",
+    "ar": "تجول في أزقة شفشاون الزرقاء الساحرة. مثالية لعشاق التصوير والهدوء."
+  },
+  "5-Day Luxury Marrakech Retreat": {
+    "fr": "Retraite de luxe de 5 jours à Marrakech",
+    "ar": "إقامة فاخرة لمدة 5 أيام في مراكش"
+  },
+  "Indulge in the finest riads, private cooking classes, spa treatments, and exclusive experiences in the Red City.": {
+    "fr": "Profitez de riads d’exception, cours de cuisine privés, soins au spa et expériences exclusives dans la ville rouge.",
+    "ar": "استمتع بأجمل الرياض ودروس الطبخ الخاصة والعناية والتجارب الحصرية في المدينة الحمراء."
+  },
+  "3-Day Essaouira Coastal Adventure": {
+    "fr": "Aventure côtière de 3 jours à Essaouira",
+    "ar": "مغامرة ساحلية لمدة 3 أيام في الصويرة"
+  },
+  "Windsurf, explore the historic medina, enjoy fresh seafood, and experience the bohemian vibe of Morocco's wind city.": {
+    "fr": "Faites de la planche à voile, découvrez la médina historique et dégustez des fruits de mer dans l’atmosphère artistique d’Essaouira.",
+    "ar": "اركب الأمواج واستكشف المدينة العتيقة وتذوق المأكولات البحرية واستمتع بأجواء الصويرة الفنية."
+  },
+  "5-Day Budget Morocco Explorer": {
+    "fr": "Découverte du Maroc à petit budget en 5 jours",
+    "ar": "استكشف المغرب بميزانية محدودة في 5 أيام"
+  },
+  "See the best of Morocco without breaking the bank. Hostels, local transport, and authentic experiences.": {
+    "fr": "Découvrez le meilleur du Maroc à petit prix : auberges, transports locaux et expériences authentiques.",
+    "ar": "اكتشف أجمل ما في المغرب بتكلفة مناسبة: نزل ونقل محلي وتجارب أصيلة."
+  },
+  "The Red City enchants with its bustling medina, vibrant souks, and the iconic Jemaa el-Fnaa square. A sensory feast of colors, spices, and sounds.": {
+    "fr": "La ville rouge séduit par sa médina animée, ses souks et la place Jemaa el-Fna. Un festival de couleurs, d’épices et de sons.",
+    "ar": "تسحر المدينة الحمراء زوارها بالمدينة العتيقة والأسواق وساحة جامع الفنا، في مزيج من الألوان والتوابل والأصوات."
+  },
+  "The Blue Pearl of Morocco is a photographer's paradise with its striking blue-washed buildings nestled in the Rif Mountains.": {
+    "fr": "La perle bleue du Maroc, nichée dans le Rif, est un paradis pour les photographes avec ses maisons peintes en bleu.",
+    "ar": "لؤلؤة المغرب الزرقاء جنة للمصورين، بمبانيها الزرقاء بين جبال الريف."
+  },
+  "Experience the magic of the world's largest hot desert. Sleep under a canopy of stars in a luxury desert camp and ride camels across golden dunes.": {
+    "fr": "Vivez la magie du plus vaste désert chaud du monde. Dormez sous les étoiles dans un campement de luxe et parcourez les dunes dorées à dos de chameau.",
+    "ar": "عش سحر أكبر صحراء حارة في العالم. نم تحت النجوم في مخيم فاخر واركب الجمال عبر الكثبان الذهبية."
+  },
+  "Morocco's cultural and spiritual heart, home to the world's oldest university and the largest car-free urban area. A living museum of medieval Islamic architecture.": {
+    "fr": "Cœur culturel et spirituel du Maroc, Fès abrite la plus ancienne université et une vaste médina sans voitures. Un musée vivant d’architecture islamique médiévale.",
+    "ar": "فاس قلب المغرب الثقافي والروحي، تحتضن أقدم جامعة ومدينة عتيقة واسعة دون سيارات. متحف حي للعمارة الإسلامية التاريخية."
+  },
+  "A laid-back coastal town with Portuguese fortifications, artistic vibes, fresh seafood, and some of Africa's best windsurfing conditions.": {
+    "fr": "Une ville côtière paisible, entre fortifications portugaises, ambiance artistique, fruits de mer et conditions idéales pour la planche à voile.",
+    "ar": "مدينة ساحلية هادئة تجمع التحصينات البرتغالية والأجواء الفنية والمأكولات البحرية وظروفًا مميزة لركوب الأمواج."
+  },
+  "Atlas & Desert Guide": {
+    "fr": "Guide de l’Atlas et du désert",
+    "ar": "مرشد الأطلس والصحراء"
+  },
+  "Specializes in mountain routes, kasbah stops, and calm desert logistics.": {
+    "fr": "Spécialiste des routes de montagne, des kasbahs et de l’organisation des séjours au désert.",
+    "ar": "متخصص في المسارات الجبلية والقصبات وتنظيم الرحلات الصحراوية بهدوء."
+  },
+  "Medina Culture Host": {
+    "fr": "Hôte culturel de la médina",
+    "ar": "مضيف ثقافي في المدينة العتيقة"
+  },
+  "Connects guests with artisans, food makers, and quieter corners of old cities.": {
+    "fr": "À la rencontre des artisans, des cuisiniers et des coins paisibles des vieilles villes.",
+    "ar": "يربط الزوار بالحرفيين وصناع الطعام والزوايا الهادئة في المدن العتيقة."
+  },
+  "Family Trip Planner": {
+    "fr": "Organisateur de voyages en famille",
+    "ar": "مخطط الرحلات العائلية"
+  },
+  "Builds flexible routes with reliable drivers, riads, and kid-friendly pacing.": {
+    "fr": "Des parcours flexibles avec des chauffeurs fiables, des riads et un rythme adapté aux enfants.",
+    "ar": "يصمم مسارات مرنة بسائقين موثوقين ورياض ووتيرة مناسبة للأطفال."
+  },
+  "Coastal Experience Guide": {
+    "fr": "Guide des expériences côtières",
+    "ar": "مرشدة التجارب الساحلية"
+  },
+  "Plans relaxed Atlantic routes with seafood stops, beach rides, Gnawa music, and wind-friendly timing.": {
+    "fr": "Des parcours tranquilles sur l’Atlantique entre fruits de mer, balades sur la plage et musique gnaoua.",
+    "ar": "تنظم مسارات أطلسية هادئة مع المأكولات البحرية وركوب الخيل والموسيقى الكناوية وتوقيت يناسب الرياح."
+  },
+  "Sahara Camp Host": {
+    "fr": "Hôte de campement au Sahara",
+    "ar": "مضيف المخيم الصحراوي"
+  },
+  "Coordinates dune camps, camel treks, 4x4 transfers, sunrise viewpoints, and smooth desert arrivals.": {
+    "fr": "Organisation des campements, balades à dos de chameau, transferts en 4x4 et levers de soleil.",
+    "ar": "ينسق المخيمات وركوب الجمال والنقل بالدفع الرباعي وإطلالات الشروق والوصول السلس للصحراء."
+  },
+  "Food & Market Host": {
+    "fr": "Hôte des marchés et de la gastronomie",
+    "ar": "مضيفة الطعام والأسواق"
+  },
+  "Creates market-to-table experiences with spice stories, family recipes, and practical food tips.": {
+    "fr": "Des expériences du marché à la table, entre épices, recettes familiales et conseils culinaires.",
+    "ar": "تصمم تجارب من السوق إلى المائدة مع قصص التوابل والوصفات العائلية ونصائح الطعام."
+  },
+  "Photography Route Guide": {
+    "fr": "Guide de parcours photo",
+    "ar": "مرشد مسارات التصوير"
+  },
+  "Builds early-light photo walks through blue streets, mountain viewpoints, and quiet local corners.": {
+    "fr": "Des balades photo matinales dans les ruelles bleues, les montagnes et les coins paisibles.",
+    "ar": "يصمم جولات تصوير في ضوء الصباح بين الأزقة الزرقاء والإطلالات الجبلية والأماكن الهادئة."
+  },
+  "Wellness & Riad Concierge": {
+    "fr": "Concierge bien-être et riads",
+    "ar": "منسقة الاسترخاء والرياض"
+  },
+  "Arranges hammam rituals, peaceful riad stays, garden visits, and slow-paced luxury days.": {
+    "fr": "Hammams, riads paisibles, jardins et journées de luxe à un rythme tranquille.",
+    "ar": "ترتب طقوس الحمام وإقامات الرياض الهادئة وزيارات الحدائق وأيام الرفاهية بوتيرة مريحة."
+  },
+  "The personalized itinerary was spot-on! Every day was perfectly planned, from the riad in Fes to our desert camp. Best trip of our lives.": {
+    "fr": "L’itinéraire personnalisé était parfait ! Du riad à Fès au campement dans le désert, chaque journée était bien organisée. Le plus beau voyage de notre vie.",
+    "ar": "كان البرنامج المخصص رائعًا! كل يوم مخطط بإتقان من رياض فاس إلى المخيم الصحراوي. أجمل رحلة في حياتنا."
+  },
+  "Incredible local expertise. The hidden spots they recommended in Chefchaouen were Instagram gold. Will definitely use again.": {
+    "fr": "Une expertise locale remarquable. Les coins discrets recommandés à Chefchaouen étaient parfaits pour les photos. Nous reviendrons !",
+    "ar": "خبرة محلية رائعة. الأماكن الخفية التي أوصوا بها في شفشاون مثالية للتصوير. سأعود بالتأكيد."
+  },
+  "As a solo female traveler, I felt completely safe and supported. The 24/7 WhatsApp assistance was invaluable.": {
+    "fr": "En tant que voyageuse solo, je me suis sentie en sécurité et bien accompagnée. L’assistance WhatsApp 24 h/24 était précieuse.",
+    "ar": "بصفتي مسافرة بمفردي، شعرت بالأمان والدعم الكامل. كانت المساعدة عبر واتساب على مدار الساعة لا تقدر بثمن."
+  },
+  "Booking request sent. Reference {reference}. Our team will contact you shortly.": {
+    "fr": "Demande envoyée. Référence {reference}. Notre équipe vous contactera prochainement.",
+    "ar": "تم إرسال طلب الحجز. المرجع {reference}. سيتواصل معك فريقنا قريبًا."
+  },
+  "Book a trip to {place}": {
+    "fr": "Réserver un voyage à {place}",
+    "ar": "احجز رحلة إلى {place}"
+  },
+  "Arrive, settle in, and take a guided first look at {place}.": {
+    "fr": "Arrivez, installez-vous et découvrez {place} avec un guide.",
+    "ar": "صل واستقر واستمتع بجولة تعريفية مع مرشد في {place}."
+  },
+  "Combine {highlight} with local food and neighborhood time.": {
+    "fr": "Découvrez {highlight}, puis les saveurs et les quartiers locaux.",
+    "ar": "اجمع بين {highlight} والطعام المحلي واستكشاف الأحياء."
+  },
+  "Camel caravan crossing the golden Sahara dunes": {
+    "fr": "Caravane de chameaux sur les dunes dorées du Sahara",
+    "ar": "قافلة جمال تعبر كثبان الصحراء الذهبية"
+  },
+  "Best time": {
+    "fr": "Meilleure période",
+    "ar": "أفضل وقت"
+  }
+}

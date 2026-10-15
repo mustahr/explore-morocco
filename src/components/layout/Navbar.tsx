@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -22,6 +24,7 @@ const navLinks = [
 ] as const
 
 export function Navbar() {
+  const { tr } = useTranslations()
   const reduceMotion = useReducedMotion()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -72,7 +75,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 min-w-0 items-center justify-between gap-2 lg:h-24">
-          <Link href="/" className="my-1 flex shrink-0 items-center lg:mr-1" aria-label="Dunexplore Morocco home">
+          <Link href="/" className="my-1 flex shrink-0 items-center lg:mr-1" aria-label={tr("Dunexplore Morocco home")}>
             <ImageWithFallback
               src="/dunexplore-logo-transparent.png"
               alt="Dunexplore Morocco"
@@ -120,7 +123,7 @@ export function Navbar() {
             <div className="relative">
               <button
                 type="button"
-                aria-label="Select language"
+                aria-label={tr("Select language")}
                 aria-expanded={openSelector === "language"}
                 aria-controls="navbar-language-options"
                 onClick={() => setOpenSelector(openSelector === "language" ? null : "language")}
@@ -148,7 +151,7 @@ export function Navbar() {
                       <button
                         key={lang}
                         onClick={() => { setLanguage(lang); setOpenSelector(null) }}
-                        className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
+                        className={`w-full rounded-xl px-4 py-2.5 text-start text-sm transition-colors ${
                           language === lang ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
                       >
@@ -163,7 +166,7 @@ export function Navbar() {
             <div className="relative">
               <button
                 type="button"
-                aria-label="Select currency"
+                aria-label={tr("Select currency")}
                 aria-expanded={openSelector === "currency"}
                 aria-controls="navbar-currency-options"
                 onClick={() => setOpenSelector(openSelector === "currency" ? null : "currency")}
@@ -191,7 +194,7 @@ export function Navbar() {
                       <button
                         key={cur}
                         onClick={() => { setCurrency(cur); setOpenSelector(null) }}
-                        className={`w-full rounded-xl px-4 py-2.5 text-left text-sm transition-colors ${
+                        className={`w-full rounded-xl px-4 py-2.5 text-start text-sm transition-colors ${
                           currency === cur ? "bg-amber-100 text-stone-950 font-semibold" : "text-stone-600 hover:bg-white"
                         }`}
                       >
@@ -205,14 +208,14 @@ export function Navbar() {
 
           </div>
 
-          <Link href="/trip-generator" aria-label={t.nav.generateTrip} aria-current={pathname === "/trip-generator" ? "page" : undefined} className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-full border border-amber-200/40 bg-amber-100/10 px-3 text-sm font-semibold text-amber-100 transition-colors hover:bg-amber-100/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 lg:hidden">
+          <Link href="/trip-generator" aria-label={t.nav.generateTrip} aria-current={pathname === "/trip-generator" ? "page" : undefined} className="ms-auto inline-flex min-h-11 shrink-0 items-center rounded-full border border-amber-200/40 bg-amber-100/10 px-3 text-sm font-semibold text-amber-100 transition-colors hover:bg-amber-100/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200 lg:hidden">
             <span className="sm:hidden">{language === "ar" ? "خطط" : language === "fr" ? "Planifier" : "Plan"}</span>
             <span className="hidden sm:inline">{t.nav.generateTrip}</span>
           </Link>
 
           <motion.button
             type="button"
-            aria-label={language === "ar" ? "فتح قائمة التنقل" : language === "fr" ? "Ouvrir le menu" : "Open navigation menu"}
+            aria-label={language === "ar" ? "فتح قائمة التنقل" : language === "fr" ? "Ouvrir le menu" : tr("Open navigation menu")}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation"
             aria-haspopup="dialog"

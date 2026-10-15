@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref, contactWhatsAppHref } from "@/lib/contact"
@@ -10,6 +12,7 @@ import { NewsletterForm } from "./NewsletterForm"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height: number) => void }) {
+  const { tr } = useTranslations()
   const footerRef = useRef<HTMLElement>(null)
   const [reveal, setReveal] = useState(false)
   const { language } = useApp()
@@ -58,7 +61,7 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
       <div className="mx-auto flex max-w-7xl flex-col px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid min-w-0 grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 xl:gap-12 [&>div]:min-w-0">
           <div>
-            <Link href="/" className="my-2 mb-6 mr-4 block w-56 max-w-full" aria-label="Dunexplore Morocco home">
+            <Link href="/" className="my-2 mb-6 mr-4 block w-56 max-w-full" aria-label={tr("Dunexplore Morocco home")}>
               <ImageWithFallback
                 src="/dunexplore-logo-transparent.png"
                 alt="Dunexplore Morocco"
@@ -72,10 +75,10 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
               {t.footer.description}
             </p>
             <div className="flex gap-4">
-              <a href={contactWhatsAppHref()} target="_blank" rel="noopener noreferrer" aria-label="Contact Dunexplore Morocco on WhatsApp (opens in a new tab)" className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+              <a href={contactWhatsAppHref()} target="_blank" rel="noopener noreferrer" aria-label={tr("Contact Dunexplore Morocco on WhatsApp (opens in a new tab)")} className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
                 <MessageCircle size={18} aria-hidden="true" />
               </a>
-              <a href={contactEmailHref()} aria-label="Email Dunexplore Morocco" className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+              <a href={contactEmailHref()} aria-label={tr("Email Dunexplore Morocco")} className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
                 <Mail size={18} aria-hidden="true" />
               </a>
             </div>
@@ -104,20 +107,18 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
               </li>
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <Phone size={16} className="text-primary" />
-                <a href={CONTACT_PHONE_HREF} className="hover:text-white transition-colors">{CONTACT_PHONE}</a>
+                <a href={CONTACT_PHONE_HREF} dir="ltr" className="hover:text-white transition-colors">{CONTACT_PHONE}</a>
               </li>
               <li className="flex items-center gap-3 text-stone-400 text-sm">
                 <MapPin size={16} className="text-primary" />
-                <span>{CONTACT_LOCATION}</span>
+                <span>{tr(CONTACT_LOCATION)}</span>
               </li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold mb-4">{t.footer.newsletter}</h3>
-            <p className="text-stone-400 text-sm mb-4">
-              Get travel inspiration and exclusive offers.
-            </p>
+            <p className="text-stone-400 text-sm mb-4">{tr("Get travel inspiration and exclusive offers.")}</p>
             <NewsletterForm />
           </div>
         </div>
@@ -127,8 +128,8 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
             &copy; 2026 Dunexplore Morocco. {t.footer.rights}
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
-            <Link href="/privacy" className="text-stone-500 hover:text-white text-sm transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="text-stone-500 hover:text-white text-sm transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="text-stone-500 hover:text-white text-sm transition-colors">{tr("Privacy Policy")}</Link>
+            <Link href="/terms" className="text-stone-500 hover:text-white text-sm transition-colors">{tr("Terms of Service")}</Link>
           </div>
         </div>
       </div>

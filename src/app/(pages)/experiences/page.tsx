@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { PageHero } from "@/components/layout/PageHero"
 import { useEffect, useState } from "react"
 import Link from "next/link"
@@ -13,6 +15,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 const categories = ["All", "Adventure", "Wellness", "Food & Drink", "Culture"]
 
 export default function ExperiencesPage() {
+  const { tr } = useTranslations()
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [experiences, setExperiences] = useState<Experience[]>([])
   const { currency } = useApp()
@@ -37,7 +40,7 @@ export default function ExperiencesPage() {
 
   return (
     <div className="pt-20 lg:pt-24">
-      <PageHero image="/images/content/moroccan-cuisine.webp" imageAlt="Sharing traditional Moroccan food around a table" eyebrow="Local activities" title="Experiences" description="From camel rides to cooking classes, immerse yourself in authentic Moroccan experiences." />
+      <PageHero image="/images/content/moroccan-cuisine.webp" imageAlt={tr("Sharing traditional Moroccan food around a table")} eyebrow={tr("Local activities")} title={tr("Experiences")} description={tr("From camel rides to cooking classes, immerse yourself in authentic Moroccan experiences.")} />
 
       <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -53,7 +56,7 @@ export default function ExperiencesPage() {
                     : "bg-white text-stone-600 hover:bg-stone-50 border border-stone-200"
                 }`}
               >
-                {cat}
+                {tr(cat)}
               </button>
             ))}
           </div>
@@ -80,22 +83,22 @@ export default function ExperiencesPage() {
                       fallbackClassName="h-full w-full"
                     />
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-stone-700">
-                      {exp.category}
+                      {tr(exp.category)}
                     </div>
                   </div>
                   <div className="p-4">
                     <h3 className="font-bold text-stone-900 mb-1 group-hover:text-primary transition-colors">
-                      {exp.title}
+                      {tr(exp.title)}
                     </h3>
-                    <p className="text-stone-500 text-sm mb-3 line-clamp-2">{exp.description}</p>
+                    <p className="text-stone-500 text-sm mb-3 line-clamp-2">{tr(exp.description)}</p>
                     <div className="flex items-center gap-3 text-xs text-stone-400 mb-3">
                       <span className="flex items-center gap-1">
                         <Clock size={12} />
-                        {exp.duration}
+                        {tr(exp.duration)}
                       </span>
                       <span className="flex items-center gap-1">
                         <MapPin size={12} />
-                        {exp.location}
+                        {tr(exp.location)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between pt-3 border-t border-stone-100">
@@ -107,9 +110,7 @@ export default function ExperiencesPage() {
                           <Star size={14} className="fill-accent text-accent" />
                           <span className="font-medium text-stone-700">{exp.rating}</span>
                         </span>
-                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
-                          Details
-                          <ArrowRight size={14} />
+                        <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary">{tr("Details")}<ArrowRight size={14} />
                         </span>
                       </div>
                     </div>
@@ -121,13 +122,11 @@ export default function ExperiencesPage() {
 
           {filtered.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-stone-400 text-lg">No experiences found in this category</p>
+              <p className="text-stone-400 text-lg">{tr("No experiences found in this category")}</p>
               <button
                 onClick={() => setSelectedCategory("All")}
                 className="mt-4 text-primary font-medium hover:underline"
-              >
-                Show all experiences
-              </button>
+              >{tr("Show all experiences")}</button>
             </div>
           )}
         </div>

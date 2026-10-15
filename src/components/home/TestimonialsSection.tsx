@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Star, Quote } from "lucide-react"
@@ -7,6 +9,7 @@ import { type Testimonial } from "@/lib/content-db"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function TestimonialsSection() {
+  const { tr } = useTranslations()
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
 
   useEffect(() => {
@@ -32,10 +35,8 @@ export function TestimonialsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider">Testimonials</span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">
-            What Travelers Say
-          </h2>
+          <span className="text-primary font-semibold text-sm uppercase tracking-wider">{tr("Testimonials")}</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">{tr("What Travelers Say")}</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -54,7 +55,7 @@ export function TestimonialsSection() {
                   <Star key={i} size={16} className="fill-accent text-accent" />
                 ))}
               </div>
-              <p className="text-stone-600 mb-6 leading-relaxed">&ldquo;{testimonial.text.replace(/AI-generated itinerary/g, "personalized itinerary")}&rdquo;</p>
+              <p className="text-stone-600 mb-6 leading-relaxed">&ldquo;{tr(testimonial.text.replace(/AI-generated itinerary/g, "personalized itinerary"))}&rdquo;</p>
               <div className="flex items-center gap-4">
                 <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
                   <ImageWithFallback
@@ -67,8 +68,8 @@ export function TestimonialsSection() {
                   />
                 </div>
                 <div>
-                  <p className="font-semibold text-stone-900">{testimonial.name}</p>
-                  <p className="text-sm text-stone-400">{testimonial.location}</p>
+                  <p className="font-semibold text-stone-900">{tr(testimonial.name)}</p>
+                  <p className="text-sm text-stone-400">{tr(testimonial.location)}</p>
                 </div>
               </div>
             </motion.div>

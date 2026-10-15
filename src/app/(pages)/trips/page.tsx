@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -12,6 +14,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 const categories = ["all", "favorited", "luxury", "budget", "adventure", "cultural", "romantic", "family"]
 
 export default function TripsPage() {
+  const { tr } = useTranslations()
   const [trips, setTrips] = useState<Trip[]>([])
   const [isLoadingTrips, setIsLoadingTrips] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState("all")
@@ -60,7 +63,7 @@ export default function TripsPage() {
         <div className="absolute inset-0 overflow-hidden">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1542401886-65d6c61db217?auto=format&fit=crop&w=2000&q=80"
-            alt="Morocco desert"
+            alt={tr("Morocco desert")}
             fill
             preload
             sizes="100vw"
@@ -81,18 +84,14 @@ export default function TripsPage() {
           >
             <div className="flex items-center gap-3 mb-4">
               <Sparkles size={20} className="text-amber-400" />
-              <span className="text-sm uppercase tracking-[0.24em] text-amber-200/90">Discover Your Next Adventure</span>
+              <span className="text-sm uppercase tracking-[0.24em] text-amber-200/90">{tr("Discover Your Next Adventure")}</span>
             </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight mb-6">
-              Luxury Trips & Tours in Morocco
-            </h1>
-            <p className="text-lg text-amber-100/90 max-w-2xl leading-8">
-              Handcrafted itineraries by local experts. From desert escapes to coastal retreats, each journey is designed for unforgettable experiences.
-            </p>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight mb-6">{tr("Luxury Trips & Tours in Morocco")}</h1>
+            <p className="text-lg text-amber-100/90 max-w-2xl leading-8">{tr("Handcrafted itineraries by local experts. From desert escapes to coastal retreats, each journey is designed for unforgettable experiences.")}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               {['Best Sellers', 'Small Groups', 'Premium Guides'].map((badge) => (
                 <span key={badge} className="rounded-full bg-white/10 border border-white/15 px-4 py-2 text-sm font-medium text-white/90 backdrop-blur-md">
-                  {badge}
+                  {tr(badge)}
                 </span>
               ))}
             </div>
@@ -108,20 +107,18 @@ export default function TripsPage() {
                 onClick={() => setShowFilters(!showFilters)}
                 className="lg:hidden flex items-center gap-2 bg-white px-4 py-3 rounded-3xl border border-stone-200 mb-4 shadow-sm cursor-pointer"
               >
-                <SlidersHorizontal size={18} />
-                Filters
-              </button>
+                <SlidersHorizontal size={18} />{tr("Filters")}</button>
 
               <div className={`${showFilters ? "block" : "hidden"} lg:block bg-white rounded-[2rem] p-6 border border-stone-200 shadow-lg sticky top-28`}>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="font-bold text-stone-900 text-lg">Filter</h3>
+                  <h3 className="font-bold text-stone-900 text-lg">{tr("Filter")}</h3>
                   <button onClick={() => setShowFilters(false)} className="lg:hidden cursor-pointer">
                     <X size={20} className="text-stone-500" />
                   </button>
                 </div>
 
                 <div className="mb-8">
-                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">Category</h4>
+                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">{tr("Category")}</h4>
                   <div className="space-y-2">
                     <button
                       onClick={() => setSelectedCategory("all")}
@@ -130,9 +127,7 @@ export default function TripsPage() {
                           ? "bg-primary text-white shadow-md"
                           : "text-stone-700 bg-stone-100 hover:bg-stone-200"
                       }`}
-                    >
-                      All
-                    </button>
+                    >{tr("All")}</button>
                     <div className="grid grid-cols-2 gap-2">
                       {categories
                         .filter((cat) => cat !== "all")
@@ -146,7 +141,7 @@ export default function TripsPage() {
                                 : "text-stone-700 bg-stone-100 hover:bg-stone-200"
                             }`}
                           >
-                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                            {tr(cat.charAt(0).toUpperCase() + cat.slice(1))}
                           </button>
                         ))}
                     </div>
@@ -154,7 +149,7 @@ export default function TripsPage() {
                 </div>
 
                 <div className="mb-8">
-                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">Duration</h4>
+                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">{tr("Duration")}</h4>
                   <div className="flex flex-wrap gap-2">
                     {[2, 3, 4, 5, 7].map((days) => (
                       <button
@@ -166,14 +161,14 @@ export default function TripsPage() {
                             : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                         }`}
                       >
-                        {days}d
+                        {tr("{count} days", { count: days })}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">Max Price</h4>
+                  <h4 className="font-semibold text-stone-900 mb-4 text-sm uppercase tracking-wider">{tr("Max Price")}</h4>
                   <input
                     type="range"
                     min="0"
@@ -183,8 +178,7 @@ export default function TripsPage() {
                     onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
                     className="w-full accent-primary"
                   />
-                  <p className="text-sm font-semibold text-stone-900 mt-3">
-                    Up to {formatPrice(priceRange[1], currency)}
+                  <p className="text-sm font-semibold text-stone-900 mt-3">{tr("Up to")}{formatPrice(priceRange[1], currency)}
                   </p>
                 </div>
               </div>
@@ -193,7 +187,7 @@ export default function TripsPage() {
                 <div className="mt-6 lg:mt-0 bg-white rounded-[2rem] p-6 border border-stone-200 shadow-lg z-50">
                   <div className="flex items-center gap-2 mb-6">
                     <Heart size={20} className="text-primary fill-primary" />
-                    <h3 className="font-bold text-stone-900 text-lg">Favorited Trips</h3>
+                    <h3 className="font-bold text-stone-900 text-lg">{tr("Favorited Trips")}</h3>
                   </div>
 
                   {/* <div className="space-y-3">
@@ -244,9 +238,9 @@ export default function TripsPage() {
             <div className="flex-1">
               <div className="mb-8 flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-stone-500 uppercase tracking-wider">Results</p>
+                  <p className="text-sm text-stone-500 uppercase tracking-wider">{tr("Results")}</p>
                   <p className="text-2xl font-bold text-stone-900">
-                    {isLoadingTrips ? "Loading trips..." : `${filteredTrips.length} trips found`}
+                    {isLoadingTrips ? tr("Loading trips...") : `${filteredTrips.length} trips found`}
                   </p>
                 </div>
               </div>
@@ -278,7 +272,7 @@ export default function TripsPage() {
                             <div className="absolute inset-x-0 top-4 px-6 flex flex-wrap gap-2">
                               {['Best Value', `${trip.category.charAt(0).toUpperCase() + trip.category.slice(1)}`].map((badge) => (
                                 <span key={badge} className="rounded-full bg-white/15 border border-white/20 px-3 py-1.5 text-xs uppercase tracking-wider text-white/90 backdrop-blur-md font-semibold">
-                                  {badge}
+                                  {tr(badge)}
                                 </span>
                               ))}
                             </div>
@@ -298,13 +292,13 @@ export default function TripsPage() {
 
                             <div className="absolute bottom-0 left-0 right-0 p-6">
                               <h3 className="text-2xl font-bold tracking-tight text-white leading-tight group-hover:text-amber-200 transition-colors">
-                                {trip.title}
+                                {tr(trip.title)}
                               </h3>
                             </div>
                           </div>
 
                           <div className="p-6">
-                            <p className="text-stone-600 text-sm mb-4 line-clamp-2">{trip.description}</p>
+                            <p className="text-stone-600 text-sm mb-4 line-clamp-2">{tr(trip.description)}</p>
 
                             <div className="flex flex-wrap gap-2 mb-6">
                               {trip.locations.slice(0, 2).map((loc) => (
@@ -317,37 +311,36 @@ export default function TripsPage() {
 
                             <div className="grid grid-cols-3 gap-3 mb-6 pb-6 border-b border-stone-200">
                               <div>
-                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">Duration</p>
+                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">{tr("Duration")}</p>
                                 <p className="text-lg font-bold text-stone-900 flex items-center gap-1">
                                   <Clock size={16} className="text-primary" />
                                   {trip.duration}d
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">Rating</p>
+                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">{tr("Rating")}</p>
                                 <p className="text-lg font-bold text-stone-900 flex items-center gap-1">
                                   <Star size={16} className="fill-accent text-accent" />
                                   {trip.rating}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">Reviews</p>
+                                <p className="text-xs uppercase tracking-widest text-stone-500 font-semibold mb-1">{tr("Reviews")}</p>
                                 <p className="text-lg font-bold text-stone-900">{trip.reviews}</p>
                               </div>
                             </div>
 
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="text-xs text-stone-500 mb-1">Starting from</p>
+                                <p className="text-xs text-stone-500 mb-1">{tr("Starting from")}</p>
                                 <div className="flex items-baseline gap-2">
                                   <span className="text-3xl font-bold text-primary">{formatPrice(trip.price, currency)}</span>
                                   <span className="text-sm text-stone-400 line-through">{formatPrice(originalPrice, currency)}</span>
                                 </div>
-                                <p className="text-xs text-green-600 font-semibold mt-1">Save {formatPrice(savings, currency)}</p>
+                                <p className="text-xs text-green-600 font-semibold mt-1">{tr("Save")} {formatPrice(savings, currency)}</p>
                               </div>
-                              <div className="text-right">
-                                <span className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-dark transition-colors">
-                                  Explore <ArrowRight size={18} />
+                              <div className="text-end">
+                                <span className="inline-flex items-center gap-2 text-primary font-semibold hover:text-primary-dark transition-colors">{tr("Explore")}<ArrowRight size={18} />
                                 </span>
                               </div>
                             </div>
@@ -361,7 +354,7 @@ export default function TripsPage() {
 
               {filteredTrips.length === 0 && (
                 <div className="text-center py-24 bg-white rounded-[2rem] border border-stone-200">
-                  <p className="text-stone-500 text-lg mb-6">No trips match your filters</p>
+                  <p className="text-stone-500 text-lg mb-6">{tr("No trips match your filters")}</p>
                   <button
                     onClick={() => {
                       setSelectedCategory("all")
@@ -369,9 +362,7 @@ export default function TripsPage() {
                       setPriceRange([0, 15000])
                     }}
                     className="px-6 py-3 bg-primary text-stone-950 rounded-3xl font-semibold hover:bg-primary-light transition-colors cursor-pointer"
-                  >
-                    Clear all filters
-                  </button>
+                  >{tr("Clear all filters")}</button>
                 </div>
               )}
             </div>

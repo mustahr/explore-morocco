@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "@/context/useTranslations"
+
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
@@ -10,6 +12,7 @@ import { translations, formatPrice } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function ExperiencesPreview() {
+  const { tr } = useTranslations()
   const { language, currency } = useApp()
   const t = translations[language]
   const [experiences, setExperiences] = useState<Experience[]>([])
@@ -38,12 +41,8 @@ export function ExperiencesPreview() {
           className="text-center mb-16"
         >
           <span className="text-primary font-semibold text-sm uppercase tracking-wider">{t.common.popular}</span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">
-            Unforgettable Experiences
-          </h2>
-          <p className="text-stone-500 mt-4 max-w-2xl mx-auto text-lg">
-            From camel rides to cooking classes, discover what makes Morocco special
-          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-3 text-stone-900">{tr("Unforgettable Experiences")}</h2>
+          <p className="text-stone-500 mt-4 max-w-2xl mx-auto text-lg">{tr("From camel rides to cooking classes, discover what makes Morocco special")}</p>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -70,13 +69,13 @@ export function ExperiencesPreview() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <span className="text-xs font-medium text-white/70 uppercase tracking-wider">{exp.category}</span>
-                    <h3 className="text-white font-semibold mt-1 text-sm lg:text-base">{exp.title}</h3>
+                    <span className="text-xs font-medium text-white/70 uppercase tracking-wider">{tr(exp.category)}</span>
+                    <h3 className="text-white font-semibold mt-1 text-sm lg:text-base">{tr(exp.title)}</h3>
                     <div className="flex items-center justify-between mt-2">
                       <span className="text-white/80 text-xs">{formatPrice(exp.price, currency)}</span>
                       <span className="flex items-center gap-1 text-white/70 text-xs">
                         <Clock size={12} />
-                        {exp.duration}
+                        {tr(exp.duration)}
                       </span>
                     </div>
                   </div>
@@ -95,9 +94,7 @@ export function ExperiencesPreview() {
           <Link
             href="/experiences"
             className="inline-flex items-center gap-2 btn-primary text-white px-8 py-4 rounded-full font-semibold"
-          >
-            View All Experiences
-            <ArrowRight size={18} />
+          >{tr("View All Experiences")}<ArrowRight size={18} />
           </Link>
         </motion.div>
       </div>
