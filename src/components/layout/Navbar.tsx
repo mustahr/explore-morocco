@@ -84,12 +84,12 @@ export function Navbar() {
             />
           </Link>
 
-          <div className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-0 lg:flex xl:gap-1">
+          <div className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-0.5 lg:flex xl:gap-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-1 xl:px-2 py-2 rounded-full text-xs xl:text-sm font-medium transition-colors ${
+                className={`px-1 xl:px-2 py-2 rounded-full text-sm xl:text-base font-semibold transition-colors ${
                   pathname === link.href
                     ? "text-primary-light"
                     : isHomePage
