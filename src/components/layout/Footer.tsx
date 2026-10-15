@@ -2,16 +2,15 @@
 
 import Link from "next/link"
 import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref, contactWhatsAppHref } from "@/lib/contact"
-import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react"
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
-import { useState } from "react"
+import { NewsletterForm } from "./NewsletterForm"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function Footer() {
   const { language } = useApp()
   const t = translations[language]
-  const [email, setEmail] = useState("")
 
   return (
     <footer className="relative isolate overflow-hidden bg-[#0D0D0D] text-white md:fixed md:inset-x-0 md:bottom-0 md:z-0 md:h-[28rem]">
@@ -92,18 +91,7 @@ export function Footer() {
             <p className="text-stone-400 text-sm mb-4">
               Get travel inspiration and exclusive offers.
             </p>
-            <div className="flex">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t.footer.newsletterPlaceholder}
-                className="flex-1 bg-stone-800 border-0 rounded-l-xl px-4 py-3 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button className="bg-primary px-4 text-stone-950 transition-colors hover:bg-primary-light">
-                <Send size={18} />
-              </button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
 
