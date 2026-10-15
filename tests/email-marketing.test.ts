@@ -83,6 +83,25 @@ test("audience combines and retains contacts; campaigns protect addresses, opt-o
       return Response.json({ data: [{ id: "private-provider-id" }] })
     }
     assert.equal((await route.POST(req({ action: "send", id: individual.id }))).status, 200)
+    const selectedResponse = await route.POST(req({ action: "create", subject: "Selected client offer", message: "Same message", audience: "selected", emails: ["private@example.com", "SECOND@EXAMPLE.COM", " private@example.com "] }))
+    assert.equal(selectedResponse.status, 200)
+    const selected = (await selectedResponse.json()).campaign
+    assert.deepEqual(selected.recipients, ["private@example.com", "second@example.com"])
+    assert.equal((await route.POST(req({ action: "create", subject: "Empty", message: "Hello", audience: "selected", emails: [] }))).status, 400)
+    assert.equal((await route.POST(req({ action: "create", subject: "Invalid", message: "Hello", audience: "selected", emails: ["private@example.com", "invalid"] }))).status, 400)
+    assert.equal((await route.POST(req({ action: "create", subject: "Opt out", message: "Hello", audience: "selected", emails: ["private@example.com", "same@example.com"] }))).status, 400)
+    let selectedCalls = 0
+    globalThis.fetch = async (_url, options) => {
+      selectedCalls++
+      const messages = JSON.parse(String(options?.body))
+      assert.equal(messages.length, 2)
+      assert.deepEqual(messages.map((item: { to: string[] }) => item.to), [["private@example.com"], ["second@example.com"]])
+      assert.ok(messages.every((item: { subject: string; text: string }) => item.subject === "Selected client offer" && item.text.startsWith("Same message")))
+      return Response.json({ data: [{ id: "selected-first" }, { id: "selected-second" }] })
+    }
+    assert.equal((await route.POST(req({ action: "send", id: selected.id }))).status, 200)
+    await route.POST(req({ action: "send", id: selected.id }))
+    assert.equal(selectedCalls, 1)
     const newDraftResponse = await route.POST(req({ action: "create", subject: "Draft to edit", message: "Original", audience: "single", email: "private@example.com" }))
     const draftToEdit = (await newDraftResponse.json()).campaign
     const editedResponse = await route.POST(req({ action: "update", id: draftToEdit.id, subject: "Edited draft", message: "Updated content", audience: "single", email: "private@example.com" }))

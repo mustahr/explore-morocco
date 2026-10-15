@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         if (!response.ok || !result?.id) return Response.json({ error: `Test email rejected (HTTP ${response.status}). Check Resend logs and sender verification.` }, { status: 502 })
         return Response.json({ message: "Resend accepted the test email. Check inbox/spam; acceptance does not guarantee delivery." })
       }
-      if (!["subscribers", "all", "single"].includes(body.audience) || (body.audience === "all" && body.permissionConfirmed !== true)) return Response.json({ error: "Choose an audience and confirm permission for all-contact campaigns." }, { status: 400 })
+      if (!["subscribers", "all", "single", "selected"].includes(body.audience) || (body.audience === "all" && body.permissionConfirmed !== true)) return Response.json({ error: "Choose an audience and confirm permission for all-contact campaigns." }, { status: 400 })
       let existing: Campaign | undefined
       if (body.action === "update") {
         existing = (await marketingRecords<Campaign>("email_campaigns")).find((item) => item.id === body.id)
@@ -56,20 +56,20 @@ export async function POST(request: Request) {
       }
       const contacts = await emailAudience()
       let recipients: string[]
-      if (body.audience === "single") {
-        const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
-        if (!emailValid(email) || /[,;]/.test(email)) return Response.json({ error: "Enter exactly one valid client email address." }, { status: 400 })
-        const contact = contacts.find((item) => item.email === email)
+      if (body.audience === "single" || body.audience === "selected") {
+        const raw = body.audience === "single" ? [body.email] : body.emails
+        if (!Array.isArray(raw) || !raw.length || raw.length > 1000 || raw.some((email) => typeof email !== "string" || !emailValid(email.trim()) || /[,;]/.test(email))) return Response.json({ error: "Select 1 to 1,000 valid client email addresses." }, { status: 400 })
+        recipients = [...new Set(raw.map((email: string) => email.trim().toLowerCase()))].sort()
         const preferences = await marketingRecords<{ email: string; unsubscribed: boolean }>("email_preferences")
-        if (contact?.unsubscribed || preferences.some((item) => item.email === email && item.unsubscribed)) return Response.json({ error: "This client has unsubscribed from these emails." }, { status: 400 })
+        if (recipients.some((email) => contacts.some((contact) => contact.email === email && contact.unsubscribed) || preferences.some((item) => item.email === email && item.unsubscribed))) return Response.json({ error: "A selected client has unsubscribed. Remove that address before sending." }, { status: 400 })
         const now = new Date().toISOString()
-        await saveMarketingRecord<EmailContact>("email_contacts", {
-          id: contactId(email), email, name: contact?.name || email,
-          sources: [...new Set([...(contact?.sources || []), "Individual email"])],
-          firstSeen: contact?.firstSeen || now, lastSeen: now,
-          subscribed: contact?.subscribed || false, unsubscribed: false,
-        })
-        recipients = [email]
+        for (const email of recipients) {
+          if (contacts.some((contact) => contact.email === email)) continue
+          await saveMarketingRecord<EmailContact>("email_contacts", {
+            id: contactId(email), email, name: email, sources: ["Individual email"],
+            firstSeen: now, lastSeen: now, subscribed: false, unsubscribed: false,
+          })
+        }
       } else {
         recipients = contacts.filter((contact) => !contact.unsubscribed && (body.audience === "all" || contact.subscribed)).map((contact) => contact.email).sort()
       }

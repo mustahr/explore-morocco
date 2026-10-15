@@ -8,7 +8,7 @@ import { getSiteUrl } from "./site"
 import { renderCampaignEmail, type CampaignDesign } from "./email-template"
 
 export interface EmailContact { id: string; email: string; name: string; sources: string[]; firstSeen: string; lastSeen: string; subscribed: boolean; unsubscribed: boolean }
-export interface Campaign { draftEditedAt?: string; updatedAt?: string; design?: CampaignDesign; id: string; subject: string; message: string; audience: "subscribers" | "all" | "single"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
+export interface Campaign { draftEditedAt?: string; updatedAt?: string; design?: CampaignDesign; id: string; subject: string; message: string; audience: "subscribers" | "all" | "single" | "selected"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
 interface Preference { id: string; email: string; subscribed: boolean; unsubscribed: boolean; updatedAt: string }
 export const emailValid = (email: string) => email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 export const contactId = (email: string) => createHash("sha256").update(email.trim().toLowerCase()).digest("hex")
@@ -123,6 +123,6 @@ export async function sendCampaignBatch(campaign: Campaign, index: number) {
   await saveMarketingRecord("email_campaigns", campaign)
   return campaign
 }
-export function newCampaign(subject: string, message: string, audience: "subscribers" | "all" | "single", recipients: string[], design: CampaignDesign = {}): Campaign {
+export function newCampaign(subject: string, message: string, audience: "subscribers" | "all" | "single" | "selected", recipients: string[], design: CampaignDesign = {}): Campaign {
   return { id: randomUUID(), subject, message, audience, recipients, design, createdAt: new Date().toISOString(), batches: {}, status: "draft" }
 }
