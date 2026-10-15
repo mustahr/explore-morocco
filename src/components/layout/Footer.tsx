@@ -84,6 +84,7 @@ export function Footer({ onRevealHeightChange }: { onRevealHeightChange: (height
           <div>
             <h3 className="font-semibold mb-4">{t.footer.quickLinks}</h3>
             <ul className="space-y-3">
+              <li><Link href="/trip-generator" className="text-sm font-semibold text-amber-200 transition-colors hover:text-white">{t.nav.generateTrip}</Link></li>
               {["trips", "destinations", "experiences", "blog", "about", "contact"].map((link) => (
                 <li key={link}>
                   <Link href={`/${link}`} className="text-stone-400 hover:text-white transition-colors text-sm">

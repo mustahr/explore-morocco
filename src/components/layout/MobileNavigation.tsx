@@ -111,6 +111,14 @@ export function MobileNavigation({ links, onClose }: {
           </motion.button>
         </div>
 
+        <Link
+          href="/trip-generator"
+          onClick={onClose}
+          className="mt-5 flex min-h-14 shrink-0 items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#efdca0] px-5 py-4 font-semibold text-stone-950 shadow-lg shadow-black/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200"
+        >
+          {t.nav.generateTrip}<ArrowRight size={19} aria-hidden="true" />
+        </Link>
+
         <motion.nav
           aria-label={labels.title}
           initial="hidden" animate="visible"
@@ -140,13 +148,7 @@ export function MobileNavigation({ links, onClose }: {
           })}
         </motion.nav>
 
-        <Link
-          href="/trip-generator"
-          onClick={onClose}
-          className="flex min-h-14 shrink-0 items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-[#d4af37] to-[#efdca0] px-5 py-4 font-semibold text-stone-950 shadow-lg shadow-black/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200"
-        >
-          {t.nav.generateTrip}<ArrowRight size={19} aria-hidden="true" />
-        </Link>
+
 
         <section aria-label={labels.preferences} className="mt-6 border-t border-white/10 pt-5">
           <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">{labels.preferences}</p>
