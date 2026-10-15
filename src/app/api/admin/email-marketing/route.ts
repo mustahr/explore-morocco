@@ -1,7 +1,7 @@
 import { normalizeCampaignDesign, renderCampaignEmail } from "@/lib/email-template"
 import { getSiteUrl } from "@/lib/site"
 import { isAdminRequest, unauthorizedResponse } from "@/lib/admin-auth"
-import { campaignPayload, emailAudience, emailValid, marketingRecords, newCampaign, saveMarketingRecord, sendCampaignBatch, setEmailPreference, type Campaign } from "@/lib/email-marketing"
+import { campaignPayload, emailAudience, emailValid, marketingRecords, newCampaign, saveMarketingRecord, sendCampaignBatch, setEmailPreference, contactId, type EmailContact, type Campaign } from "@/lib/email-marketing"
 
 export const dynamic = "force-dynamic"
 export const maxDuration = 60
@@ -40,9 +40,26 @@ export async function POST(request: Request) {
         if (!response.ok || !result?.id) return Response.json({ error: `Test email rejected (HTTP ${response.status}). Check Resend logs and sender verification.` }, { status: 502 })
         return Response.json({ message: "Resend accepted the test email. Check inbox/spam; acceptance does not guarantee delivery." })
       }
-      if (!["subscribers", "all"].includes(body.audience) || (body.audience === "all" && body.permissionConfirmed !== true)) return Response.json({ error: "Choose an audience and confirm permission for all-contact campaigns." }, { status: 400 })
+      if (!["subscribers", "all", "single"].includes(body.audience) || (body.audience === "all" && body.permissionConfirmed !== true)) return Response.json({ error: "Choose an audience and confirm permission for all-contact campaigns." }, { status: 400 })
       const contacts = await emailAudience()
-      const recipients = contacts.filter((contact) => !contact.unsubscribed && (body.audience === "all" || contact.subscribed)).map((contact) => contact.email).sort()
+      let recipients: string[]
+      if (body.audience === "single") {
+        const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : ""
+        if (!emailValid(email) || /[,;]/.test(email)) return Response.json({ error: "Enter exactly one valid client email address." }, { status: 400 })
+        const contact = contacts.find((item) => item.email === email)
+        const preferences = await marketingRecords<{ email: string; unsubscribed: boolean }>("email_preferences")
+        if (contact?.unsubscribed || preferences.some((item) => item.email === email && item.unsubscribed)) return Response.json({ error: "This client has unsubscribed from these emails." }, { status: 400 })
+        const now = new Date().toISOString()
+        await saveMarketingRecord<EmailContact>("email_contacts", {
+          id: contactId(email), email, name: contact?.name || email,
+          sources: [...new Set([...(contact?.sources || []), "Individual email"])],
+          firstSeen: contact?.firstSeen || now, lastSeen: now,
+          subscribed: contact?.subscribed || false, unsubscribed: false,
+        })
+        recipients = [email]
+      } else {
+        recipients = contacts.filter((contact) => !contact.unsubscribed && (body.audience === "all" || contact.subscribed)).map((contact) => contact.email).sort()
+      }
       if (!recipients.length) return Response.json({ error: "No eligible contacts in this audience." }, { status: 400 })
       const campaign = newCampaign(subject, message, body.audience, recipients, design)
       await saveMarketingRecord("email_campaigns", campaign)

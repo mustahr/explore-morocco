@@ -64,6 +64,25 @@ test("audience combines and retains contacts; campaigns protect addresses, opt-o
     const all = await route.POST(req({ action: "create", subject: "Next", message: "Hello", audience: "all", permissionConfirmed: true }))
     const next = (await all.json()).campaign
     assert.deepEqual(next.recipients, ["enquiry@example.com"])
+    const individualResponse = await route.POST(req({ action: "create", subject: "Your private itinerary", message: "Hello client", audience: "single", email: " PRIVATE@EXAMPLE.COM ", recipients: ["injected@example.com"], design: { buttonLabel: "View your trip", buttonUrl: "https://example.com/private-trip" } }))
+    assert.equal(individualResponse.status, 200)
+    const individual = (await individualResponse.json()).campaign
+    assert.deepEqual(individual.recipients, ["private@example.com"])
+    assert.equal(individual.audience, "single")
+    assert.equal(individual.design.buttonLabel, "View your trip")
+    assert.ok((await m.emailAudience()).some((contact) => contact.email === "private@example.com" && contact.sources.includes("Individual email")))
+    assert.equal((await route.POST(req({ action: "create", subject: "Private", message: "Hello", audience: "single", email: "one@example.com,two@example.com" }))).status, 400)
+    assert.equal((await route.POST(req({ action: "create", subject: "Private", message: "Hello", audience: "single", email: "same@example.com" }))).status, 400)
+    globalThis.fetch = async (_url, options) => {
+      const messages = JSON.parse(String(options?.body))
+      assert.equal(messages.length, 1)
+      assert.deepEqual(messages[0].to, ["private@example.com"])
+      assert.equal(messages[0].subject, "Your private itinerary")
+      assert.ok(messages[0].html.includes("dunexplore-logo-transparent.png"))
+      assert.ok(messages[0].html.includes("View your trip"))
+      return Response.json({ data: [{ id: "private-provider-id" }] })
+    }
+    assert.equal((await route.POST(req({ action: "send", id: individual.id }))).status, 200)
     globalThis.fetch = async () => Response.json({ message: "rate limited" }, { status: 429 })
     assert.equal((await route.POST(req({ action: "send", id: next.id }))).status, 502)
     const records = JSON.parse(await readFile(path.join(temporary, "data/email_campaigns.json"), "utf8"))
