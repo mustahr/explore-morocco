@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   if (!isAdminRequest(request)) return unauthorizedResponse()
   try {
     const [contacts, campaigns] = await Promise.all([emailAudience(), marketingRecords<Campaign>("email_campaigns")])
-    return Response.json({ contacts, campaigns: campaigns.sort((a, b) => b.createdAt.localeCompare(a.createdAt)), configured: Boolean(process.env.RESEND_API_KEY?.trim()) }, { headers: { "Cache-Control": "no-store" } })
+    return Response.json({ siteUrl: getSiteUrl(), contacts, campaigns: campaigns.sort((a, b) => b.createdAt.localeCompare(a.createdAt)), configured: Boolean(process.env.RESEND_API_KEY?.trim()) }, { headers: { "Cache-Control": "no-store" } })
   } catch { return Response.json({ error: "Could not load the email audience. Check the database connection." }, { status: 503 }) }
 }
 export async function POST(request: Request) {

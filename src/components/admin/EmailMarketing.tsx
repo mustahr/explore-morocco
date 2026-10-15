@@ -2,9 +2,25 @@
 import { useEffect, useRef, useState } from "react"
 import type { CampaignDesign } from "@/lib/email-template"
 import type { Campaign, EmailContact } from "@/lib/email-marketing"
+import { defaultSiteUrl } from "@/lib/site"
 import { formatMoroccoDateTime } from "@/lib/record-timestamps"
 
+const mainPages = [
+  { path: "/trips", title: "Trips & Tours" },
+  { path: "/trip-generator", title: "Trip Planner" },
+  { path: "/destinations", title: "All Destinations" },
+  { path: "/experiences", title: "All Experiences" },
+  { path: "/blog", title: "Travel Blog" },
+  { path: "/contact", title: "Contact Us" },
+  { path: "/about", title: "About Us" },
+  { path: "/", title: "Home" },
+]
+
 export function EmailMarketing() {
+  const [siteUrl, setSiteUrl] = useState(defaultSiteUrl)
+  const [pageGroups, setPageGroups] = useState<Array<{ label: string; pages: Array<{ path: string; title: string }> }>>([])
+  const [pagesLoading, setPagesLoading] = useState(true)
+  const [pagesError, setPagesError] = useState(false)
   const [contacts, setContacts] = useState<EmailContact[]>([])
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [query, setQuery] = useState("")
@@ -55,9 +71,31 @@ export function EmailMarketing() {
   }
   async function load() {
     const data = await api()
-    setContacts(data.contacts); setCampaigns(data.campaigns); setConfigured(data.configured)
+    setContacts(data.contacts); setCampaigns(data.campaigns); setConfigured(data.configured); if (data.siteUrl) setSiteUrl(data.siteUrl)
   }
-  useEffect(() => { let active = true; api().then((data) => { if (active) { setContacts(data.contacts); setCampaigns(data.campaigns); setConfigured(data.configured) } }).catch((error) => { if (active) setNotice(error.message) }); return () => { active = false } }, [])
+  useEffect(() => { let active = true; api().then((data) => { if (active) { setContacts(data.contacts); setCampaigns(data.campaigns); setConfigured(data.configured); if (data.siteUrl) setSiteUrl(data.siteUrl) } }).catch((error) => { if (active) setNotice(error.message) }); return () => { active = false } }, [])
+  useEffect(() => {
+    const controller = new AbortController()
+    const catalogs = [
+      { endpoint: "/api/trips", key: "trips", label: "Individual trips", prefix: "/trips/", id: "id", title: "title" },
+      { endpoint: "/api/destinations", key: "destinations", label: "Individual destinations", prefix: "/destinations/", id: "slug", title: "name" },
+      { endpoint: "/api/experiences", key: "experiences", label: "Individual experiences", prefix: "/experiences/", id: "id", title: "title" },
+      { endpoint: "/api/blog", key: "posts", label: "Blog posts", prefix: "/blog/", id: "slug", title: "title" },
+    ]
+    Promise.allSettled(catalogs.map(async (catalog) => {
+      const response = await fetch(catalog.endpoint, { signal: controller.signal })
+      if (!response.ok) throw new Error("Could not load pages")
+      const data = await response.json()
+      if (!Array.isArray(data[catalog.key])) throw new Error("Invalid pages")
+      return { label: catalog.label, pages: (data[catalog.key] as Array<Record<string, unknown>>).filter((item) => typeof item[catalog.id] === "string" && typeof item[catalog.title] === "string").map((item) => ({ path: `${catalog.prefix}${encodeURIComponent(String(item[catalog.id]))}`, title: String(item[catalog.title]) })) }
+    })).then((results) => {
+      if (controller.signal.aborted) return
+      setPageGroups(results.flatMap((result) => result.status === "fulfilled" ? [result.value] : []))
+      setPagesError(results.some((result) => result.status === "rejected"))
+      setPagesLoading(false)
+    })
+    return () => controller.abort()
+  }, [])
   async function run(action: () => Promise<void>) {
     setBusy(true); setNotice("")
     try { await action() } catch (error) { setNotice(error instanceof Error ? error.message : "Could not complete this action.") }
@@ -112,8 +150,7 @@ export function EmailMarketing() {
         <fieldset className="rounded-2xl border border-stone-200 p-4"><legend className="px-2 text-sm font-semibold">Email design</legend><p className="mb-4 text-xs leading-5 text-stone-500">Your logo and a Morocco photo are included automatically. Customize the image and button below. Instagram and Facebook icons use placeholder links for now.</p><div className="grid gap-4 md:grid-cols-2">{([
           ["imageUrl", "Hero image URL (optional)", "https://…/your-photo.jpg"],
           ["buttonLabel", "Button label", "Explore Morocco"],
-          ["buttonUrl", "Button destination", "https://www.dunexplore-morocco.com/trips"],
-        ] as const).map(([key, label, placeholder]) => <label key={key} className="grid min-w-0 gap-2 text-sm font-semibold">{label}<input type={key === "buttonLabel" ? "text" : "url"} value={design[key] || ""} maxLength={key === "buttonLabel" ? 60 : 2000} onChange={(event) => { setDesign((current) => ({ ...current, [key]: event.target.value })); setPreview(null) }} placeholder={placeholder} className="admin-input min-w-0" /></label>)}</div></fieldset>
+        ] as const).map(([key, label, placeholder]) => <label key={key} className="grid min-w-0 gap-2 text-sm font-semibold">{label}<input type={key === "buttonLabel" ? "text" : "url"} value={design[key] || ""} maxLength={key === "buttonLabel" ? 60 : 2000} onChange={(event) => { setDesign((current) => ({ ...current, [key]: event.target.value })); setPreview(null) }} placeholder={placeholder} className="admin-input min-w-0" /></label>)}<label className="grid min-w-0 gap-2 text-sm font-semibold">Button destination<select value={design.buttonUrl || `${siteUrl}/trips`} onChange={(event) => { setDesign((current) => ({ ...current, buttonUrl: event.target.value })); setPreview(null) }} className="admin-input min-w-0"><optgroup label="Main pages">{mainPages.map((page) => <option key={page.path} value={`${siteUrl}${page.path}`}>{page.title}</option>)}</optgroup>{pageGroups.filter((group) => group.pages.length).map((group) => <optgroup key={group.label} label={group.label}>{group.pages.map((page) => <option key={page.path} value={`${siteUrl}${page.path}`}>{page.title}</option>)}</optgroup>)}</select><span className="text-xs font-normal text-stone-500">{pagesLoading ? "Loading individual page options…" : pagesError ? "Some individual pages could not load. Main pages are available; reload to try again." : "Choose the page clients should visit when they click the email button."}</span></label></div></fieldset>
         <div className="flex flex-col gap-3 sm:flex-row"><input type="email" aria-label="Test email recipient" value={testEmail} onChange={(event) => setTestEmail(event.target.value)} className="admin-input min-w-0 flex-1" /><button disabled={busy || !configured || !subject.trim() || !message.trim()} onClick={() => run(async () => { const result = await api({ action: "test", subject, message, email: testEmail, design }); setNotice(result.message) })} className="rounded-xl border px-4 py-3 font-semibold disabled:opacity-50">Send test email</button><button disabled={busy || !subject.trim() || !message.trim() || !recipientCount || (audience === "all" && !permission)} onClick={() => run(async () => { const result = await api({ action: "create", subject, message, audience, email: clientEmail, permissionConfirmed: permission, design }); setPreview(result.campaign); await load() })} className="btn-primary rounded-xl px-5 py-3 font-semibold disabled:opacity-50">Save & preview</button></div>
       </div>
       {preview && <dialog ref={campaignDialog} aria-labelledby="campaign-preview-title" onCancel={(event) => { event.preventDefault(); if (!busy) setPreview(null) }} onClick={(event) => { if (event.target === event.currentTarget && !busy) setPreview(null) }} className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-3xl overflow-y-auto overscroll-contain rounded-3xl border border-amber-200 bg-white p-5 text-stone-900 shadow-2xl backdrop:bg-black/60 sm:p-7"><div className="mb-5 flex items-start justify-between gap-4"><h2 id="campaign-preview-title" className="text-2xl font-bold">{preview.audience === "single" ? (preview.status === "complete" ? "Email details" : "Review email") : (preview.status === "complete" ? "Campaign details" : "Review campaign")}</h2><button type="button" disabled={busy} onClick={() => setPreview(null)} className="shrink-0 rounded-xl border px-4 py-2 font-semibold disabled:opacity-50">Close</button></div><p className="mb-3 text-xs text-stone-500">{preview.audience === "single" ? `To: ${preview.recipients[0]}` : `${preview.recipients.length} recipients · ${preview.audience}`} · {preview.subject}</p><div className="mb-3 flex gap-2"><button type="button" aria-pressed={previewWidth === "desktop"} onClick={() => setPreviewWidth("desktop")} className={`rounded-lg border px-3 py-2 text-sm ${previewWidth === "desktop" ? "bg-stone-950 text-white" : "bg-white"}`}>Desktop</button><button type="button" aria-pressed={previewWidth === "mobile"} onClick={() => setPreviewWidth("mobile")} className={`rounded-lg border px-3 py-2 text-sm ${previewWidth === "mobile" ? "bg-stone-950 text-white" : "bg-white"}`}>Mobile</button></div><div className="overflow-hidden rounded-xl border bg-stone-100">{renderedPreview?.id === preview.id ? <iframe title="Campaign email design preview" sandbox="" srcDoc={renderedPreview.html} className="mx-auto block h-[65dvh] max-h-[850px] w-full border-0" style={{ maxWidth: previewWidth === "mobile" ? 360 : "100%" }} /> : <p role="status" className="p-6">Loading email preview…</p>}</div><div className="mt-4 rounded-2xl bg-amber-50 p-5"><p className="mt-3 text-sm">{Object.values(preview.batches).reduce((sum, batch) => sum + batch.count, 0)} emails accepted by provider.</p>{preview.status !== "complete" && <button disabled={busy || !configured} onClick={() => run(() => send(preview))} className="mt-4 rounded-xl bg-stone-950 px-5 py-3 font-semibold text-white disabled:opacity-50">{busy ? "Working…" : preview.audience === "single" ? `Send email to ${preview.recipients[0]}` : `Send campaign to ${preview.recipients.length} contacts`}</button>}<p className="mt-3 text-xs text-stone-500">Keep this page open during sending. If interrupted, resume this saved campaign from history.</p>{preview.status === "complete" && <p className="mt-3 text-sm font-semibold text-emerald-800">Sending complete. Provider acceptance is recorded; check Resend for delivery status.</p>}</div>{notice && <p role="status" className="mt-4 rounded-xl bg-stone-100 p-4 text-sm">{notice}</p>}</dialog>}
