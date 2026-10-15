@@ -1,34 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref } from "@/lib/contact"
-import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { CONTACT_EMAIL, CONTACT_LOCATION, CONTACT_PHONE, CONTACT_PHONE_HREF, contactEmailHref, contactWhatsAppHref } from "@/lib/contact"
+import { Mail, Phone, MapPin, Send, MessageCircle } from "lucide-react"
 import { useApp } from "@/context/AppContext"
 import { translations } from "@/lib/utils"
 import { useState } from "react"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
-
-const SocialIcons = () => (
-  <>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-    </svg>
-  </>
-)
-
-const FacebookIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-  </svg>
-)
-
-const TwitterIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
-  </svg>
-)
 
 export function Footer() {
   const { language } = useApp()
@@ -69,14 +47,11 @@ export function Footer() {
               {t.footer.description}
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <SocialIcons />
+              <a href={contactWhatsAppHref()} target="_blank" rel="noopener noreferrer" aria-label="Contact Dunexplore Morocco on WhatsApp (opens in a new tab)" className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                <MessageCircle size={18} aria-hidden="true" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <FacebookIcon />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-primary transition-colors">
-                <TwitterIcon />
+              <a href={contactEmailHref()} aria-label="Email Dunexplore Morocco" className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-800 transition-colors hover:bg-primary hover:text-stone-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+                <Mail size={18} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -137,8 +112,8 @@ export function Footer() {
             &copy; 2026 Dunexplore Morocco. {t.footer.rights}
           </p>
           <div className="flex gap-6">
-            <Link href="#" className="text-stone-500 hover:text-white text-sm transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-stone-500 hover:text-white text-sm transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="text-stone-500 hover:text-white text-sm transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-stone-500 hover:text-white text-sm transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

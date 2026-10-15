@@ -13,6 +13,8 @@ const staticRoutes = [
   "/about",
   "/blog",
   "/contact",
+  "/privacy",
+  "/terms",
   "/destinations",
   "/experiences",
   "/trip-generator",
