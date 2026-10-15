@@ -43,7 +43,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pt-32 pb-10">
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center pt-32 pb-10">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -105,34 +105,33 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
-          className="flex items-center justify-center gap-8 mt-12 text-white/70"
+          className="mx-auto mt-12 grid w-full max-w-xl grid-cols-3 divide-x divide-white/20 text-white/70"
         >
-          <div className="text-center">
+          <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">500+</p>
-            <p className="text-sm">Moroccan Tours</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Moroccan Tours</p>
           </div>
-          <div className="w-px h-10 bg-white/20" />
-          <div className="text-center">
+          <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">50k+</p>
-            <p className="text-sm">Dream Trips Planned</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Dream Trips Planned</p>
           </div>
-          <div className="w-px h-10 bg-white/20" />
-          <div className="text-center">
+          <div className="min-w-0 px-2 text-center sm:px-4">
             <p className="text-2xl font-bold text-white">4.9</p>
-            <p className="text-sm">Average Rating</p>
+            <p className="mt-1 text-xs leading-relaxed sm:text-sm">Average Rating</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          aria-hidden="true"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="mx-auto mt-8 flex w-fit justify-center text-white/50"
+        >
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
+            <div className="w-1 h-2 bg-white/50 rounded-full" />
           </div>
         </motion.div>
       </div>
-
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50"
-      >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
-          <div className="w-1 h-2 bg-white/50 rounded-full" />
-        </div>
-      </motion.div>
     </section>
   )
 }
