@@ -1,5 +1,5 @@
 export const siteName = "Dunexplore Morocco"
-export const defaultSiteUrl = "https://morocco-travel.vercel.app"
+export const defaultSiteUrl = "https://www.dunexplore-morocco.com"
 
 export function getSiteUrl() {
   const rawUrl =

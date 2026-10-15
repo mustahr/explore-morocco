@@ -5,9 +5,10 @@ import { getBookings, getLeads } from "./admin-db"
 import { getCloudRecords, upsertCloudRecord, assertLocalWritesAllowed } from "./cloud-db"
 import { CONTACT_EMAIL } from "./contact"
 import { getSiteUrl } from "./site"
+import { renderCampaignEmail, type CampaignDesign } from "./email-template"
 
 export interface EmailContact { id: string; email: string; name: string; sources: string[]; firstSeen: string; lastSeen: string; subscribed: boolean; unsubscribed: boolean }
-export interface Campaign { id: string; subject: string; message: string; audience: "subscribers" | "all"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
+export interface Campaign { design?: CampaignDesign; id: string; subject: string; message: string; audience: "subscribers" | "all"; recipients: string[]; createdAt: string; batches: Record<string, { count: number; acceptedAt: string }>; status: "draft" | "sending" | "complete"; lastError?: string }
 interface Preference { id: string; email: string; subscribed: boolean; unsubscribed: boolean; updatedAt: string }
 export const emailValid = (email: string) => email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 export const contactId = (email: string) => createHash("sha256").update(email.trim().toLowerCase()).digest("hex")
@@ -78,14 +79,13 @@ export function unsubscribeEmail(token: string) {
   const expected = unsubscribeToken(email).split(".")[1]
   return timingSafeEqual(Buffer.from(signature), Buffer.from(expected)) ? email : null
 }
-export function campaignPayload(subject: string, message: string, email: string) {
-  const escape = (value: string) => value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!)
+export function campaignPayload(subject: string, message: string, email: string, design: CampaignDesign = {}) {
   const unsubscribe = `${getSiteUrl()}/unsubscribe?token=${encodeURIComponent(unsubscribeToken(email))}`
   return {
     from: process.env.NOTIFICATION_EMAIL_FROM?.trim() || "Dunexplore Morocco <notifications@dunexplore-morocco.com>",
     to: [email], reply_to: CONTACT_EMAIL, subject,
-    text: `${message}\n\nDunexplore Morocco · Marrakech, Morocco\nUnsubscribe: ${unsubscribe}`,
-    html: `<div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;color:#1c1917;line-height:1.7"><p style="color:#94751c;font-weight:bold">DUNEXPLORE MOROCCO</p><h1>${escape(subject)}</h1><div style="white-space:pre-wrap">${escape(message)}</div><hr/><p style="font-size:12px">Dunexplore Morocco · Marrakech, Morocco<br/><a href="${escape(unsubscribe)}">Unsubscribe from travel emails</a></p></div>`,
+    text: `${message}\n\n${design.buttonLabel || "Explore Morocco"}: ${design.buttonUrl || `${getSiteUrl()}/trips`}\n\nDunexplore Morocco · Marrakech, Morocco\n${CONTACT_EMAIL}\nUnsubscribe: ${unsubscribe}`,
+    html: renderCampaignEmail(subject, message, getSiteUrl(), unsubscribe, design),
     headers: { "List-Unsubscribe": `<${unsubscribe}>` },
   }
 }
@@ -102,7 +102,7 @@ export async function sendCampaignBatch(campaign: Campaign, index: number) {
   } else {
     const response = await fetch("https://api.resend.com/emails/batch", {
       method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json", "Idempotency-Key": `${campaign.id}/${index}` },
-      body: JSON.stringify(recipients.map((email) => campaignPayload(campaign.subject, campaign.message, email))), signal: AbortSignal.timeout(20000),
+      body: JSON.stringify(recipients.map((email) => campaignPayload(campaign.subject, campaign.message, email, campaign.design))), signal: AbortSignal.timeout(20000),
     })
     const result = await response.json().catch(() => null)
     if (!response.ok || !Array.isArray(result?.data) || result.data.length !== recipients.length || result.data.some((item: { id?: string }) => !item.id)) {
@@ -115,6 +115,6 @@ export async function sendCampaignBatch(campaign: Campaign, index: number) {
   await saveMarketingRecord("email_campaigns", campaign)
   return campaign
 }
-export function newCampaign(subject: string, message: string, audience: "subscribers" | "all", recipients: string[]): Campaign {
-  return { id: randomUUID(), subject, message, audience, recipients, createdAt: new Date().toISOString(), batches: {}, status: "draft" }
+export function newCampaign(subject: string, message: string, audience: "subscribers" | "all", recipients: string[], design: CampaignDesign = {}): Campaign {
+  return { id: randomUUID(), subject, message, audience, recipients, design, createdAt: new Date().toISOString(), batches: {}, status: "draft" }
 }
