@@ -50,7 +50,7 @@ export function HeroSection() {
           transition={{ duration: 0.5 }}
           className="mb-6 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90 backdrop-blur-sm"
         >
-          Moroccan trips & tours, powered by AI
+          Moroccan trips & tours, made for you
         </motion.div>
 
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">

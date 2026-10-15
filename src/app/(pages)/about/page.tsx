@@ -87,8 +87,8 @@ export default function AboutPage() {
                 From Local Guides to Global Platform
               </h2>
               <p className="text-stone-600 text-lg leading-relaxed mb-6">
-                MoroccoAI started as a simple idea: what if travelers could plan their perfect Morocco trip with the
-                guidance of local experts, powered by the efficiency of AI?
+                Dunexplore Morocco started as a simple idea: what if travelers could plan their perfect Morocco trip with the
+                guidance of local experts and the freedom to tailor every detail?
               </p>
               <p className="text-stone-600 text-lg leading-relaxed mb-6">
                 Founded in Marrakech by a team of travel enthusiasts, software engineers, and hospitality professionals,
@@ -132,7 +132,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
             {[
               { icon: MapPin, title: "Local Expertise", description: "Born and raised in Morocco, we know every corner of this beautiful country." },
-              { icon: Lightbulb, title: "AI-Powered Planning", description: "Our AI creates personalized itineraries based on your preferences and budget." },
+              { icon: Lightbulb, title: "Personalized Planning", description: "Create personalized itineraries based on your preferences and budget." },
               { icon: Heart, title: "Authentic Experiences", description: "We connect you with real local guides, artisans, and families." },
               { icon: Shield, title: "Trusted & Secure", description: "24/7 support, verified partners, and transparent pricing." },
             ].map((item, index) => (

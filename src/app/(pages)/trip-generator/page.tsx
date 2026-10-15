@@ -309,7 +309,7 @@ export default function TripGeneratorPage({ searchParams }: TripGeneratorPagePro
 
   return (
     <div className="pt-20 lg:pt-24 min-h-screen">
-      <PageHero image="/images/content/sahara-dunes.webp" imageAlt="Camel caravan crossing the golden Sahara dunes" eyebrow="Plan your journey" title="Trip Generator" description="Tell us your preferences, and our AI will create your perfect Morocco itinerary." />
+      <PageHero image="/images/content/sahara-dunes.webp" imageAlt="Camel caravan crossing the golden Sahara dunes" eyebrow="Plan your journey" title="Trip Generator" description="Tell us your preferences and create your personalized Morocco itinerary." />
 
       <section className="py-12 lg:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">

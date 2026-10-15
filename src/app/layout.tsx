@@ -25,11 +25,11 @@ const body = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
+    default: "Dunexplore Morocco - Moroccan Trips & Tours",
     template: `%s | ${siteName}`,
   },
-  description: "Discover Moroccan trips and tours, from Sahara escapes to medina experiences. Use AI planning to turn your dream Morocco trip into a personalized itinerary.",
-  keywords: ["Morocco travel", "Morocco tours", "AI travel planner", "Marrakech", "Sahara desert", "Chefchaouen", "Morocco experiences"],
+  description: "Discover Moroccan trips and tours, from Sahara escapes to medina experiences. Plan your dream Morocco trip with a personalized itinerary.",
+  keywords: ["Morocco travel", "Morocco tours", "Morocco trip planner", "Marrakech", "Sahara desert", "Chefchaouen", "Morocco experiences"],
   applicationName: siteName,
   creator: siteName,
   publisher: siteName,
@@ -48,8 +48,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
-    description: "Discover Moroccan trips and tours, then use AI planning to turn your dream trip into a personalized itinerary.",
+    title: "Dunexplore Morocco - Moroccan Trips & Tours",
+    description: "Discover Moroccan trips and tours, and plan your dream trip with a personalized itinerary.",
     url: "/",
     siteName,
     type: "website",
@@ -57,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MoroccoAI - Moroccan Trips & Tours with AI Planning",
-    description: "Discover Moroccan trips and tours, then use AI planning to turn your dream trip into a personalized itinerary.",
+    title: "Dunexplore Morocco - Moroccan Trips & Tours",
+    description: "Discover Moroccan trips and tours, and plan your dream trip with a personalized itinerary.",
   },
 }
 

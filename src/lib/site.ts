@@ -1,4 +1,4 @@
-export const siteName = "MoroccoAI"
+export const siteName = "Dunexplore Morocco"
 export const defaultSiteUrl = "https://morocco-travel.vercel.app"
 
 export function getSiteUrl() {

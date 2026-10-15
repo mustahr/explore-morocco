@@ -54,7 +54,7 @@ export function TestimonialsSection() {
                   <Star key={i} size={16} className="fill-accent text-accent" />
                 ))}
               </div>
-              <p className="text-stone-600 mb-6 leading-relaxed">&ldquo;{testimonial.text}&rdquo;</p>
+              <p className="text-stone-600 mb-6 leading-relaxed">&ldquo;{testimonial.text.replace(/AI-generated itinerary/g, "personalized itinerary")}&rdquo;</p>
               <div className="flex items-center gap-4">
                 <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
                   <ImageWithFallback
