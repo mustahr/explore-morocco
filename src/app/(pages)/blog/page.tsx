@@ -123,8 +123,10 @@ export default function BlogPage() {
                     <ImageWithFallback
                       src={post.image}
                       alt={post.title}
+                      fill
+                      sizes="(max-width: 1023px) 100vw, 50vw"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      fallbackClassName="w-full h-full"
+                      fallbackClassName="absolute inset-0"
                     />
                   </div>
                   <span className="text-primary text-sm font-semibold">{post.category}</span>
@@ -156,12 +158,14 @@ export default function BlogPage() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Link href={`/blog/${post.slug}`} className="group flex gap-4">
-                    <div className="w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                    <div className="relative w-32 h-24 rounded-xl overflow-hidden flex-shrink-0">
                       <ImageWithFallback
                         src={post.image}
                         alt={post.title}
+                        fill
+                        sizes="128px"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        fallbackClassName="w-full h-full"
+                        fallbackClassName="absolute inset-0"
                       />
                     </div>
                     <div>
@@ -190,12 +194,14 @@ export default function BlogPage() {
               >
                 <Link href={`/blog/${post.slug}`} className="group block">
                   <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-stone-100 card-hover">
-                    <div className="aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-[16/10] overflow-hidden">
                       <ImageWithFallback
                         src={post.image}
                         alt={post.title}
+                        fill
+                        sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        fallbackClassName="w-full h-full"
+                        fallbackClassName="absolute inset-0"
                       />
                     </div>
                     <div className="p-5">
