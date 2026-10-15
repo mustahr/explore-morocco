@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react"
 import type { CampaignDesign } from "@/lib/email-template"
 import type { Campaign, EmailContact } from "@/lib/email-marketing"
+import { ClientEmailPicker } from "./ClientEmailPicker"
 import { defaultSiteUrl } from "@/lib/site"
 import { formatMoroccoDateTime } from "@/lib/record-timestamps"
 
@@ -142,7 +143,7 @@ export function EmailMarketing() {
     })
   }
   const eligible = contacts.filter((contact) => !contact.unsubscribed && (audience === "single" ? contact.email === clientEmail.trim().toLowerCase() : audience === "all" || contact.subscribed))
-  const recipientCount = audience === "single" ? (clientEmail.trim() ? 1 : 0) : eligible.length
+  const recipientCount = audience === "single" ? (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail.trim()) ? 1 : 0) : eligible.length
   const visible = contacts.filter((contact) => `${contact.email} ${contact.name} ${contact.sources.join(" ")}`.toLowerCase().includes(query.toLowerCase()) && (filter === "all" || (filter === "subscribers" ? contact.subscribed && !contact.unsubscribed : filter === "unsubscribed" ? contact.unsubscribed : contact.sources.includes(filter))))
   return <section className="mt-8 space-y-6">
     {notice && <p role="status" className="rounded-xl bg-stone-100 p-4 text-sm">{notice}</p>}
@@ -164,7 +165,7 @@ export function EmailMarketing() {
       {!configured && <p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">Sending needs RESEND_API_KEY in Vercel Production and a verified sender. You can collect contacts and prepare campaigns now.</p>}
       <div className="mt-5 grid gap-4">
         <label className="grid gap-2 text-sm font-semibold">Audience<select value={audience} onChange={(event) => { setAudience(event.target.value as "subscribers" | "all" | "single"); setPreview(null) }} className="admin-input"><option value="single">One client — individual email</option><option value="subscribers">Newsletter subscribers</option><option value="all">All contacts I have permission to email</option></select></label>
-        {audience === "single" && <label className="grid gap-2 text-sm font-semibold">Client email<input ref={clientEmailRef} type="email" list="client-email-contacts" value={clientEmail} onChange={(event) => { setClientEmail(event.target.value); setPreview(null) }} placeholder="client@example.com" maxLength={254} className="admin-input" /><datalist id="client-email-contacts">{contacts.filter((contact) => !contact.unsubscribed).map((contact) => <option key={contact.id} value={contact.email}>{contact.name}</option>)}</datalist><span className="text-xs font-normal text-stone-500">Choose an existing contact or enter a new address. This email goes only to this client and uses the same branded template.</span></label>}
+        {audience === "single" && <ClientEmailPicker contacts={contacts} value={clientEmail} inputRef={clientEmailRef} onChange={(value) => { setClientEmail(value); setPreview(null) }} />}
         {audience === "all" && <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={permission} onChange={(event) => setPermission(event.target.checked)} className="mt-1" />I confirm I have permission to send this newsletter or offer to these contacts. Unsubscribed contacts remain excluded.</label>}
         <p className="text-sm text-stone-500">{recipientCount} {audience === "single" ? "client selected" : "eligible recipients"}. Emails are sent individually; recipients cannot see other email addresses.</p>
         <label className="grid gap-2 text-sm font-semibold">Subject<input value={subject} maxLength={180} onChange={(event) => { setSubject(event.target.value); setPreview(null) }} className="admin-input" placeholder="Your next Morocco adventure awaits" /></label>
