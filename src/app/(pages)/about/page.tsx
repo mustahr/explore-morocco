@@ -173,19 +173,20 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08 }}
-                  className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+                  className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
                 >
-                  <div className="relative aspect-[4/3]">
+                  <div className="relative isolate aspect-[4/3] shrink-0 overflow-hidden">
                     <ImageWithFallback
                       src={guide.image}
                       alt={guide.name}
+                      parallax={false}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover"
                       fallbackClassName="h-full w-full"
                     />
                   </div>
-                  <div className="p-5">
+                  <div className="relative z-10 flex-1 bg-white p-5">
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{guide.role}</p>
                     <h3 className="mt-2 text-xl font-bold text-stone-900">{guide.name}</h3>
                     <p className="mt-1 text-sm font-semibold text-stone-500">{guide.location} - {guide.yearsExperience} years</p>
