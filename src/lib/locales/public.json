@@ -2926,5 +2926,41 @@
   "Best time": {
     "fr": "Meilleure période",
     "ar": "أفضل وقت"
+  },
+  "Saved trips": {
+    "fr": "Voyages favoris",
+    "ar": "الرحلات المفضلة"
+  },
+  "View saved trips": {
+    "fr": "Voir mes voyages favoris",
+    "ar": "عرض الرحلات المفضلة"
+  },
+  "Save {trip}": {
+    "fr": "Enregistrer {trip}",
+    "ar": "حفظ {trip}"
+  },
+  "Remove {trip} from saved trips": {
+    "fr": "Retirer {trip} des favoris",
+    "ar": "إزالة {trip} من الرحلات المفضلة"
+  },
+  "Tap the heart on a trip to save it here.": {
+    "fr": "Appuyez sur le cœur d’un voyage pour le retrouver ici.",
+    "ar": "اضغط على قلب الرحلة لحفظها هنا."
+  },
+  "Saved on this browser. No account needed.": {
+    "fr": "Enregistré dans ce navigateur. Aucun compte nécessaire.",
+    "ar": "محفوظة في هذا المتصفح. لا حاجة لحساب."
+  },
+  "No saved trips yet": {
+    "fr": "Aucun voyage enregistré pour le moment",
+    "ar": "لا توجد رحلات مفضلة بعد"
+  },
+  "Explore all trips": {
+    "fr": "Découvrir tous les voyages",
+    "ar": "استكشف جميع الرحلات"
+  },
+  "{count} trips found": {
+    "fr": "{count} voyages trouvés",
+    "ar": "تم العثور على {count} رحلات"
   }
 }

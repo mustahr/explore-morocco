@@ -1,5 +1,6 @@
 "use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { useEffect, useState } from "react"
@@ -14,7 +15,7 @@ import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 export function FeaturedTrips() {
   const { tr } = useTranslations()
   const [trips, setTrips] = useState<Trip[]>([])
-  const { language, currency, toggleWishlist, isWishlisted } = useApp()
+  const { language, currency, wishlist } = useApp()
   const t = translations[language]
 
   useEffect(() => {
@@ -72,15 +73,7 @@ export function FeaturedTrips() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     fallbackClassName="h-full w-full"
                   />
-                  <button
-                    onClick={() => toggleWishlist(trip.id)}
-                    className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors"
-                  >
-                    <Heart
-                      size={20}
-                      className={isWishlisted(trip.id) ? "fill-primary text-primary" : "text-stone-400"}
-                    />
-                  </button>
+                  <WishlistButton tripId={trip.id} title={trip.title} className="absolute end-4 top-4" />
                   <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold uppercase">
                     {tr(trip.category)}
                   </div>
@@ -122,7 +115,7 @@ export function FeaturedTrips() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="mt-12 flex flex-wrap items-center justify-center gap-4"
         >
           <Link
             href="/trips"
@@ -130,6 +123,9 @@ export function FeaturedTrips() {
           >
             {tr("View all trips")}<ArrowRight size={18} />
           </Link>
+          {wishlist.length > 0 && <Link href="/trips#saved-trips" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 px-6 py-3 font-semibold text-stone-700 transition hover:border-primary hover:text-primary">
+            <Heart size={18} aria-hidden="true" />{tr("View saved trips")}
+          </Link>}
         </motion.div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 ﻿"use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
@@ -227,8 +228,8 @@ export default function TripDetailClient({
   return (
     <div className="pt-20 lg:pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32 lg:pb-20">
-        <Link href="/trips" className="inline-flex items-center gap-2 text-stone-500 hover:text-primary mb-8 transition-colors">
-          <ArrowLeft size={18} />{tr("Back to Trips")}</Link>
+        <div className="mb-8 flex items-center justify-between gap-4"><Link href="/trips" className="inline-flex items-center gap-2 text-stone-500 hover:text-primary transition-colors">
+          <ArrowLeft size={18} />{tr("Back to Trips")}</Link><div className="flex items-center gap-3"><Link href="/trips#saved-trips" className="text-sm font-semibold text-primary hover:underline">{tr("Saved trips")}</Link><WishlistButton tripId={trip.id} title={trip.title} /></div></div>
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px] mb-12">
           <section>
