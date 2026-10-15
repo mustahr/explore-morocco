@@ -5,6 +5,7 @@ import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { RecordDates } from "@/components/admin/RecordDates";
 import { formatMoroccoDateTime } from "@/lib/record-timestamps";
+import { EmailMarketing } from "@/components/admin/EmailMarketing";
 import { ProjectDiagnostics } from "@/components/admin/ProjectDiagnostics";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
@@ -970,6 +971,7 @@ const adminSections = [
   "site-content",
   "bookings",
   "leads",
+  "emails",
   "content",
   "database",
   "settings",
@@ -2964,6 +2966,7 @@ export default function AdminTripsPage() {
                 { id: "site-content", label: "Site Content", icon: Settings },
                 { id: "bookings", label: "Bookings", icon: Users },
                 { id: "leads", label: "Leads", icon: MessageCircle },
+                { id: "emails", label: "Emails & Campaigns", icon: MessageCircle },
                 { id: "content", label: "Content", icon: FileText },
                 { id: "database", label: "Database", icon: Database },
                 { id: "settings", label: "Settings", icon: Settings },
@@ -3094,6 +3097,7 @@ export default function AdminTripsPage() {
                     {activeSection === "experiences" && "Experience management"}
                     {activeSection === "bookings" && "Booking operations"}
                     {activeSection === "leads" && "Lead pipeline"}
+                    {activeSection === "emails" && "Emails & Campaigns"}
                     {activeSection === "guides" && "Guide management"}
                     {activeSection === "content" && "Content control"}
                     {activeSection === "database" && "Database status"}
@@ -3203,6 +3207,7 @@ export default function AdminTripsPage() {
 
             <AnimatePresence mode="wait">
               <motion.div key={activeSection} {...sectionTransition}>
+                {activeSection === "emails" && <EmailMarketing />}
                 {activeSection === "overview" && (
                   <section className="mt-8 space-y-8">
                     <section className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-xl shadow-stone-950/5">
