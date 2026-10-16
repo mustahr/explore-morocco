@@ -5,6 +5,7 @@ import { type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { RecordDates } from "@/components/admin/RecordDates";
 import { formatMoroccoDateTime } from "@/lib/record-timestamps";
+import { FavoritesDashboard } from "@/components/admin/FavoritesDashboard";
 import { EmailMarketing } from "@/components/admin/EmailMarketing";
 import { ProjectDiagnostics } from "@/components/admin/ProjectDiagnostics";
 import { AnimatePresence, motion } from "framer-motion";
@@ -30,6 +31,7 @@ import {
   Search,
   Settings,
   Sparkles,
+  Star,
   Trash2,
   TrendingUp,
   Upload,
@@ -972,6 +974,7 @@ const adminSections = [
   "bookings",
   "leads",
   "emails",
+  "favorites",
   "content",
   "database",
   "settings",
@@ -2967,6 +2970,7 @@ export default function AdminTripsPage() {
                 { id: "bookings", label: "Bookings", icon: Users },
                 { id: "leads", label: "Leads", icon: MessageCircle },
                 { id: "emails", label: "Emails & Campaigns", icon: MessageCircle },
+                { id: "favorites", label: "Visitor Favorites", icon: Star },
                 { id: "content", label: "Content", icon: FileText },
                 { id: "database", label: "Database", icon: Database },
                 { id: "settings", label: "Settings", icon: Settings },
@@ -3098,6 +3102,7 @@ export default function AdminTripsPage() {
                     {activeSection === "bookings" && "Booking operations"}
                     {activeSection === "leads" && "Lead pipeline"}
                     {activeSection === "emails" && "Emails & Campaigns"}
+                    {activeSection === "favorites" && "Visitor Favorites"}
                     {activeSection === "guides" && "Guide management"}
                     {activeSection === "content" && "Content control"}
                     {activeSection === "database" && "Database status"}
@@ -3208,6 +3213,7 @@ export default function AdminTripsPage() {
             <AnimatePresence mode="wait">
               <motion.div key={activeSection} {...sectionTransition}>
                 {activeSection === "emails" && <EmailMarketing />}
+                {activeSection === "favorites" && <FavoritesDashboard />}
                 {activeSection === "overview" && (
                   <section className="mt-8 space-y-8">
                     <section className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-xl shadow-stone-950/5">

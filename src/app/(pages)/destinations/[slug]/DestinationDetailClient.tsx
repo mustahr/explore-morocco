@@ -1,5 +1,6 @@
 "use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { BookingRequestButton } from "@/components/booking/BookingRequestButton"
@@ -7,7 +8,7 @@ import { BookingRequestButton } from "@/components/booking/BookingRequestButton"
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Heart, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, MessageCircle, Mail, Send, ChevronDown } from "lucide-react"
+import { Star, MapPin, Calendar, ArrowLeft, ArrowRight, Share2, Clock, Utensils, Navigation, Hotel, Lightbulb, MessageCircle, Mail, Send, ChevronDown } from "lucide-react"
 import { type Destination, type DestinationDetails } from "@/lib/data"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
@@ -334,8 +335,7 @@ export default function DestinationDetailClient({ destination }: { destination: 
                 </div>
               </div>
               <div className="flex gap-3 mt-6">
-                <button className="flex-1 py-3 rounded-xl border border-stone-200 text-stone-600 hover:border-primary hover:text-primary font-medium text-sm transition-colors flex items-center justify-center gap-2">
-                  <Heart size={16} />{tr("Save")}</button>
+                <WishlistButton tripId={dest.slug} title={dest.name} kind="destination" className="border border-stone-200" />
                 <button className="flex-1 py-3 rounded-xl border border-stone-200 text-stone-600 hover:border-primary hover:text-primary font-medium text-sm transition-colors flex items-center justify-center gap-2">
                   <Share2 size={16} />{tr("Share")}</button>
               </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { BookingWhatsAppCopy } from "@/components/booking/BookingWhatsAppCopy"
@@ -164,6 +165,7 @@ export default function ExperienceDetailClient({
           <div className="mt-12 grid items-end gap-10 lg:grid-cols-[1fr_24rem]">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl">
               <div className="flex flex-wrap items-center gap-3">
+                <WishlistButton tripId={experience.id} title={experience.title} kind="experience" />
                 <span className="inline-flex rounded-full bg-white px-4 py-2 text-sm font-bold text-primary shadow-lg shadow-stone-950/20">
                   {tr(experience.category)}
                 </span>

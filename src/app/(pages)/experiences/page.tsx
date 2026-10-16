@@ -1,5 +1,6 @@
 "use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { PageHero } from "@/components/layout/PageHero"
@@ -68,6 +69,7 @@ export default function ExperiencesPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
+                className="relative"
               >
                 <Link
                   href={`/experiences/${exp.id}`}
@@ -82,7 +84,7 @@ export default function ExperiencesPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       fallbackClassName="h-full w-full"
                     />
-                    <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-stone-700">
+                    <div className="absolute top-3 start-3 max-w-[calc(100%-5rem)] bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-stone-700">
                       {tr(exp.category)}
                     </div>
                   </div>
@@ -116,6 +118,7 @@ export default function ExperiencesPage() {
                     </div>
                   </div>
                 </Link>
+                <WishlistButton tripId={exp.id} title={exp.title} kind="experience" className="absolute end-3 top-3 z-10" />
               </motion.div>
             ))}
           </div>

@@ -123,7 +123,7 @@ export function FeaturedTrips() {
           >
             {tr("View all trips")}<ArrowRight size={18} />
           </Link>
-          {wishlist.length > 0 && <Link href="/trips#saved-trips" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 px-6 py-3 font-semibold text-stone-700 transition hover:border-primary hover:text-primary">
+          {trips.some((trip) => wishlist.includes(trip.id)) && <Link href="/trips#saved-trips" className="inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-200 px-6 py-3 font-semibold text-stone-700 transition hover:border-primary hover:text-primary">
             <Heart size={18} aria-hidden="true" />{tr("View saved trips")}
           </Link>}
         </motion.div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { WishlistButton } from "@/components/trips/WishlistButton"
 import { useTranslations } from "@/context/useTranslations"
 
 import { useEffect, useState } from "react"
@@ -136,6 +137,7 @@ export default function DestinationsPage() {
                       fallbackClassName="h-full w-full"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <WishlistButton tripId={dest.slug} title={dest.name} kind="destination" className="absolute end-4 top-4 z-10" />
                   </div>
                 </div>
 

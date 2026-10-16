@@ -6,9 +6,11 @@ import {
   useEffect,
   useContext,
   useMemo,
+  useRef,
   useSyncExternalStore,
   type ReactNode,
 } from "react"
+import { parseFavoriteKey } from "@/lib/favorite-keys"
 import { currencies, translations, type CurrencyCode, type LanguageCode } from "@/lib/utils"
 
 interface AppContextType {
@@ -134,6 +136,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const currency = hasHydrated ? storedCurrency : "MAD"
   const wishlist = hasHydrated ? storedWishlist : EMPTY_WISHLIST
 
+  const syncQueue = useRef<Promise<void>>(Promise.resolve())
+  useEffect(() => {
+    if (!hasHydrated) return
+    const keys = wishlist.filter((key) => parseFavoriteKey(key)).slice(0, 200)
+    if (!keys.length && !localStorage.getItem("morocco-favorites-synced")) return
+    // Remember sync intent before the request: a fast unsave or offline reload
+    // must still send the empty snapshot and clear any server-side saves.
+    localStorage.setItem("morocco-favorites-synced", "true")
+    let cancelled = false
+    const enqueue = () => {
+      syncQueue.current = syncQueue.current.catch(() => {}).then(async () => {
+        if (cancelled) return
+        for (let attempt = 0; attempt < 3; attempt++) {
+          if (cancelled) return
+          try {
+            const response = await fetch("/api/favorites", {
+              method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ keys }), signal: AbortSignal.timeout(15000),
+            })
+            if (response.ok) { localStorage.setItem("morocco-favorites-synced", "true"); return }
+          } catch { /* Local favorites remain available while offline. */ }
+          if (attempt < 2) await new Promise((resolve) => window.setTimeout(resolve, 1000 * (attempt + 1)))
+        }
+      })
+    }
+    const timer = window.setTimeout(enqueue, 300)
+    window.addEventListener("online", enqueue)
+    return () => { cancelled = true; window.clearTimeout(timer); window.removeEventListener("online", enqueue) }
+  }, [hasHydrated, wishlist])
+
   const setLanguage = useCallback((lang: LanguageCode) => {
     writeStorage(LANGUAGE_STORAGE_KEY, lang)
   }, [])
@@ -143,9 +175,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const toggleWishlist = useCallback((id: string) => {
-    const nextWishlist = wishlist.includes(id) ? wishlist.filter((item) => item !== id) : [...wishlist, id]
+    const current = parseWishlist(readStoredWishlistSnapshot())
+    const nextWishlist = current.includes(id) ? current.filter((item) => item !== id) : [...current, id]
     writeStorage(WISHLIST_STORAGE_KEY, JSON.stringify(nextWishlist))
-  }, [wishlist])
+  }, [])
 
   const isWishlisted = useCallback((id: string) => wishlist.includes(id), [wishlist])
 
