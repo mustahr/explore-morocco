@@ -14,7 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isAdminRoute && <Navbar />}
-      <main ref={contentRef} style={!isAdminRoute && footerSpace ? { marginBottom: footerSpace } : undefined} className={!isAdminRoute ? "relative z-10 mb-0 bg-background shadow-[0_30px_80px_rgba(13,13,13,0.35)]" : "flex-1"}>
+      <main ref={contentRef} style={!isAdminRoute && footerSpace ? { marginBottom: footerSpace } : undefined} className={!isAdminRoute ? "relative z-10 mb-0 bg-background shadow-[0_30px_80px_rgba(13,13,13,0.35)]" : "min-w-0 w-full max-w-full flex-1"}>
         {children}
       </main>
       {!isAdminRoute && <Footer contentRef={contentRef} onRevealHeightChange={setFooterSpace} />}

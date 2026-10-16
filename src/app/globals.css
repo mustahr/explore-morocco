@@ -498,3 +498,48 @@ select.admin-input:focus,
 @media (prefers-reduced-motion: reduce) {
   html, body { scroll-behavior: auto; }
 }
+
+/* Admin layout: constrain intrinsic content instead of clipping page overflow. */
+.admin-shell :where(.grid) > *,
+.admin-shell :where(.flex) > :where(div, section, article, fieldset, label, p) {
+  min-width: 0;
+}
+.admin-shell :where(fieldset, input, textarea, select, iframe) {
+  min-width: 0;
+  max-width: 100%;
+}
+.admin-shell :where(p, h1, h2, h3, h4, a, code, label) {
+  overflow-wrap: anywhere;
+}
+.admin-shell pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.admin-shell .admin-input {
+  min-height: 44px;
+}
+.admin-shell .admin-navigation-panel {
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+@media (max-width: 639px) {
+  .admin-shell .admin-input { font-size: 16px; }
+  .admin-workspace :where(section, aside).rounded-\[2rem\] {
+    border-radius: 1.25rem;
+    padding: 1rem;
+  }
+}
+@media (max-height: 740px) {
+  .admin-shell .admin-sidebar-summary { display: none; }
+}
+
+.admin-shell .admin-record-list {
+  max-height: min(24rem, 60dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.25rem;
+  scrollbar-gutter: stable;
+}
+@media (min-width: 1280px) {
+  .admin-shell .admin-record-list { max-height: max(12rem, calc(100dvh - 14rem)); }
+}

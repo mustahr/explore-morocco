@@ -1068,6 +1068,30 @@ export default function AdminTripsPage() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [activeSection, setActiveSection] = useState<AdminSection>("overview");
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+  const adminMenuRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!isAdminMenuOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    adminMenuRef.current?.querySelector<HTMLButtonElement>("[data-admin-menu-close]")?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { event.preventDefault(); setIsAdminMenuOpen(false); return; }
+      if (event.key !== "Tab") return;
+      const controls = Array.from(adminMenuRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]') ?? []).filter((element) => element.getClientRects().length);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first) return;
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+      previousFocus?.focus({ preventScroll: true });
+    };
+  }, [isAdminMenuOpen]);
   const [brokenImageKeys, setBrokenImageKeys] = useState<string[]>([]);
   const [isCheckingImages, setIsCheckingImages] = useState(false);
   const [uploadingMediaKey, setUploadingMediaKey] = useState<string | null>(
@@ -1103,6 +1127,7 @@ export default function AdminTripsPage() {
   function showAdminSection(section: AdminSection, mode: "push" | "replace" = "push") {
     setActiveSection(section);
     updateAdminSectionUrl(section, mode);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   const isEditing = Boolean(selectedTripId);
@@ -2887,7 +2912,7 @@ export default function AdminTripsPage() {
   }
 
   return (
-    <main className="min-h-screen min-w-0 w-full max-w-full bg-stone-50">
+    <main lang="en" dir="ltr" className="admin-shell min-h-screen min-w-0 w-full max-w-full bg-stone-50">
       <div
         className="min-h-screen"
       >
@@ -2898,6 +2923,8 @@ export default function AdminTripsPage() {
             isAdminMenuOpen ? "hidden" : "inline-flex"
           }`}
           aria-label="Open admin menu"
+          aria-expanded={isAdminMenuOpen}
+          aria-controls="admin-navigation"
           title="Open admin menu"
         >
           <Menu size={20} />
@@ -2911,37 +2938,46 @@ export default function AdminTripsPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setIsAdminMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-stone-950/55 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-stone-950/55 backdrop-blur-sm"
               aria-label="Close admin menu"
             />
           )}
         </AnimatePresence>
         <div
-          className={`group/sidebar fixed left-0 top-0 z-50 h-screen w-[min(20rem,calc(100vw-2rem))] transition-transform duration-300 ease-out lg:w-[280px] ${
+          className={`group/sidebar fixed left-0 top-0 z-50 h-dvh w-[min(20rem,calc(100vw-2rem))] transition-transform duration-300 ease-out lg:w-[280px] ${
             isAdminMenuOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:-translate-x-[280px] lg:hover:translate-x-0 lg:focus-within:translate-x-0`}
+          }`}
         >
           <button
             type="button"
             className="absolute left-full top-4 z-50 ml-4 hidden h-12 w-12 items-center justify-center rounded-2xl border border-stone-200 bg-white text-stone-900 shadow-xl shadow-stone-900/10 transition group-hover/sidebar:border-amber-300 group-hover/sidebar:bg-stone-950 group-hover/sidebar:text-white lg:inline-flex"
-            aria-label="Open admin menu"
-            title="Open admin menu"
+            onClick={() => setIsAdminMenuOpen((open) => !open)}
+            aria-label={isAdminMenuOpen ? "Close admin menu" : "Open admin menu"}
+            aria-expanded={isAdminMenuOpen}
+            aria-controls="admin-navigation"
+            title={isAdminMenuOpen ? "Close admin menu" : "Open admin menu"}
           >
             <Menu size={20} />
           </button>
           <motion.aside
+            ref={adminMenuRef}
+            id="admin-navigation"
+            role={isAdminMenuOpen ? "dialog" : undefined}
+            aria-modal={isAdminMenuOpen ? true : undefined}
+            aria-label="Admin navigation"
+            inert={!isAdminMenuOpen}
             initial={{ opacity: 0, x: -24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="relative flex h-screen max-h-screen flex-col overflow-y-auto border-b border-stone-200 bg-stone-950 px-4 py-6 text-white shadow-2xl shadow-stone-950/30 transition-all duration-300 lg:w-[280px] lg:overflow-hidden lg:border-b-0 lg:border-r lg:px-5"
+            className="admin-navigation-panel relative flex h-dvh max-h-dvh min-h-0 flex-col overflow-hidden border-b border-stone-200 bg-stone-950 px-4 py-6 text-white shadow-2xl shadow-stone-950/30 transition-all duration-300 lg:w-[280px] lg:border-b-0 lg:border-r lg:px-5"
           >
             <div
-              className="shrink-0 rounded-[1.35rem] border border-white/10 bg-white/[0.06] p-2 shadow-2xl shadow-black/15 backdrop-blur"
+              className="flex shrink-0 items-center gap-2 rounded-[1.35rem] border border-white/10 bg-white/[0.06] p-2 shadow-2xl shadow-black/15 backdrop-blur"
             >
               <Link
                 href="/"
                 onClick={() => setIsAdminMenuOpen(false)}
-                className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 text-sm font-semibold text-stone-200 transition hover:border-amber-300/50 hover:bg-amber-300/15 hover:text-white"
+                className="inline-flex h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 text-sm font-semibold text-stone-200 transition hover:border-amber-300/50 hover:bg-amber-300/15 hover:text-white"
                 title="Back to site"
               >
                 <ArrowLeft size={17} className="shrink-0" />
@@ -2949,10 +2985,11 @@ export default function AdminTripsPage() {
                   Back to site
                 </span>
               </Link>
+              <button type="button" data-admin-menu-close onClick={() => setIsAdminMenuOpen(false)} aria-label="Close admin menu" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 text-white transition hover:bg-white/10"><X size={20} /></button>
             </div>
 
             <nav
-              className="admin-sidebar-nav mt-5 grid min-h-0 gap-2 overflow-y-auto py-3 pr-2 [scrollbar-gutter:stable] lg:flex-1"
+              className="admin-sidebar-nav mt-4 grid min-h-0 flex-1 gap-2 overflow-y-auto overscroll-contain py-3 pr-2 [scrollbar-gutter:stable]"
             >
               {[
                 { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -3016,7 +3053,7 @@ export default function AdminTripsPage() {
             </nav>
 
             <div
-              className="mt-8 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4"
+              className="admin-sidebar-summary mt-4 shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4"
             >
               <p className="overflow-hidden whitespace-nowrap text-sm font-semibold">
                 Database
@@ -3047,7 +3084,7 @@ export default function AdminTripsPage() {
           </motion.aside>
         </div>
 
-        <div className="min-w-0 w-full max-w-full px-4 pb-8 pt-20 sm:px-6 lg:px-8 lg:py-8">
+        <div inert={isAdminMenuOpen} className="admin-workspace min-w-0 w-full max-w-full px-4 pb-8 pt-20 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto min-w-0 w-full max-w-7xl">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
@@ -3119,7 +3156,7 @@ export default function AdminTripsPage() {
                     type="button"
                     onClick={enableBrowserNotifications}
                     disabled={isEnablingPush || pushEnabledForDevice}
-                    className="flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/15 disabled:cursor-default disabled:text-emerald-200"
+                    className="flex w-full flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/15 disabled:cursor-default disabled:text-emerald-200"
                   >
                     <span className="inline-flex items-center gap-2">
                       <Bell size={17} />
@@ -3359,7 +3396,7 @@ export default function AdminTripsPage() {
                       />
                     </div>
 
-                    <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
+                    <div className="grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
                       <section className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg">
                         <div className="flex items-center gap-3">
                           <BarChart3 size={22} className="text-primary" />
@@ -3375,7 +3412,7 @@ export default function AdminTripsPage() {
 
                             return (
                               <div key={item.category}>
-                                <div className="flex items-center justify-between text-sm">
+                                <div className="flex flex-wrap items-center justify-between text-sm">
                                   <span className="font-semibold capitalize text-stone-700">
                                     {item.category}
                                   </span>
@@ -3476,7 +3513,7 @@ export default function AdminTripsPage() {
                                   whileHover={{ x: 4 }}
                                   className="rounded-2xl border border-amber-100 bg-amber-50/70 p-4"
                                 >
-                                  <div className="flex items-start justify-between gap-3">
+                                  <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="min-w-0">
                                       <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
                                         {issue.type}
@@ -3656,7 +3693,7 @@ export default function AdminTripsPage() {
                             {contentIssues.map((issue) => (
                               <div
                                 key={issue.id}
-                                className="grid gap-4 bg-white p-4 transition hover:bg-amber-50/40 md:grid-cols-[160px_1fr_auto] md:items-center"
+                                className="grid gap-4 bg-white p-4 transition hover:bg-amber-50/40 md:grid-cols-[10rem_minmax(0,1fr)_auto] md:items-center"
                               >
                                 <div>
                                   <p className="text-xs font-bold uppercase tracking-wider text-amber-700">
@@ -3686,9 +3723,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "blog" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Blog posts
@@ -3700,14 +3737,14 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewBlogPost}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add blog post"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
 
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {blogPosts.map((post) => (
                           <button
                             key={post.slug}
@@ -3719,7 +3756,7 @@ export default function AdminTripsPage() {
                                 : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"
                             }`}
                           >
-                            <div className="flex items-start justify-between gap-3">
+                            <div className="flex flex-wrap items-start justify-between gap-3">
                               <p className="min-w-0 truncate font-semibold text-stone-900">
                                 {post.title}
                               </p>
@@ -3737,7 +3774,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditingBlogPost
@@ -3750,7 +3787,7 @@ export default function AdminTripsPage() {
                               : "Create a new blog record"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {selectedBlogPostHref && (
                             <Link
                               href={selectedBlogPostHref}
@@ -3925,7 +3962,7 @@ export default function AdminTripsPage() {
                             className="admin-input min-h-24"
                           />
                         </Field>
-                        <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+                        <div className="grid gap-5 2xl:grid-cols-[minmax(0,1fr)_22rem]">
                           <div className="space-y-5">
                             <Field label="Article content">
                               <div className="mb-3 flex flex-wrap gap-2">
@@ -4014,7 +4051,7 @@ export default function AdminTripsPage() {
                           </div>
 
                           <div className="rounded-[2rem] border border-stone-200 bg-stone-50 p-5">
-                            <div className="mb-4 flex items-center justify-between gap-3">
+                            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
                               <div>
                                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
                                   Live Preview
@@ -4047,9 +4084,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "testimonials" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Testimonials
@@ -4061,13 +4098,13 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewTestimonial}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add testimonial"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {testimonials.map((testimonial) => (
                           <button
                             key={testimonial.id}
@@ -4089,7 +4126,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditingTestimonial
@@ -4102,7 +4139,7 @@ export default function AdminTripsPage() {
                               : "Create a new testimonial record"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {isEditingTestimonial && (
                             <button
                               type="button"
@@ -4212,9 +4249,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "guides" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Guides
@@ -4226,13 +4263,13 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewGuide}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add guide"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {guides.map((guide) => (
                           <button
                             key={guide.id}
@@ -4240,7 +4277,7 @@ export default function AdminTripsPage() {
                             onClick={() => startEditingGuide(guide)}
                             className={`w-full rounded-2xl border p-3 text-left transition ${selectedGuideId === guide.id ? "border-primary bg-amber-50" : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"}`}
                           >
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
                                 <ImageWithFallback
                                   src={guide.image}
@@ -4267,7 +4304,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditingGuide ? "Edit guide" : "Add guide"}
@@ -4278,7 +4315,7 @@ export default function AdminTripsPage() {
                               : "Create a new guide profile"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {isEditingGuide && (
                             <button
                               type="button"
@@ -4431,7 +4468,7 @@ export default function AdminTripsPage() {
                 {activeSection === "site-content" && (
                   <section className="mt-8 grid gap-6 xl:grid-cols-2">
                     <div className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex items-center justify-between gap-4 border-b border-stone-200 pb-6">
+                      <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-6">
                         <div>
                           <h3 className="text-2xl font-bold text-stone-900">
                             Trip generator options
@@ -4460,7 +4497,7 @@ export default function AdminTripsPage() {
                     </div>
 
                     <div className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex items-center justify-between gap-4 border-b border-stone-200 pb-6">
+                      <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-6">
                         <div>
                           <h3 className="text-2xl font-bold text-stone-900">
                             Trip detail content
@@ -4492,7 +4529,7 @@ export default function AdminTripsPage() {
 
                 {activeSection === "bookings" && (
                   <section className="mt-8 rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                    <div className="mb-6 flex items-center justify-between gap-4 border-b border-stone-200 pb-6">
+                    <div className="mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-6">
                       <div>
                         <h3 className="text-2xl font-bold text-stone-900">
                           Bookings
@@ -4506,7 +4543,7 @@ export default function AdminTripsPage() {
                       </span>
                     </div>
 
-                    <div className="mb-6 grid gap-3 lg:grid-cols-[1fr_240px]">
+                    <div className="mb-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_15rem]">
                       <label className="relative block">
                         <span className="sr-only">Search bookings</span>
                         <Search
@@ -4541,7 +4578,7 @@ export default function AdminTripsPage() {
                         return (
                           <div
                             key={booking.id}
-                            className="grid gap-4 rounded-2xl border border-stone-200 p-4 xl:grid-cols-[1.2fr_0.8fr_0.8fr_auto] xl:items-center"
+                            className="grid gap-4 rounded-2xl border border-stone-200 p-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)_minmax(0,0.8fr)_auto] xl:items-center"
                           >
                             <div>
                               <p className="mb-2 inline-flex rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-stone-600">
@@ -4667,7 +4704,7 @@ export default function AdminTripsPage() {
                               : "border-stone-200"
                           }`}
                         >
-                          <div className="flex items-start justify-between gap-4">
+                          <div className="flex flex-wrap items-start justify-between gap-4">
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
                                 <p className="font-bold text-stone-900">
@@ -4854,9 +4891,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "destinations" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Destinations
@@ -4868,14 +4905,14 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewDestination}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add new destination"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
 
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {destinations.map((destination) => (
                           <button
                             key={destination.slug}
@@ -4887,7 +4924,7 @@ export default function AdminTripsPage() {
                                 : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"
                             }`}
                           >
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                               <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
                                 <ImageWithFallback
                                 src={destination.image}
@@ -4899,7 +4936,7 @@ export default function AdminTripsPage() {
                                 />
                               </div>
                               <div className="min-w-0">
-                                <div className="flex items-start justify-between gap-3">
+                                <div className="flex flex-wrap items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
                                     {destination.name}
                                   </p>
@@ -4922,7 +4959,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditingDestination
@@ -4935,7 +4972,7 @@ export default function AdminTripsPage() {
                               : "Create a new destination record"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {isEditingDestination && (
                             <button
                               type="button"
@@ -5275,9 +5312,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "experiences" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Experiences
@@ -5289,14 +5326,14 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewExperience}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add new experience"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
 
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {experiences.map((experience) => (
                           <button
                             key={experience.id}
@@ -5308,7 +5345,7 @@ export default function AdminTripsPage() {
                                 : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"
                             }`}
                           >
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                               <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
                                 <ImageWithFallback
                                 src={experience.image}
@@ -5320,7 +5357,7 @@ export default function AdminTripsPage() {
                                 />
                               </div>
                               <div className="min-w-0">
-                                <div className="flex items-start justify-between gap-3">
+                                <div className="flex flex-wrap items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
                                     {experience.title}
                                   </p>
@@ -5343,7 +5380,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditingExperience
@@ -5356,7 +5393,7 @@ export default function AdminTripsPage() {
                               : "Create a new experience record"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {isEditingExperience && (
                             <button
                               type="button"
@@ -5545,9 +5582,9 @@ export default function AdminTripsPage() {
                 )}
 
                 {activeSection === "trips" && (
-                  <div className="mt-8 grid gap-8 lg:grid-cols-[360px_1fr]">
+                  <div className="mt-8 grid gap-8 xl:grid-cols-[20rem_minmax(0,1fr)]">
                     <aside className="rounded-[2rem] border border-stone-200 bg-white p-4 shadow-lg">
-                      <div className="flex items-center justify-between px-2 pb-4">
+                      <div className="flex flex-wrap items-center justify-between px-2 pb-4">
                         <div>
                           <h2 className="text-lg font-bold text-stone-900">
                             Trips
@@ -5559,14 +5596,14 @@ export default function AdminTripsPage() {
                         <button
                           type="button"
                           onClick={startNewTrip}
-                          className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
+                          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white transition hover:bg-primary"
                           aria-label="Add new trip"
                         >
                           <Plus size={18} />
                         </button>
                       </div>
 
-                      <div className="space-y-3">
+                      <div className="admin-record-list space-y-3" role="region" aria-label="Content records" tabIndex={0}>
                         {trips.map((trip) => (
                           <button
                             key={trip.id}
@@ -5578,7 +5615,7 @@ export default function AdminTripsPage() {
                                 : "border-stone-200 bg-white hover:border-primary/50 hover:bg-stone-50"
                             }`}
                           >
-                            <div className="flex gap-3">
+                            <div className="flex flex-wrap gap-3">
                               <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl">
                                 <ImageWithFallback
                                 src={trip.image}
@@ -5590,7 +5627,7 @@ export default function AdminTripsPage() {
                                 />
                               </div>
                               <div className="min-w-0">
-                                <div className="flex items-start justify-between gap-3">
+                                <div className="flex flex-wrap items-start justify-between gap-3">
                                   <p className="min-w-0 truncate font-semibold text-stone-900">
                                     {trip.title}
                                   </p>
@@ -5613,7 +5650,7 @@ export default function AdminTripsPage() {
                     </aside>
 
                     <section className="rounded-[2rem] border border-stone-200 bg-white p-5 shadow-lg lg:p-8">
-                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="mb-6 flex flex-col gap-3 border-b border-stone-200 pb-6 xl:flex-row xl:flex-wrap xl:items-center xl:justify-between">
                         <div>
                           <h2 className="text-2xl font-bold text-stone-900">
                             {isEditing ? "Edit trip" : "Add trip"}
@@ -5624,7 +5661,7 @@ export default function AdminTripsPage() {
                               : "Create a new trip record"}
                           </p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex flex-wrap gap-3">
                           {isEditing && (
                             <button
                               type="button"
@@ -5885,7 +5922,7 @@ function SystemStatusCard({ status }: { status: SystemStatusResponse | null }) {
 
   return (
     <div className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h3 className="text-xl font-bold text-stone-900">System status</h3>
           <p className="mt-2 text-sm text-stone-500">
@@ -5915,10 +5952,10 @@ function SystemStatusCard({ status }: { status: SystemStatusResponse | null }) {
           [...status.variables, ...(status.optionalVariables ?? [])].map((variable) => (
             <div
               key={variable.name}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-stone-200 px-4 py-3"
+              className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200 px-4 py-3"
             >
               <div className="min-w-0">
-                <span className="block truncate text-sm font-semibold text-stone-700">
+                <span className="block break-all text-sm font-semibold text-stone-700">
                   {variable.name}
                 </span>
                 {!variable.required && (
@@ -5974,7 +6011,7 @@ function ContentCard({
       transition={{ type: "spring", stiffness: 260, damping: 22 }}
       className="rounded-[2rem] border border-stone-200 bg-white p-6 shadow-lg"
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h3 className="text-xl font-bold text-stone-900">{title}</h3>
           <p className="mt-2 text-sm text-stone-500">{status}</p>
@@ -6008,7 +6045,7 @@ function MetricRow({
       transition={{ type: "spring", stiffness: 280, damping: 24 }}
       className="rounded-2xl border border-stone-200 p-4"
     >
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <span className="text-sm font-semibold text-stone-500">{label}</span>
         <span className="font-bold text-stone-900">{value}</span>
       </div>
@@ -6040,7 +6077,7 @@ function ToggleRow({
   enabled?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-stone-200 p-4">
+    <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200 p-4">
       <div>
         <p className="font-semibold text-stone-900">{title}</p>
         <p className="mt-1 text-sm text-stone-500">{description}</p>
@@ -6240,7 +6277,7 @@ function FancySelect({
 
   return (
     <div
-      className="relative"
+      className="relative min-w-0"
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
           setIsOpen(false);
@@ -6255,7 +6292,7 @@ function FancySelect({
         aria-expanded={isOpen}
         aria-haspopup="listbox"
       >
-        <span className="truncate">{selectedOption?.label ?? value}</span>
+        <span className="min-w-0 flex-1 truncate">{selectedOption?.label ?? value}</span>
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-stone-950 text-primary shadow-inner">
           <ChevronDown
             size={16}
@@ -6269,7 +6306,7 @@ function FancySelect({
             initial={{ opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
-            className="absolute right-0 top-full z-50 mt-3 max-h-72 w-full min-w-48 overflow-y-auto rounded-2xl border border-amber-200 bg-[#fffaf0] p-1.5 shadow-2xl shadow-stone-950/20"
+            className="absolute right-0 top-full z-50 mt-3 max-h-72 w-full min-w-0 overflow-y-auto rounded-2xl border border-amber-200 bg-[#fffaf0] p-1.5 shadow-2xl shadow-stone-950/20"
             role="listbox"
           >
             {options.map((option) => {
@@ -6291,7 +6328,7 @@ function FancySelect({
                   role="option"
                   aria-selected={isSelected}
                 >
-                  <span className="truncate">{option.label}</span>
+                  <span className="min-w-0 flex-1 truncate">{option.label}</span>
                   {isSelected && <Check size={15} />}
                 </button>
               );
@@ -6374,7 +6411,7 @@ function PublishingSeoPanel({
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div className="block">
+    <div className="block min-w-0">
       <span className="mb-2 block text-sm font-semibold text-stone-700">
         {label}
       </span>
