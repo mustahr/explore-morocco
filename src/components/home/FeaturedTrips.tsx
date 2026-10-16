@@ -1,41 +1,23 @@
 "use client"
 
 import { WishlistButton } from "@/components/trips/WishlistButton"
+import { useTrips } from "@/hooks/useTrips"
+import { TripLoadState } from "@/components/trips/TripLoadState"
 import { useTranslations } from "@/context/useTranslations"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Star, Clock, MapPin, ArrowRight, Heart } from "lucide-react"
-import { type Trip } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { translations, formatPrice } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 
 export function FeaturedTrips() {
   const { tr } = useTranslations()
-  const [trips, setTrips] = useState<Trip[]>([])
+  const { trips: allTrips, status, retry } = useTrips()
+  const trips = allTrips.slice(0, 6)
   const { language, currency, wishlist } = useApp()
   const t = translations[language]
-
-  useEffect(() => {
-    let ignore = false
-
-    async function loadTrips() {
-      const response = await fetch("/api/trips")
-      const data = (await response.json()) as { trips: Trip[] }
-
-      if (!ignore) {
-        setTrips(data.trips.slice(0, 6))
-      }
-    }
-
-    loadTrips()
-
-    return () => {
-      ignore = true
-    }
-  }, [])
 
   return (
     <section className="py-20 lg:py-28">
@@ -51,6 +33,8 @@ export function FeaturedTrips() {
           <p className="text-stone-500 mt-4 max-w-2xl mx-auto text-lg">{tr("Handpicked experiences designed by local experts")}</p>
         </motion.div>
 
+        {status !== "success" && <TripLoadState status={status} onRetry={retry} />}
+        {status === "success" && trips.length === 0 && <p role="status" className="rounded-3xl border border-stone-200 bg-stone-50 p-8 text-center text-stone-600">{tr("New trips will be available soon.")}</p>}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {trips.map((trip, index) => (
             <motion.div

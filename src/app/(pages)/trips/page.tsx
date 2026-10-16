@@ -2,13 +2,14 @@
 
 import { SavedTrips } from "@/components/trips/SavedTrips"
 import { WishlistButton } from "@/components/trips/WishlistButton"
+import { useTrips } from "@/hooks/useTrips"
+import { TripLoadState } from "@/components/trips/TripLoadState"
 import { useTranslations } from "@/context/useTranslations"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Star, Clock, MapPin, Heart, SlidersHorizontal, X, ArrowRight, Sparkles } from "lucide-react"
-import { type Trip } from "@/lib/data"
 import { useApp } from "@/context/AppContext"
 import { formatPrice } from "@/lib/utils"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
@@ -17,38 +18,13 @@ const categories = ["all", "favorited", "luxury", "budget", "adventure", "cultur
 
 export default function TripsPage() {
   const { tr } = useTranslations()
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [isLoadingTrips, setIsLoadingTrips] = useState(true)
+  const { trips, status, retry } = useTrips()
+  const isLoadingTrips = status === "loading"
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null)
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 15000])
   const [showFilters, setShowFilters] = useState(false)
   const { currency, isWishlisted } = useApp()
-
-  useEffect(() => {
-    let ignore = false
-
-    async function loadTrips() {
-      try {
-        const response = await fetch("/api/trips")
-        const data = (await response.json()) as { trips: Trip[] }
-
-        if (!ignore) {
-          setTrips(data.trips)
-        }
-      } finally {
-        if (!ignore) {
-          setIsLoadingTrips(false)
-        }
-      }
-    }
-
-    loadTrips()
-
-    return () => {
-      ignore = true
-    }
-  }, [])
 
   const maximumPrice = Math.max(15000, ...trips.map((trip) => Math.ceil(trip.price / 500) * 500))
   const savedTrips = trips.filter((trip) => isWishlisted(trip.id))
@@ -198,23 +174,24 @@ export default function TripsPage() {
                 </div>
               </div>
 
-              <SavedTrips trips={trips} loading={isLoadingTrips} />
+              <SavedTrips trips={trips} loading={isLoadingTrips} failed={status === "error"} />
             </div>
 
-            <div className="flex-1">
+            <div className="min-w-0 flex-1" aria-busy={isLoadingTrips}>
               <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="text-sm text-stone-500 uppercase tracking-wider">{tr("Results")}</p>
                   <p className="text-2xl font-bold text-stone-900">
-                    {isLoadingTrips ? tr("Loading trips...") : tr("{count} trips found", { count: filteredTrips.length })}
+                    {isLoadingTrips ? tr("Loading trips...") : status === "error" ? tr("Trips are temporarily unavailable") : tr("{count} trips found", { count: filteredTrips.length })}
                   </p>
                 </div>
                 <button type="button" aria-pressed={selectedCategory === "favorited"} onClick={() => selectedCategory === "favorited" ? resetFilters() : showSavedTrips()} className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold transition hover:border-primary hover:bg-amber-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary ${selectedCategory === "favorited" ? "border-primary bg-amber-50 text-primary-dark" : "border-stone-200 bg-white text-stone-700"}`}>
                   <Heart size={18} aria-hidden="true" className={selectedCategory === "favorited" ? "fill-primary text-primary" : ""} />
-                  {tr("Saved trips")} <span aria-live="polite">({savedTrips.length})</span>
+                  {tr("Saved trips")} <span aria-live="polite">({status === "success" ? savedTrips.length : "—"})</span>
                 </button>
               </div>
 
+              {status !== "success" && <TripLoadState status={status} onRetry={retry} />}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredTrips.map((trip, index) => {
                   const originalPrice = Math.round(trip.price * 1.15)
@@ -314,7 +291,7 @@ export default function TripsPage() {
                 })}
               </div>
 
-              {!isLoadingTrips && filteredTrips.length === 0 && (
+              {status === "success" && filteredTrips.length === 0 && (
                 <div className="text-center py-24 bg-white rounded-[2rem] border border-stone-200">
                   <p className="text-stone-500 text-lg mb-6">{selectedCategory === "favorited" && savedTrips.length === 0 ? tr("No saved trips yet") : tr("No trips match your filters")}</p>
                   <button

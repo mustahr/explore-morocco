@@ -2970,5 +2970,29 @@
   "Your browser stores language, currency, and favorites locally. Favorites are also synchronized to our database with an anonymous browser identifier in a cookie lasting up to one year, so our team can see which trips, destinations, and experiences visitors save and when. Saving an item does not subscribe you to marketing or identify you by name or email. Removing a favorite removes its active database record. An administrative session cookie supports secure admin access. Vercel Analytics records website usage and selected interactions. You can clear local preferences and cookies in your browser settings.": {
     "fr": "Votre navigateur conserve la langue, la devise et les favoris localement. Les favoris sont aussi synchronisés dans notre base avec un identifiant de navigateur anonyme, dans un cookie valable jusqu’à un an, pour connaître les voyages, destinations et expériences enregistrés et leur date. Enregistrer un favori ne vous abonne pas au marketing et ne vous identifie pas par nom ou e-mail. Le retrait d’un favori supprime son enregistrement actif. Un cookie sécurise l’accès administrateur. Vercel Analytics mesure l’utilisation du site et certaines interactions. Vous pouvez effacer les préférences et cookies dans les paramètres du navigateur.",
     "ar": "يحفظ متصفحك اللغة والعملة والمفضلة محليًا. تُزامن المفضلة أيضًا مع قاعدة بياناتنا بمعرّف متصفح مجهول في ملف ارتباط يستمر حتى سنة، ليعرف فريقنا الرحلات والوجهات والتجارب المحفوظة وتوقيتها. لا يؤدي الحفظ إلى الاشتراك في التسويق أو التعريف باسمك أو بريدك. تؤدي إزالة المفضلة إلى حذف سجلها النشط. يحمي ملف جلسة الوصول للإدارة، وتسجل Vercel Analytics استخدام الموقع وبعض التفاعلات. يمكنك مسح التفضيلات وملفات الارتباط من إعدادات المتصفح."
+  },
+  "We couldn’t load the trips": {
+    "fr": "Impossible de charger les voyages",
+    "ar": "تعذر تحميل الرحلات"
+  },
+  "Check your connection and try again. Your saved favorites and filter choices are kept.": {
+    "fr": "Vérifiez votre connexion et réessayez. Vos favoris et vos filtres sont conservés.",
+    "ar": "تحقق من اتصالك وحاول مجددًا. تبقى المفضلة وخيارات التصفية محفوظة."
+  },
+  "Retry": {
+    "fr": "Réessayer",
+    "ar": "إعادة المحاولة"
+  },
+  "Trips are temporarily unavailable": {
+    "fr": "Les voyages sont temporairement indisponibles",
+    "ar": "الرحلات غير متاحة مؤقتًا"
+  },
+  "Your favorites are still saved. Retry loading trips to see them.": {
+    "fr": "Vos favoris sont conservés. Relancez le chargement pour les afficher.",
+    "ar": "ما زالت المفضلة محفوظة. أعد تحميل الرحلات لعرضها."
+  },
+  "New trips will be available soon.": {
+    "fr": "De nouveaux voyages seront bientôt disponibles.",
+    "ar": "ستتوفر رحلات جديدة قريبًا."
   }
 }

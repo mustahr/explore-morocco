@@ -9,7 +9,7 @@ import { useTranslations } from "@/context/useTranslations"
 import { ImageWithFallback } from "@/components/ui/ImageWithFallback"
 import { WishlistButton } from "./WishlistButton"
 
-export function SavedTrips({ trips, loading }: { trips: Trip[]; loading: boolean }) {
+export function SavedTrips({ trips, loading, failed = false }: { trips: Trip[]; loading: boolean; failed?: boolean }) {
   const { currency, isWishlisted } = useApp()
   const { tr } = useTranslations()
   const savedTrips = trips.filter((trip) => isWishlisted(trip.id))
@@ -17,9 +17,9 @@ export function SavedTrips({ trips, loading }: { trips: Trip[]; loading: boolean
     <div className="mb-4 flex items-center gap-2">
       <Heart size={20} className="fill-primary text-primary" aria-hidden="true" />
       <h3 id="saved-trips-title" className="text-lg font-bold text-stone-900">{tr("Saved trips")}</h3>
-      <span className="ms-auto rounded-full bg-amber-50 px-2.5 py-1 text-sm font-semibold text-primary-dark">{savedTrips.length}</span>
+      <span className="ms-auto rounded-full bg-amber-50 px-2.5 py-1 text-sm font-semibold text-primary-dark">{loading || failed ? "—" : savedTrips.length}</span>
     </div>
-    {loading ? <p role="status" className="text-sm text-stone-500">{tr("Loading trips...")}</p> : savedTrips.length > 0 ? <ul className="divide-y divide-stone-100">
+    {failed ? <p className="text-sm leading-relaxed text-stone-500">{tr("Your favorites are still saved. Retry loading trips to see them.")}</p> : loading ? <p role="status" className="text-sm text-stone-500">{tr("Loading trips...")}</p> : savedTrips.length > 0 ? <ul className="divide-y divide-stone-100">
       {savedTrips.map((trip) => <li key={trip.id} className="flex items-center gap-2 py-3 first:pt-0">
         <Link href={`/trips/${trip.id}`} className="group flex min-w-0 flex-1 items-center gap-3 rounded-xl p-1 transition hover:bg-stone-50 focus-visible:outline-2 focus-visible:outline-primary">
           <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
