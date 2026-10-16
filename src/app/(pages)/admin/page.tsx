@@ -2887,7 +2887,7 @@ export default function AdminTripsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-stone-50">
+    <main className="min-h-screen min-w-0 w-full max-w-full bg-stone-50">
       <div
         className="min-h-screen"
       >
@@ -3047,8 +3047,8 @@ export default function AdminTripsPage() {
           </motion.aside>
         </div>
 
-        <div className="px-4 pb-8 pt-20 sm:px-6 lg:px-8 lg:py-8">
-          <div className="mx-auto max-w-7xl">
+        <div className="min-w-0 w-full max-w-full px-4 pb-8 pt-20 sm:px-6 lg:px-8 lg:py-8">
+          <div className="mx-auto min-w-0 w-full max-w-7xl">
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -3088,12 +3088,12 @@ export default function AdminTripsPage() {
                 className="absolute bottom-6 right-44 hidden h-14 w-14 rounded-2xl border border-amber-300/30 bg-amber-300/10 lg:block"
               />
 
-              <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <div className="relative z-10 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-end">
                 <div>
                   <p className="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-amber-200 ring-1 ring-white/15">
                     Admin Dashboard
                   </p>
-                  <h2 className="mt-5 text-4xl font-bold tracking-tight text-white lg:text-5xl">
+                  <h2 className="mt-5 break-words text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
                     {activeSection === "overview" && "Dashboard overview"}
                     {activeSection === "trips" && "Trip management"}
                     {activeSection === "destinations" &&
@@ -3114,7 +3114,7 @@ export default function AdminTripsPage() {
                   </p>
                 </div>
 
-                <div className="space-y-3 sm:w-[24rem]">
+                <div className="min-w-0 w-full space-y-3">
                   <button
                     type="button"
                     onClick={enableBrowserNotifications}
@@ -3211,7 +3211,7 @@ export default function AdminTripsPage() {
             </AnimatePresence>
 
             <AnimatePresence mode="wait">
-              <motion.div key={activeSection} {...sectionTransition}>
+              <motion.div key={activeSection} {...sectionTransition} className="min-w-0 max-w-full">
                 {activeSection === "emails" && <EmailMarketing />}
                 {activeSection === "favorites" && <FavoritesDashboard />}
                 {activeSection === "overview" && (
